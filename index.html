@@ -6,7 +6,10 @@
   <title>Arthur Fogolin Rocha — AI Systems Architect & Software Engineer</title>
   <meta name="description" content="Engenharia de Software, Agentes de Inteligência Artificial e Ferramentas de Alta Performance em Rust de Arthur Fogolin Rocha.">
   <meta name="theme-color" content="#02030b">
-  <link rel="icon" type="image/jpeg" href="/assets/arthur_ai_executive_real.jpg">
+  <!-- Cyberpunk Monogram Logo Favicon (SVG + PNG) -->
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   
   <!-- Open Graph / WhatsApp / LinkedIn Rich Preview -->
   <meta property="og:type" content="website">
@@ -246,91 +249,94 @@
   <div class="fixed top-[-10%] left-[-10%] w-[550px] h-[550px] bg-cyanGlow/15 rounded-full blur-[160px] pointer-events-none z-0 animate-pulse-glow"></div>
   <div class="fixed bottom-[-15%] right-[-10%] w-[650px] h-[650px] bg-purpleGlow/15 rounded-full blur-[180px] pointer-events-none z-0 animate-pulse-glow" style="animation-delay: 1.5s;"></div>
 
-  <!-- TOP CYBER TELEMETRY & HUD BAR (HACKARUN / MATRIX COMMAND GRADE) -->
-  <div class="w-full max-w-full bg-void/90 border-b border-cyanGlow/25 py-1.5 px-3 sm:px-4 font-mono text-[10px] text-gray-400 flex items-center justify-between backdrop-blur-md z-50 overflow-x-auto whitespace-nowrap select-none scrollbar-none">
-    <div class="flex items-center gap-2 sm:gap-5">
-      <span class="flex items-center gap-1.5 text-emeraldGlow font-bold tracking-wider">
-        <span class="w-2 h-2 rounded-full bg-emeraldGlow led-live shadow-[0_0_8px_#10b981]"></span>
-        SYS_ONLINE // 256-BIT SECURE
-      </span>
-      <span class="text-white/20">|</span>
-      <span class="text-cyanGlow flex items-center gap-1">
-        <i data-lucide="map-pin" class="w-3 h-3 text-cyanGlow"></i>
-        PALMAS - TO [-10.1843, -48.3336]
-      </span>
-      <span class="text-white/20 hidden md:inline">|</span>
-      <span id="telemetry-time" class="text-purpleGlow font-bold hidden md:inline">UTC-3 --:--:--.---</span>
-      <span class="text-white/20 hidden lg:inline">|</span>
-      <span id="telemetry-visitor" class="text-cyanGlow font-semibold hidden lg:inline-flex items-center gap-1">
-        <i data-lucide="users" class="w-3 h-3 text-cyanGlow"></i>
-        VISITANTE #1.482
-      </span>
-    </div>
-
-    <div class="flex items-center gap-2 sm:gap-5">
-      <span class="text-amber-400 font-semibold flex items-center gap-1">
-        <i data-lucide="cpu" class="w-3 h-3 text-amber-400"></i>
-        12 CORES (APPLE SILICON M)
-      </span>
-      <span class="text-white/20 hidden sm:inline">|</span>
-      <span class="text-cyanGlow/90 hidden lg:inline">QUANTUM AGENTS: 12 ONLINE</span>
-      <span class="text-white/20 hidden lg:inline">|</span>
-      <span id="fps-counter" class="text-emeraldGlow font-bold px-2 py-0.5 rounded bg-emeraldGlow/10 border border-emeraldGlow/30">60 FPS</span>
-    </div>
-  </div>
-
-  <!-- Header / Navigation Bar -->
-  <header class="sticky top-0 z-50 card-glass border-b border-white/5 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      
-      <!-- Brand Logo -->
-      <a href="#inicio" class="flex items-center gap-3 group">
-        <div class="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-cyanGlow/20 to-purpleGlow/30 border border-cyanGlow/50 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]">
-          <div class="absolute inset-0 bg-cyanGlow/20 animate-pulse"></div>
-          <span class="font-orbitron font-extrabold text-cyanGlow text-lg tracking-wider relative z-10">AF</span>
-        </div>
-        <div>
-          <span class="font-orbitron font-bold text-white tracking-widest text-sm block">ARTHUR FOGOLIN</span>
-          <span class="font-mono text-[10px] text-cyanGlow tracking-wider flex items-center gap-1.5 font-semibold">
-            <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow animate-ping"></span>
-            AI SYSTEMS ARCHITECT & RUST DEV
-          </span>
-        </div>
-      </a>
-
-      <!-- Desktop Nav Links -->
-      <nav class="hidden md:flex items-center gap-6 font-mono text-xs text-gray-400">
-        <button onclick="switchTab('perfil')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">01.</span> Biografia & Cérebro</button>
-        <button onclick="switchTab('sistemas')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">02.</span> Sistemas & Clientes</button>
-        <button onclick="switchTab('rust')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">03.</span> Rust High-Perf</button>
-        <button onclick="switchTab('servicos')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">04.</span> Serviços & Orçamento</button>
-        <a href="#terminal" class="hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">05.</span> Terminal CLI</a>
-      </nav>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-3">
-        <!-- Cyber Ambient Audio Player Pill -->
-        <button id="sfx-toggle" title="Trilha Sonora Ambient Cyberpunk (Web Audio Synthesizer)" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 card-glass text-xs font-mono transition-all hover:scale-105 active:scale-95 group">
-          <div class="flex items-end gap-0.5 h-3.5 w-3.5" id="eq-bars">
-            <span class="w-0.5 bg-gray-500 rounded-full h-1 eq-bar"></span>
-            <span class="w-0.5 bg-gray-500 rounded-full h-2 eq-bar"></span>
-            <span class="w-0.5 bg-gray-500 rounded-full h-1.5 eq-bar"></span>
-            <span class="w-0.5 bg-gray-500 rounded-full h-2.5 eq-bar"></span>
-          </div>
-          <span id="sfx-label" class="text-gray-400 group-hover:text-cyanGlow transition-colors font-semibold">TRILHA: OFF</span>
-        </button>
-
-        <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar!" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyanGlow/20 to-purpleGlow/20 hover:from-cyanGlow/30 hover:to-purpleGlow/30 border border-cyanGlow/50 text-white font-mono text-xs font-bold tracking-wider transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,240,255,0.2)]">
-          <i data-lucide="send" class="w-3.5 h-3.5 text-cyanGlow"></i>
-          <span>FALE COMIGO</span>
-        </a>
+  <!-- FIXED TOP HEADER & TELEMETRY WRAPPER (100% FIXED EM QUALQUER SCROLL) -->
+  <div id="top-fixed-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <!-- TOP CYBER TELEMETRY & HUD BAR (HACKARUN / MATRIX COMMAND GRADE) -->
+    <div class="w-full max-w-full bg-void/95 border-b border-cyanGlow/25 py-1.5 px-3 sm:px-4 font-mono text-[10px] text-gray-400 flex items-center justify-between backdrop-blur-md overflow-x-auto whitespace-nowrap select-none scrollbar-none">
+      <div class="flex items-center gap-2 sm:gap-5">
+        <span class="flex items-center gap-1.5 text-emeraldGlow font-bold tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-emeraldGlow led-live shadow-[0_0_8px_#10b981]"></span>
+          SYS_ONLINE // 256-BIT SECURE
+        </span>
+        <span class="text-white/20">|</span>
+        <span class="text-cyanGlow flex items-center gap-1">
+          <i data-lucide="map-pin" class="w-3 h-3 text-cyanGlow"></i>
+          PALMAS - TO [-10.1843, -48.3336]
+        </span>
+        <span class="text-white/20 hidden md:inline">|</span>
+        <span id="telemetry-time" class="text-purpleGlow font-bold hidden md:inline">UTC-3 --:--:--.---</span>
+        <span class="text-white/20 hidden lg:inline">|</span>
+        <span id="telemetry-visitor" class="text-cyanGlow font-semibold hidden lg:inline-flex items-center gap-1">
+          <i data-lucide="users" class="w-3 h-3 text-cyanGlow"></i>
+          VISITANTE #1.482
+        </span>
       </div>
 
+      <div class="flex items-center gap-2 sm:gap-5">
+        <span class="text-amber-400 font-semibold flex items-center gap-1">
+          <i data-lucide="cpu" class="w-3 h-3 text-amber-400"></i>
+          12 CORES (APPLE SILICON M)
+        </span>
+        <span class="text-white/20 hidden sm:inline">|</span>
+        <span class="text-cyanGlow/90 hidden lg:inline">QUANTUM AGENTS: 12 ONLINE</span>
+        <span class="text-white/20 hidden lg:inline">|</span>
+        <span id="fps-counter" class="text-emeraldGlow font-bold px-2 py-0.5 rounded bg-emeraldGlow/10 border border-emeraldGlow/30">60 FPS</span>
+      </div>
     </div>
-  </header>
 
-  <!-- Main Content Container -->
-  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+    <!-- Header / Navigation Bar -->
+    <header class="card-glass border-b border-white/5 bg-void/85 backdrop-blur-md transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <a href="#inicio" class="flex items-center gap-3 group">
+          <div class="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-cyanGlow/20 to-purpleGlow/30 border border-cyanGlow/50 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+            <div class="absolute inset-0 bg-cyanGlow/20 animate-pulse"></div>
+            <span class="font-orbitron font-extrabold text-cyanGlow text-lg tracking-wider relative z-10">AF</span>
+          </div>
+          <div>
+            <span class="font-orbitron font-bold text-white tracking-widest text-sm block">ARTHUR FOGOLIN</span>
+            <span class="font-mono text-[10px] text-cyanGlow tracking-wider flex items-center gap-1.5 font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow animate-ping"></span>
+              AI SYSTEMS ARCHITECT & RUST DEV
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Nav Links -->
+        <nav class="hidden md:flex items-center gap-6 font-mono text-xs text-gray-400">
+          <button onclick="switchTab('perfil')" id="nav-btn-perfil" class="tab-nav-btn text-cyanGlow font-bold hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">01.</span> Biografia & Cérebro</button>
+          <button onclick="switchTab('sistemas')" id="nav-btn-sistemas" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">02.</span> Sistemas & Clientes</button>
+          <button onclick="switchTab('rust')" id="nav-btn-rust" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">03.</span> Rust High-Perf</button>
+          <button onclick="switchTab('servicos')" id="nav-btn-servicos" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">04.</span> Serviços & Orçamento</button>
+          <a href="#terminal" class="hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">05.</span> Terminal CLI</a>
+        </nav>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+          <!-- Cyber Ambient Audio Player Pill -->
+          <button id="sfx-toggle" title="Trilha Sonora Ambient Cyberpunk (Web Audio Synthesizer)" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 card-glass text-xs font-mono transition-all hover:scale-105 active:scale-95 group">
+            <div class="flex items-end gap-0.5 h-3.5 w-3.5" id="eq-bars">
+              <span class="w-0.5 bg-gray-500 rounded-full h-1 eq-bar"></span>
+              <span class="w-0.5 bg-gray-500 rounded-full h-2 eq-bar"></span>
+              <span class="w-0.5 bg-gray-500 rounded-full h-1.5 eq-bar"></span>
+              <span class="w-0.5 bg-gray-500 rounded-full h-2.5 eq-bar"></span>
+            </div>
+            <span id="sfx-label" class="text-gray-400 group-hover:text-cyanGlow transition-colors font-semibold">TRILHA: OFF</span>
+          </button>
+
+          <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar!" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyanGlow/20 to-purpleGlow/20 hover:from-cyanGlow/30 hover:to-purpleGlow/30 border border-cyanGlow/50 text-white font-mono text-xs font-bold tracking-wider transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+            <i data-lucide="send" class="w-3.5 h-3.5 text-cyanGlow"></i>
+            <span>FALE COMIGO</span>
+          </a>
+        </div>
+
+      </div>
+    </header>
+  </div>
+
+  <!-- Main Content Container with top padding for fixed header -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-36 sm:pt-40 pb-10 space-y-20">
 
     <!-- HERO SECTION -->
     <section id="inicio" class="pt-4 pb-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -460,7 +466,7 @@
     </section>
 
     <!-- SECTION: MULTI-SCREEN INTERACTIVE TABS (DIVIDIR TELAS) -->
-    <section class="space-y-8">
+    <section id="tabs-section" class="space-y-8 scroll-mt-36">
       
       <!-- Screen Tab Selectors -->
       <div class="flex flex-wrap items-center justify-center gap-3 p-2 rounded-2xl bg-void/80 border border-white/10 card-glass max-w-5xl mx-auto font-mono text-xs">
@@ -1473,7 +1479,7 @@
     </section>
 
     <!-- SECTION 4: INTERACTIVE CYBERPUNK TERMINAL -->
-    <section id="terminal" class="space-y-4 pt-4">
+    <section id="terminal" class="space-y-4 pt-4 scroll-mt-36">
       
       <div class="flex items-center justify-between">
         <div>
@@ -1761,7 +1767,7 @@
     });
 
     // 3. Tab Switching Engine (Dividir Telas com Suporte a Serviços)
-    function switchTab(tabId) {
+    function switchTab(tabId, shouldScroll = true) {
       if (tabId === 'hackarun') tabId = 'servicos'; // Alias para a nova aba executiva de serviços
 
       document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1781,10 +1787,30 @@
       if (activeContent) {
         activeContent.classList.remove('hidden');
       }
+
+      // Sincroniza indicador visual no menu superior (Header Desktop)
+      document.querySelectorAll('.tab-nav-btn').forEach(nb => {
+        nb.classList.remove('text-cyanGlow', 'font-bold');
+        nb.classList.add('text-gray-400');
+      });
+      const activeNavBtn = document.getElementById(`nav-btn-${tabId}`);
+      if (activeNavBtn) {
+        activeNavBtn.classList.add('text-cyanGlow', 'font-bold');
+        activeNavBtn.classList.remove('text-gray-400');
+      }
+
       playTone(850, 'sine', 0.06, 0.03);
 
       if (tabId === 'perfil') {
         setTimeout(initObsidianGraph, 100);
+      }
+
+      // Direcionamento imediato e suave até a seção de abas
+      if (shouldScroll) {
+        const tabsSection = document.getElementById('tabs-section');
+        if (tabsSection) {
+          tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
     }
 
