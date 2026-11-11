@@ -3862,229 +3862,217 @@
       }
     }, { passive: true });
 
-    // 14. NOVO: Motor do NEXUS AI — Assistente Neural & Co-Piloto (Módulo 1)
+    // 14. NOVO: Motor do NEXUS AI — Assistente Neural 3D & Co-Piloto (Módulo 1)
     let aiAssistantOpen = false;
     let isHoloSpeaking = false;
+    let holoScene = null;
+    let holoCamera = null;
+    let holoRenderer = null;
+    let holoPoints = null;
+    let holoBasePositions = null;
+    let holoMouthIndices = [];
+    let holoHaloData = [];
     let holoAnimFrameId = null;
-    let holoParticles = [];
+    let holoMouseTarget = { x: 0, y: 0 };
+    let holoMouseCurrent = { x: 0, y: 0 };
 
-    // Motor Canvas 60fps do Holograma Neural (Inspirado na anatomia bio-óptica com coração incandescente, nervos e partículas)
-    function initNeuralHologram() {
-      const canvas = document.getElementById('holo-neural-canvas');
-      if (!canvas) return;
-      holoParticles = [];
-      for (let i = 0; i < 45; i++) {
-        holoParticles.push({
-          x: 35 + Math.random() * 230,
-          y: 20 + Math.random() * 300,
-          r: 0.8 + Math.random() * 1.6,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: -(0.3 + Math.random() * 0.65),
-          alpha: 0.25 + Math.random() * 0.7,
-          pulseSpeed: 1 + Math.random() * 2,
-          phase: Math.random() * Math.PI * 2
-        });
-      }
+    function createPointSpriteTexture() {
+      const c = document.createElement('canvas');
+      c.width = 64;
+      c.height = 64;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.25, 'rgba(0, 240, 255, 0.95)');
+      grad.addColorStop(0.65, 'rgba(16, 185, 129, 0.4)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
     }
 
-    const neuralBranches = [
-      [[150, 175], [125, 165], [95, 150], [60, 145], [45, 195], [38, 245]],
-      [[150, 175], [175, 165], [205, 150], [240, 145], [255, 195], [262, 245]],
-      [[150, 175], [150, 145], [150, 115], [150, 85], [140, 65], [135, 45], [150, 32]],
-      [[150, 85], [160, 65], [165, 45], [150, 32]],
-      [[150, 175], [150, 210], [150, 245], [150, 280]],
-      [[150, 205], [120, 215], [95, 230]],
-      [[150, 230], [125, 240], [105, 250]],
-      [[150, 205], [180, 215], [205, 230]],
-      [[150, 230], [175, 240], [195, 250]],
-      [[150, 175], [130, 190], [115, 195]],
-      [[150, 175], [170, 190], [185, 195]]
-    ];
+    function init3DHeadHologram() {
+      const canvas = document.getElementById('holo-neural-canvas');
+      if (!canvas || !window.THREE) return;
 
-    function getPointAlongPolyline(pts, t) {
-      if (t <= 0) return pts[0];
-      if (t >= 1) return pts[pts.length - 1];
-      let totalLen = 0;
-      const lens = [];
-      for (let i = 0; i < pts.length - 1; i++) {
-        const dx = pts[i + 1][0] - pts[i][0];
-        const dy = pts[i + 1][1] - pts[i][1];
-        const len = Math.hypot(dx, dy);
-        lens.push(len);
-        totalLen += len;
+      const width = canvas.clientWidth || 400;
+      const height = canvas.clientHeight || 460;
+
+      if (!holoRenderer) {
+        holoRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        holoRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       }
-      let target = t * totalLen;
-      let acc = 0;
-      for (let i = 0; i < lens.length; i++) {
-        if (acc + lens[i] >= target) {
-          const segT = (target - acc) / lens[i];
-          return [
-            pts[i][0] + (pts[i + 1][0] - pts[i][0]) * segT,
-            pts[i][1] + (pts[i + 1][1] - pts[i][1]) * segT
-          ];
+      holoRenderer.setSize(width, height, false);
+
+      holoScene = new THREE.Scene();
+      holoCamera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+      holoCamera.position.set(0, 0.08, 3.15);
+
+      // Gera nuvem de pontos 3D da cabeça humana volumétrica (3.500+ pontos)
+      const positions = [];
+      const colors = [];
+      holoBasePositions = [];
+      holoMouthIndices = [];
+      holoHaloData = [];
+
+      const uSteps = 60;
+      const vSteps = 65;
+
+      for (let i = 0; i < uSteps; i++) {
+        const u = (i / uSteps) * Math.PI * 2;
+        for (let j = 0; j < vSteps; j++) {
+          const v = (j / vSteps) * Math.PI;
+          let rX = 0.84;
+          let rY = 1.14;
+          let rZ = 0.94;
+          let x = rX * Math.sin(v) * Math.sin(u);
+          let y = rY * Math.cos(v);
+          let z = rZ * Math.sin(v) * Math.cos(u);
+          if (y < -0.9) continue;
+
+          let isMouth = false;
+          let isEye = false;
+
+          if (z > 0) {
+            const faceAngle = Math.atan2(x, z);
+            const absAngle = Math.abs(faceAngle);
+            if (absAngle < 1.18) {
+              // Cavidade ocular dos olhos
+              if (y > 0.05 && y < 0.25 && Math.abs(x) > 0.12 && Math.abs(x) < 0.42) {
+                z -= 0.14 * Math.cos((absAngle - 0.25) * 4);
+                if (Math.abs(x) > 0.18 && Math.abs(x) < 0.35 && y > 0.09 && y < 0.21) isEye = true;
+              }
+              // Ponte e ponta do nariz
+              if (y > -0.15 && y < 0.25 && Math.abs(x) < 0.14) {
+                const nose = (1 - Math.abs(x) / 0.14) * (1 - Math.abs(y - 0.0) / 0.2);
+                z += Math.max(0, nose * 0.28);
+              }
+              // Lábios e boca
+              if (y > -0.38 && y < -0.18 && Math.abs(x) < 0.22) {
+                const lip = (1 - Math.abs(x) / 0.22);
+                if (y > -0.27) {
+                  z += lip * 0.12 * Math.sin((y + 0.27) / 0.09 * Math.PI);
+                } else {
+                  z += lip * 0.14 * Math.sin((-0.27 - y) / 0.11 * Math.PI);
+                  isMouth = true;
+                }
+              }
+              // Queixo
+              if (y > -0.62 && y < -0.42 && Math.abs(x) < 0.24) {
+                z += (1 - Math.abs(x) / 0.24) * 0.15;
+              }
+              // Tapering da mandíbula
+              if (y < -0.35) {
+                x *= (1 - (-0.35 - y) * 0.25);
+              }
+            }
+          }
+
+          // Ruído orgânico de escaneamento neural
+          const noise = (Math.random() - 0.5) * 0.016;
+          x += noise;
+          y += noise;
+          z += noise;
+
+          const idx = positions.length / 3;
+          positions.push(x, y, z);
+          holoBasePositions.push(x, y, z);
+
+          if (isEye) {
+            colors.push(1.0, 1.0, 1.0); // Olhos em destaque branco puro
+          } else if (z > 0.2) {
+            colors.push(0.0, 0.94, 1.0); // Rosto em neon ciano intenso
+          } else {
+            colors.push(0.06, 0.78, 0.65); // Laterais e crânio em tom esmeralda/matriz
+          }
+
+          if (isMouth) holoMouthIndices.push(idx);
         }
-        acc += lens[i];
       }
-      return pts[pts.length - 1];
+
+      // Halo de dados: partículas cósmicas se desintegrando no topo (idêntico à foto)
+      for (let k = 0; k < 350; k++) {
+        const theta = Math.random() * Math.PI * 2;
+        const rad = 0.15 + Math.random() * 0.85;
+        const px = Math.cos(theta) * rad;
+        const py = 0.75 + Math.random() * 0.85;
+        const pz = Math.sin(theta) * rad;
+        const idx = positions.length / 3;
+        positions.push(px, py, pz);
+        holoBasePositions.push(px, py, pz);
+        colors.push(0.0, 0.95, 1.0);
+        holoHaloData.push({ idx, speed: 0.004 + Math.random() * 0.008, basePy: py });
+      }
+
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const texture = createPointSpriteTexture();
+      const material = new THREE.PointsMaterial({
+        size: 0.046,
+        map: texture,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.95,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      holoPoints = new THREE.Points(geometry, material);
+      holoScene.add(holoPoints);
     }
 
-    function renderNeuralHologram(timestamp) {
-      const canvas = document.getElementById('holo-neural-canvas');
-      if (!canvas || !aiAssistantOpen) return;
-      const ctx = canvas.getContext('2d');
+    function render3DHeadHologram(timestamp) {
+      if (!holoRenderer || !holoScene || !holoCamera || !aiAssistantOpen) return;
+
       const time = timestamp * 0.001;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1. Silhueta Anatômica Neon Ciano
-      ctx.save();
-      ctx.lineWidth = 1.6;
-      ctx.strokeStyle = 'rgba(0, 240, 255, 0.75)';
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.06)';
+      // Interpolação suave do olhar para o mouse (tracking 3D)
+      holoMouseCurrent.x += (holoMouseTarget.x - holoMouseCurrent.x) * 0.05;
+      holoMouseCurrent.y += (holoMouseTarget.y - holoMouseCurrent.y) * 0.05;
 
-      ctx.beginPath();
-      ctx.moveTo(150, 115);
-      ctx.bezierCurveTo(120, 125, 80, 135, 55, 155);
-      ctx.lineTo(40, 255);
-      ctx.lineTo(65, 265);
-      ctx.lineTo(80, 195);
-      ctx.lineTo(105, 280);
-      ctx.lineTo(150, 285);
-      ctx.lineTo(195, 280);
-      ctx.lineTo(220, 195);
-      ctx.lineTo(235, 265);
-      ctx.lineTo(260, 255);
-      ctx.bezierCurveTo(235, 135, 180, 125, 150, 115);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
+      if (holoPoints) {
+        // Respiração e oscilação orgânica da cabeça 3D
+        holoPoints.rotation.y = Math.sin(time * 0.7) * 0.18 + holoMouseCurrent.x * 0.35;
+        holoPoints.rotation.x = Math.sin(time * 0.5) * 0.06 - holoMouseCurrent.y * 0.25;
+        holoPoints.position.y = Math.sin(time * 1.2) * 0.035;
 
-      // Pescoço e Cabeça
-      ctx.beginPath();
-      ctx.moveTo(138, 115);
-      ctx.lineTo(138, 92);
-      ctx.bezierCurveTo(122, 85, 120, 50, 132, 38);
-      ctx.bezierCurveTo(140, 25, 160, 25, 168, 38);
-      ctx.bezierCurveTo(180, 50, 178, 85, 162, 92);
-      ctx.lineTo(162, 115);
-      ctx.closePath();
-      ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
-      ctx.fill();
-      ctx.stroke();
+        const positions = holoPoints.geometry.attributes.position.array;
 
-      // 2. Olhos Cibernéticos
-      const eyeAlpha = 0.85 + Math.sin(time * 2) * 0.15;
-      ctx.fillStyle = `rgba(255, 255, 255, ${eyeAlpha})`;
-      ctx.shadowColor = '#00f0ff';
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.arc(141, 62, 1.8, 0, Math.PI * 2);
-      ctx.arc(159, 62, 1.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // 3. Vocoder de Fala Concentrado na Boca (Apenas nos lábios, sem chacoalhar o corpo)
-      const mouthY = 88;
-      const mouthX = 150;
-      ctx.lineWidth = 2.2;
-      ctx.lineCap = 'round';
-      for (let i = -2; i <= 2; i++) {
-        const bx = mouthX + i * 4.5;
-        let bHeight = 1.0;
-        if (isHoloSpeaking) {
-          bHeight = 2.5 + Math.abs(Math.sin(time * 18 + i * 1.3)) * 6.5;
-          ctx.strokeStyle = i === 0 ? '#ffffff' : '#00f0ff';
-        } else {
-          ctx.strokeStyle = 'rgba(0, 240, 255, 0.6)';
+        // Animação da Boca Falando (Quando isHoloSpeaking está ativo)
+        if (holoMouthIndices.length > 0) {
+          const mouthOpen = isHoloSpeaking ? Math.abs(Math.sin(time * 16)) * 0.08 : 0;
+          for (let i = 0; i < holoMouthIndices.length; i++) {
+            const idx = holoMouthIndices[i];
+            positions[idx * 3 + 1] = holoBasePositions[idx * 3 + 1] - mouthOpen;
+          }
         }
-        ctx.beginPath();
-        ctx.moveTo(bx, mouthY - bHeight);
-        ctx.lineTo(bx, mouthY + bHeight);
-        ctx.stroke();
+
+        // Desintegração de partículas no topo da cabeça (Halo cósmico ascendente)
+        for (let i = 0; i < holoHaloData.length; i++) {
+          const item = holoHaloData[i];
+          const pIdx = item.idx * 3;
+          positions[pIdx + 1] += item.speed;
+          if (positions[pIdx + 1] > 1.9) {
+            positions[pIdx + 1] = item.basePy;
+          }
+        }
+
+        holoPoints.geometry.attributes.position.needsUpdate = true;
       }
 
-      // 4. Ramificações Neurais / Relâmpagos Sinápticos (Nervos & Veias)
-      neuralBranches.forEach((pts, branchIdx) => {
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(pts[0][0], pts[0][1]);
-        for (let i = 1; i < pts.length; i++) {
-          ctx.lineTo(pts[i][0], pts[i][1]);
-        }
-        const veinAlpha = 0.35 + Math.sin(time * 2.5 + branchIdx) * 0.15 + (isHoloSpeaking ? 0.25 : 0);
-        ctx.strokeStyle = `rgba(0, 240, 255, ${veinAlpha})`;
-        ctx.lineWidth = branchIdx < 5 ? 1.4 : 1.0;
-        ctx.setLineDash([3, 2]);
-        ctx.stroke();
-
-        // Faísca Elétrica Sináptica
-        const speed = isHoloSpeaking ? 0.7 : 0.35;
-        const sparkOffset = (branchIdx * 0.17);
-        const progress = (time * speed + sparkOffset) % 1.0;
-        const sparkPt = getPointAlongPolyline(pts, progress);
-
-        ctx.setLineDash([]);
-        ctx.shadowColor = '#00f0ff';
-        ctx.shadowBlur = 10;
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(sparkPt[0], sparkPt[1], isHoloSpeaking ? 2.5 : 1.8, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.restore();
-      });
-
-      // 5. Coração Incandescente (Heart Core) no Centro do Peito (150, 175)
-      const heartbeat = Math.pow(Math.sin(time * 3.2), 4) * 0.6 + Math.pow(Math.sin(time * 3.2 + 0.3), 4) * 0.4;
-      const coreRadius = (isHoloSpeaking ? 16 : 13) + heartbeat * 6;
-
-      const heartGrad = ctx.createRadialGradient(150, 175, 2, 150, 175, coreRadius * 2.2);
-      heartGrad.addColorStop(0, '#ffffff');
-      heartGrad.addColorStop(0.25, 'rgba(0, 240, 255, 0.95)');
-      heartGrad.addColorStop(0.65, 'rgba(2, 132, 199, 0.4)');
-      heartGrad.addColorStop(1, 'transparent');
-
-      ctx.save();
-      ctx.fillStyle = heartGrad;
-      ctx.beginPath();
-      ctx.arc(150, 175, coreRadius * 2.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.shadowColor = '#ffffff';
-      ctx.shadowBlur = 18;
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(150, 175, 5 + heartbeat * 2.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      // 6. Nuvem de Partículas Cósmicas / Faíscas Orbitais em Suspensão
-      ctx.save();
-      holoParticles.forEach(p => {
-        p.y += p.vy;
-        p.x += p.vx + Math.sin(time * p.pulseSpeed + p.phase) * 0.3;
-        if (p.y < 10) {
-          p.y = 320;
-          p.x = 35 + Math.random() * 230;
-        }
-        const pAlpha = p.alpha * (0.6 + Math.sin(time * 3 + p.phase) * 0.4);
-        ctx.fillStyle = `rgba(0, 240, 255, ${pAlpha})`;
-        ctx.shadowColor = '#00f0ff';
-        ctx.shadowBlur = 6;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.restore();
+      holoRenderer.render(holoScene, holoCamera);
 
       if (aiAssistantOpen) {
-        holoAnimFrameId = requestAnimationFrame(renderNeuralHologram);
+        holoAnimFrameId = requestAnimationFrame(render3DHeadHologram);
       }
     }
 
     function startHoloAnimation() {
       if (holoAnimFrameId) cancelAnimationFrame(holoAnimFrameId);
-      initNeuralHologram();
-      holoAnimFrameId = requestAnimationFrame(renderNeuralHologram);
+      init3DHeadHologram();
+      holoAnimFrameId = requestAnimationFrame(render3DHeadHologram);
     }
 
     function stopHoloAnimation() {
@@ -4093,6 +4081,15 @@
         holoAnimFrameId = null;
       }
     }
+
+    // Gaze tracking 3D suave com movimento do mouse/toque
+    window.addEventListener('mousemove', (e) => {
+      if (!aiAssistantOpen) return;
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      holoMouseTarget.x = x * 0.6;
+      holoMouseTarget.y = y * 0.5;
+    }, { passive: true });
 
     // Navegação Co-Piloto pelo Portfólio (Teleporte Interativo)
     window.navigateSite = function(destination) {
@@ -4315,12 +4312,12 @@ Teclas <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> mudam as a
 
       input.value = '';
 
-      // 1. Renderiza a pergunta do usuário no Feed com destaque explícito
+      // 1. Renderiza a pergunta do usuário no Feed com destaque explícito e tipografia ampla
       const userBubble = document.createElement('div');
-      userBubble.className = 'flex justify-end my-1.5 animate-fadeIn';
+      userBubble.className = 'flex justify-end my-2 animate-fadeIn';
       userBubble.innerHTML = `
-        <div class="px-3 py-1.5 rounded-xl rounded-tr-none bg-gradient-to-r from-cyanGlow/25 to-purpleGlow/25 border border-cyanGlow/50 text-white font-sans text-xs sm:text-[13px] shadow-[0_0_12px_rgba(0,240,255,0.2)] max-w-[88%]">
-          <span class="text-[9px] font-mono text-cyanGlow/90 block uppercase font-bold tracking-wider">Você perguntou</span>
+        <div class="px-4 py-2.5 rounded-2xl rounded-tr-none bg-gradient-to-r from-cyanGlow/30 to-purpleGlow/30 border border-cyanGlow/60 text-white font-sans text-sm sm:text-base shadow-[0_0_16px_rgba(0,240,255,0.25)] max-w-[88%]">
+          <span class="text-[10px] sm:text-xs font-mono text-cyanGlow block uppercase font-bold tracking-wider mb-0.5">Você perguntou</span>
           <span>${escapeHtml(userText)}</span>
         </div>
       `;
@@ -4345,23 +4342,23 @@ Teclas <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> mudam as a
 
         let replyHtml = matched 
           ? matched.reply 
-          : `Sou a inteligência holográfica de <strong>Arthur Fogolin</strong>. Posso te apresentar sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega, idade ou formação na UniCatólica. Como posso te ajudar com o trabalho do Arthur?`;
+          : `Sou a inteligência neural de <strong>Arthur Fogolin</strong>. Posso te apresentar sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega, idade ou formação na UniCatólica. Como posso te ajudar com o trabalho do Arthur?`;
 
-        // Renderiza a resposta do assistente no Feed com histórico contínuo
+        // Renderiza a resposta do assistente no Feed com histórico contínuo e fontes legíveis
         const aiBubble = document.createElement('div');
-        aiBubble.className = 'flex flex-col gap-1.5 my-2 animate-fadeIn';
+        aiBubble.className = 'flex flex-col gap-2 my-2.5 animate-fadeIn';
         aiBubble.innerHTML = `
-          <div class="flex items-center gap-1.5 text-[9px] font-mono text-cyanGlow font-bold">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
+          <div class="flex items-center gap-2 text-[10px] sm:text-xs font-mono text-cyanGlow font-bold">
+            <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
             <span>RESPOSTA DO ASSISTENTE HOLOGRÁFICO</span>
           </div>
-          <div class="p-3 rounded-xl bg-surface/90 border border-cyanGlow/40 text-xs sm:text-[13px] leading-relaxed text-gray-100 font-sans shadow-md">
+          <div class="p-4 sm:p-5 rounded-2xl bg-surface/95 border border-cyanGlow/50 text-sm sm:text-base leading-relaxed text-gray-100 font-sans shadow-lg">
             ${replyHtml}
           </div>
           <div class="pt-0.5">
-            <a href="https://wa.me/5563991206201?text=${encodeURIComponent('Olá Arthur! Estive conversando com seu Assistente Holográfico de IA sobre: ' + userText)}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emeraldGlow/20 hover:bg-emeraldGlow/30 border border-emeraldGlow/40 text-emeraldGlow font-mono text-[10px] font-bold transition-all shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+            <a href="https://wa.me/5563991206201?text=${encodeURIComponent('Olá Arthur! Estive conversando com seu Assistente Holográfico de IA sobre: ' + userText)}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emeraldGlow/25 hover:bg-emeraldGlow/35 border border-emeraldGlow/50 text-emeraldGlow font-mono text-xs sm:text-sm font-bold transition-all shadow-[0_0_12px_rgba(16,185,129,0.25)]">
               <span>Falar no WhatsApp com Arthur</span>
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
             </a>
           </div>
         `;
@@ -4543,134 +4540,134 @@ Teclas <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> mudam as a
   </div>
 
   <!-- NOVO: PALCO HOLOGRÁFICO SUPREMO NEXUS AI (FILHO DIRETO DO BODY, Z-[9999], PROTEÇÃO MOBILE TOTAL) -->
-  <div id="ai-assistant-panel" onclick="handleBackdropClick(event)" class="hidden fixed inset-0 z-[9999] w-full h-[100dvh] bg-void/95 backdrop-blur-xl flex flex-col justify-between items-center p-3 sm:p-6 overflow-y-auto animate-fadeIn select-none pt-14 sm:pt-4">
+  <div id="ai-assistant-panel" onclick="handleBackdropClick(event)" class="hidden fixed inset-0 z-[9999] w-full h-[100dvh] bg-void/95 backdrop-blur-2xl flex flex-col justify-between items-center p-3 sm:p-6 lg:p-8 overflow-y-auto animate-fadeIn select-none pt-14 sm:pt-6">
     
     <!-- Botão Fechar Holograma em Destaque Absoluto (Fixo no topo direito com z-[10000]) -->
-    <button type="button" onclick="toggleArthurAi()" title="Fechar Assistente" class="fixed top-3 right-3 sm:top-5 sm:right-5 z-[10000] px-4 py-2 rounded-full bg-void/95 border border-red-500/80 hover:border-red-400 text-red-300 hover:text-white transition-all font-mono text-xs font-black flex items-center gap-2 cursor-pointer active:scale-95 shadow-[0_0_25px_rgba(239,68,68,0.5)] backdrop-blur-md">
-      <svg class="w-3.5 h-3.5 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    <button type="button" onclick="toggleArthurAi()" title="Fechar Assistente" class="fixed top-3 right-3 sm:top-6 sm:right-6 z-[10000] px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-void/95 border border-red-500/80 hover:border-red-400 text-red-300 hover:text-white transition-all font-mono text-xs sm:text-sm font-black flex items-center gap-2 cursor-pointer active:scale-95 shadow-[0_0_25px_rgba(239,68,68,0.5)] backdrop-blur-md">
+      <svg class="w-4 h-4 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
       <span>✕ FECHAR</span>
     </button>
 
     <!-- Top Bar Holográfica (Minimalista, Limpa e com Status) -->
-    <div class="w-full flex items-center justify-between max-w-5xl shrink-0 pt-1 pointer-events-none">
-      <div class="flex items-center gap-2 font-mono text-[10px] text-cyanGlow">
-        <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping shadow-[0_0_8px_#00f0ff]"></span>
-        <span class="font-bold tracking-widest uppercase">TRANSMISSÃO NEURAL ATIVA // NEXUS AI</span>
+    <div class="w-full flex items-center justify-between max-w-6xl shrink-0 pt-1 pointer-events-none">
+      <div class="flex items-center gap-2.5 font-mono text-xs sm:text-sm text-cyanGlow">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyanGlow animate-ping shadow-[0_0_10px_#00f0ff]"></span>
+        <span class="font-bold tracking-widest uppercase">CONEXÃO NEURAL ATIVA // NEXUS 3D POINT CLOUD</span>
       </div>
-      <div class="hidden sm:flex items-center gap-2 font-mono text-[10px] text-gray-400">
-        <span>PRESSIONE <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-white font-bold">ESC</kbd> OU CLIQUE FORA PARA SAIR</span>
+      <div class="hidden sm:flex items-center gap-2 font-mono text-xs text-gray-400">
+        <span>PRESSIONE <kbd class="px-2 py-0.5 rounded bg-white/10 text-white font-bold">ESC</kbd> OU CLIQUE FORA PARA FECHAR</span>
       </div>
     </div>
 
-    <!-- Palco Central: Homem Holográfico Neural Canvas (Veias, Nervos, Coração & Partículas) + Balão Co-Piloto -->
-    <div class="w-full max-w-5xl flex-1 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-12 my-auto py-2 relative">
+    <!-- Palco Central: Cabeça Holográfica 3D Point Cloud (LiDAR / Neural Scan) + Balão Co-Piloto Ampliado -->
+    <div class="w-full max-w-7xl flex-1 flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-14 my-auto py-3 relative">
       
-      <!-- 1. Projeção Holográfica Neural: Homem com Nervos, Veias, Coração e Partículas Orbitais -->
-      <div class="relative flex flex-col items-center justify-end min-h-[250px] sm:min-h-[310px] w-[260px] sm:w-[320px] shrink-0">
+      <!-- 1. Projeção Holográfica 3D: Cabeça Humana de Partículas Volumétricas (Referência Exata) -->
+      <div class="relative flex flex-col items-center justify-end min-h-[290px] sm:min-h-[380px] lg:min-h-[460px] w-[290px] sm:w-[380px] lg:w-[450px] shrink-0">
         
         <!-- Feixes de Luz Ascendentes a partir do Pedestal -->
-        <div class="holo-vertical-lights"></div>
+        <div class="holo-vertical-lights" style="width: 320px; height: 380px;"></div>
 
-        <!-- Figura Flutuante com Canvas Neural Procedural 60fps -->
+        <!-- Figura Flutuante com Canvas 3D Three.js -->
         <div id="holo-man-figure" class="relative z-10 holo-man-float group flex flex-col items-center">
-          <!-- Anéis HUD Orbitais Girando em Torno do Homem -->
-          <div class="absolute -inset-4 sm:-inset-6 rounded-full border border-cyanGlow/30 animate-spin-slow pointer-events-none border-dashed"></div>
-          <div class="absolute -inset-8 sm:-inset-10 rounded-full border border-purpleGlow/25 animate-spin-reverse pointer-events-none border-dotted"></div>
+          <!-- Anéis HUD Orbitais Girando em Torno do Holograma -->
+          <div class="absolute -inset-4 sm:-inset-8 rounded-full border border-cyanGlow/30 animate-spin-slow pointer-events-none border-dashed"></div>
+          <div class="absolute -inset-8 sm:-inset-12 rounded-full border border-purpleGlow/25 animate-spin-reverse pointer-events-none border-dotted"></div>
           
-          <!-- Canvas Neural 60fps em Tempo Real (Idêntico à Imagem de Referência) -->
+          <!-- Canvas WebGL 3D Point Cloud a 60 FPS -->
           <div class="relative flex items-center justify-center">
-            <canvas id="holo-neural-canvas" width="300" height="340" class="w-[230px] h-[260px] sm:w-[280px] sm:h-[317px] object-contain drop-shadow-[0_0_30px_rgba(0,240,255,0.7)]"></canvas>
+            <canvas id="holo-neural-canvas" width="440" height="480" class="w-[270px] h-[295px] sm:w-[360px] sm:h-[393px] lg:w-[420px] lg:h-[460px] object-contain drop-shadow-[0_0_40px_rgba(0,240,255,0.85)] cursor-grab active:cursor-grabbing"></canvas>
             <!-- Scanlines Dinâmicas Sobrepostas na Projeção -->
-            <div class="absolute inset-0 holo-scanlines pointer-events-none opacity-30"></div>
+            <div class="absolute inset-0 holo-scanlines pointer-events-none opacity-25"></div>
           </div>
 
-          <!-- Etiqueta Holográfica Flutuante sob o Homem -->
-          <div class="mt-1 px-3 py-0.5 rounded-full bg-void/90 border border-cyanGlow/60 shadow-[0_0_15px_rgba(0,240,255,0.4)] text-[9px] font-mono text-cyanGlow font-bold flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
-            <span>NEXUS // CORPO NEURAL BIO-ÓPTICO</span>
+          <!-- Etiqueta Holográfica Flutuante sob a Cabeça 3D -->
+          <div class="mt-1 px-4 py-1 rounded-full bg-void/90 border border-cyanGlow/60 shadow-[0_0_18px_rgba(0,240,255,0.45)] text-[10px] sm:text-xs font-mono text-cyanGlow font-bold flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
+            <span>NEXUS // CONSCIÊNCIA NEURAL 3D (POINT CLOUD)</span>
           </div>
         </div>
 
         <!-- Base Emissora no Piso com Anéis Concêntricos em Perspectiva 3D -->
-        <div class="holo-pedestal-emitter mt-2">
+        <div class="holo-pedestal-emitter mt-2" style="width: 260px;">
           <div class="holo-ring-outer"></div>
           <div class="holo-ring-inner"></div>
           <div class="holo-core-spark"></div>
-          <div class="absolute -top-3 inset-x-8 h-3 bg-gradient-to-t from-cyanGlow/80 to-transparent blur-sm"></div>
+          <div class="absolute -top-3 inset-x-8 h-4 bg-gradient-to-t from-cyanGlow/80 to-transparent blur-sm"></div>
         </div>
       </div>
 
-      <!-- 2. Balão de Histórico Holográfico & Co-Piloto (DO LADO do Homem Holográfico) -->
-      <div id="holo-speech-balloon" class="relative w-full lg:w-[500px] rounded-2xl bg-void/85 border border-cyanGlow/70 shadow-[0_0_35px_rgba(0,240,255,0.35)] p-4 sm:p-5 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between">
+      <!-- 2. Balão de Histórico Holográfico & Co-Piloto Ampliado (DO LADO do Holograma) -->
+      <div id="holo-speech-balloon" class="relative w-full lg:w-[620px] xl:w-[700px] rounded-3xl bg-void/90 border border-cyanGlow/70 shadow-[0_0_45px_rgba(0,240,255,0.35)] p-5 sm:p-7 backdrop-blur-2xl transition-all duration-300 flex flex-col justify-between">
         
         <!-- Cabeçalho do Balão Holográfico -->
-        <div class="flex items-center justify-between border-b border-cyanGlow/25 pb-2 mb-2 font-mono text-[10px] shrink-0">
-          <span class="text-cyanGlow font-bold flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
+        <div class="flex items-center justify-between border-b border-cyanGlow/25 pb-3 mb-3 font-mono text-xs sm:text-sm shrink-0">
+          <span class="text-cyanGlow font-bold flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
             NEXUS AI // CO-PILOTO & ASSISTENTE NEURAL
           </span>
-          <span id="holo-speech-status" class="text-emeraldGlow font-semibold flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span>
+          <span id="holo-speech-status" class="text-emeraldGlow font-semibold flex items-center gap-1.5 text-xs">
+            <span class="w-2 h-2 rounded-full bg-emeraldGlow"></span>
             SISTEMA ONLINE
           </span>
         </div>
 
-        <!-- Feed com Histórico de Conversa Dinâmico (Perguntas e Respostas em Tempo Real) -->
-        <div id="holo-speech-stream" class="flex-1 space-y-2.5 max-h-[190px] sm:max-h-[250px] overflow-y-auto pr-1 scrollbar-none font-sans scroll-smooth">
+        <!-- Feed com Histórico de Conversa Dinâmico (Perguntas e Respostas em Tempo Real e Fontes Amplas) -->
+        <div id="holo-speech-stream" class="flex-1 space-y-3.5 max-h-[220px] sm:max-h-[300px] lg:max-h-[360px] overflow-y-auto pr-1.5 scrollbar-none font-sans scroll-smooth">
           <!-- Mensagem Inicial de Boas-Vindas e Co-Piloto -->
-          <div class="p-3 rounded-xl bg-surface/80 border border-cyanGlow/30 text-xs sm:text-[13px] leading-relaxed text-gray-200 shadow-sm">
-            <span class="text-[9px] font-mono text-cyanGlow font-bold block mb-1">● NEXUS AI // CO-PILOTO</span>
+          <div class="p-4 sm:p-5 rounded-2xl bg-surface/85 border border-cyanGlow/40 text-sm sm:text-base leading-relaxed text-gray-100 shadow-md">
+            <span class="text-[10px] sm:text-xs font-mono text-cyanGlow font-bold block mb-1.5">● NEXUS AI // CO-PILOTO</span>
             Olá! Sou <strong>NEXUS</strong>, a inteligência neural e co-piloto do portfólio de <strong>Arthur Fogolin</strong>.
             <br><br>
             Posso te apresentar sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega ou <strong>te guiar por qualquer seção do site</strong>.
-            <div class="mt-2.5 flex flex-wrap gap-1.5 pt-1 border-t border-white/10">
-              <button type="button" onclick="askArthurAi('como mexer no site')" class="px-2 py-0.5 rounded bg-cyanGlow/15 border border-cyanGlow/40 text-cyanGlow font-mono text-[10px] hover:bg-cyanGlow/25 cursor-pointer">🧭 Como mexer no site?</button>
-              <button type="button" onclick="navigateSite('orcamento')" class="px-2 py-0.5 rounded bg-purpleGlow/20 border border-purpleGlow/40 text-purple-300 font-mono text-[10px] hover:bg-purpleGlow/30 cursor-pointer">💡 Simular Orçamento ↗</button>
-              <button type="button" onclick="navigateSite('sistemas')" class="px-2 py-0.5 rounded bg-white/10 border border-white/20 text-gray-200 font-mono text-[10px] hover:bg-white/20 cursor-pointer">🚀 Ver Sistemas ↗</button>
+            <div class="mt-3.5 flex flex-wrap gap-2 pt-2 border-t border-white/10">
+              <button type="button" onclick="askArthurAi('como mexer no site')" class="px-3 py-1.5 rounded-lg bg-cyanGlow/20 border border-cyanGlow/50 text-cyanGlow font-mono text-xs font-bold hover:bg-cyanGlow/30 cursor-pointer transition-all">🧭 Como mexer no site?</button>
+              <button type="button" onclick="navigateSite('orcamento')" class="px-3 py-1.5 rounded-lg bg-purpleGlow/25 border border-purpleGlow/50 text-purple-300 font-mono text-xs font-bold hover:bg-purpleGlow/35 cursor-pointer transition-all">💡 Simular Orçamento ↗</button>
+              <button type="button" onclick="navigateSite('sistemas')" class="px-3 py-1.5 rounded-lg bg-white/10 border border-white/25 text-gray-100 font-mono text-xs font-bold hover:bg-white/20 cursor-pointer transition-all">🚀 Ver Sistemas ↗</button>
             </div>
           </div>
         </div>
 
-        <!-- Conector Laser que aponta para o Homem Holográfico (no Desktop aponta para a Esquerda, no Mobile aponta para Baixo) -->
+        <!-- Conector Laser que aponta para o Holograma -->
         <div class="hidden lg:block absolute top-1/2 -left-3 -translate-y-1/2 w-0 h-0 border-y-8 border-y-transparent border-r-8 border-r-cyanGlow/80 filter drop-shadow(-2px 0 4px #00f0ff)"></div>
         <div class="lg:hidden absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-cyanGlow/80 filter drop-shadow(0 2px 4px #00f0ff)"></div>
       </div>
 
     </div>
 
-    <!-- Barra de Controle Inferior: Chips Rápidos + Campo de Pergunta (Minimalista e Flutuante) -->
-    <div class="w-full max-w-3xl flex flex-col gap-2 shrink-0 pb-1">
+    <!-- Barra de Controle Inferior Ampliada: Chips Rápidos + Campo de Pergunta (Visibilidade Máxima) -->
+    <div class="w-full max-w-5xl flex flex-col gap-2.5 shrink-0 pb-1">
       
-      <!-- Quick Suggestion Chips (Com Botões de Navegação Lateral + Rolagem) -->
-      <div class="relative px-2 py-1.5 bg-void/80 border border-white/10 rounded-xl flex items-center gap-1 group select-none">
+      <!-- Quick Suggestion Chips (Grandes, Visíveis e Confortáveis) -->
+      <div class="relative px-2.5 py-2 bg-void/85 border border-white/15 rounded-2xl flex items-center gap-1.5 group select-none shadow-lg">
         <!-- Botão Scroll Esquerda -->
-        <button type="button" onclick="scrollAiChips(-140)" title="Rolar opções anteriores" class="w-6 h-7 rounded-md bg-white/5 border border-white/10 hover:border-cyanGlow text-gray-400 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+        <button type="button" onclick="scrollAiChips(-180)" title="Rolar opções anteriores" class="w-8 h-9 sm:w-10 sm:h-11 rounded-lg bg-white/5 border border-white/10 hover:border-cyanGlow text-gray-300 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
         </button>
 
         <!-- Container com Rolagem Horizontal Suave e Ampla -->
-        <div id="ai-chips-scroll" class="flex-1 flex gap-2 overflow-x-auto whitespace-nowrap scroll-smooth scrollbar-none text-[11px] font-mono py-0.5 px-1">
-          <button type="button" onclick="askArthurAi('como mexer no site')" class="px-3 py-1.5 rounded-lg bg-cyanGlow/15 hover:bg-cyanGlow/30 border border-cyanGlow/40 hover:border-cyanGlow text-cyanGlow font-bold transition-all shrink-0 cursor-pointer active:scale-95 shadow-[0_0_10px_rgba(0,240,255,0.2)]">🧭 Como mexer no site?</button>
-          <button type="button" onclick="askArthurAi('quanto custa um bot')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">💰 Quanto custa um bot?</button>
-          <button type="button" onclick="navigateSite('orcamento')" class="px-3 py-1.5 rounded-lg bg-purpleGlow/20 hover:bg-purpleGlow/35 border border-purpleGlow/40 text-purple-300 font-bold transition-all shrink-0 cursor-pointer active:scale-95">💡 Simular Orçamento ↗</button>
-          <button type="button" onclick="askArthurAi('quais sistemas')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">🚀 Sistemas em produção</button>
-          <button type="button" onclick="askArthurAi('como funciona o kill switch')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">🛡️ Kill-Switch & Risco</button>
-          <button type="button" onclick="askArthurAi('agendar reuniao')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">📅 Falar no WhatsApp</button>
-          <button type="button" onclick="askArthurAi('stack')" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">⚡ Rust & TypeScript</button>
+        <div id="ai-chips-scroll" class="flex-1 flex gap-2.5 overflow-x-auto whitespace-nowrap scroll-smooth scrollbar-none text-xs sm:text-sm font-mono py-1 px-1">
+          <button type="button" onclick="askArthurAi('como mexer no site')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-cyanGlow/20 hover:bg-cyanGlow/35 border border-cyanGlow/50 hover:border-cyanGlow text-cyanGlow font-bold transition-all shrink-0 cursor-pointer active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.25)]">🧭 Como mexer no site?</button>
+          <button type="button" onclick="askArthurAi('quanto custa um bot')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">💰 Quanto custa um bot?</button>
+          <button type="button" onclick="navigateSite('orcamento')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-purpleGlow/20 hover:bg-purpleGlow/35 border border-purpleGlow/40 text-purple-300 font-bold transition-all shrink-0 cursor-pointer active:scale-95">💡 Simular Orçamento ↗</button>
+          <button type="button" onclick="askArthurAi('quais sistemas')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">🚀 Sistemas em produção</button>
+          <button type="button" onclick="askArthurAi('como funciona o kill switch')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">🛡️ Kill-Switch & Risco</button>
+          <button type="button" onclick="askArthurAi('agendar reuniao')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">📅 Falar no WhatsApp</button>
+          <button type="button" onclick="askArthurAi('stack')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white/5 hover:bg-cyanGlow/20 border border-white/10 hover:border-cyanGlow/50 text-gray-200 hover:text-cyanGlow transition-all shrink-0 cursor-pointer active:scale-95">⚡ Rust & TypeScript</button>
         </div>
 
         <!-- Botão Scroll Direita -->
-        <button type="button" onclick="scrollAiChips(140)" title="Rolar próximas opções" class="w-6 h-7 rounded-md bg-white/5 border border-white/10 hover:border-cyanGlow text-gray-400 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        <button type="button" onclick="scrollAiChips(180)" title="Rolar próximas opções" class="w-8 h-9 sm:w-10 sm:h-11 rounded-lg bg-white/5 border border-white/10 hover:border-cyanGlow text-gray-300 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
 
-      <!-- Chat Input Form com Proteção Anti-Zoom (text-[16px] sm:text-sm) -->
-      <form id="ai-chat-form" onsubmit="event.preventDefault(); submitArthurAiChat();" class="p-1.5 bg-void/90 border border-cyanGlow/50 rounded-2xl flex items-center gap-2 shadow-[0_0_25px_rgba(0,240,255,0.25)]">
-        <input type="text" id="ai-chat-input" placeholder="Pergunte sobre bots, prazos, preços, sistemas ou como navegar..." autocomplete="off" class="flex-1 min-w-0 bg-transparent border-0 px-3.5 py-2.5 text-white font-sans text-[16px] sm:text-sm focus:outline-none placeholder-gray-400">
-        <button type="submit" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyanGlow to-blue-600 hover:opacity-90 text-black font-bold shrink-0 transition-all active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.4)] flex items-center gap-1.5 cursor-pointer">
-          <span class="hidden sm:inline font-mono text-xs font-black">ENVIAR</span>
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      <!-- Chat Input Form Ampliado com Proteção Anti-Zoom (text-[16px] sm:text-base) -->
+      <form id="ai-chat-form" onsubmit="event.preventDefault(); submitArthurAiChat();" class="p-2 sm:p-2.5 bg-void/90 border border-cyanGlow/60 rounded-2xl flex items-center gap-2.5 shadow-[0_0_30px_rgba(0,240,255,0.3)]">
+        <input type="text" id="ai-chat-input" placeholder="Pergunte sobre bots, prazos, preços, sistemas ou como navegar..." autocomplete="off" class="flex-1 min-w-0 bg-transparent border-0 px-4 py-3 sm:py-3.5 text-white font-sans text-[16px] sm:text-base focus:outline-none placeholder-gray-400">
+        <button type="submit" class="px-5 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-cyanGlow to-blue-600 hover:opacity-90 text-black font-extrabold shrink-0 transition-all active:scale-95 shadow-[0_0_18px_rgba(0,240,255,0.45)] flex items-center gap-2 cursor-pointer">
+          <span class="inline font-mono text-xs sm:text-sm font-black">ENVIAR</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
         </button>
       </form>
 
