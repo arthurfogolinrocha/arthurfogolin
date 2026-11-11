@@ -3889,14 +3889,21 @@
         const res = await fetch('/assets/gideon_head_3d.json');
         if (res.ok) {
           const data = await res.json();
-          // Decodifica posições e índices compactos
-          const posRaw = Uint8Array.from(atob(data.positionsB64), c => c.charCodeAt(0));
-          const idxRaw = Uint8Array.from(atob(data.indicesB64), c => c.charCodeAt(0));
-          const normRaw = Uint8Array.from(atob(data.normalsB64), c => c.charCodeAt(0));
+          // Decodifica posições e índices compactos com segurança total de byte alignment
+          const decodeB64ToU8 = (b64) => {
+            const bin = atob(b64);
+            const bytes = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+            return bytes;
+          };
 
-          const positions = new Float32Array(posRaw.buffer);
-          const indices = new Uint16Array(idxRaw.buffer);
-          const normals = new Float32Array(normRaw.buffer);
+          const posU8 = decodeB64ToU8(data.positionsB64);
+          const idxU8 = decodeB64ToU8(data.indicesB64);
+          const normU8 = decodeB64ToU8(data.normalsB64);
+
+          const positions = new Float32Array(posU8.buffer, posU8.byteOffset, posU8.byteLength / 4);
+          const indices = new Uint16Array(idxU8.buffer, idxU8.byteOffset, idxU8.byteLength / 2);
+          const normals = new Float32Array(normU8.buffer, normU8.byteOffset, normU8.byteLength / 4);
 
           gideon3DCache = {
             positions,
