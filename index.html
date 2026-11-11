@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark scroll-smooth">
+<html lang="pt-BR" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -84,11 +84,7 @@
 
   <style>
     /* Custom Cyberpunk Dynamic Visuals — Multi-Device Responsive Grade */
-    html {
-      scroll-behavior: smooth;
-    }
     body {
-      overflow-x: clip;
       max-width: 100vw;
       width: 100%;
     }
@@ -124,17 +120,22 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Interactive Spotlight Dynamic Border & Glassmorphism (iOS Safari + Desktop Safe) */
+    /* Interactive Spotlight Dynamic Border & Glassmorphism
+       - No mobile/iOS: superfície translúcida escura direta (zero estouro de VRAM do WebKit backdrop-filter)
+       - No desktop/TV: backdrop-filter blur completo + spotlight reativo ao mouse */
     .card-glass {
       position: relative;
-      background: rgba(7, 11, 25, 0.86);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: transform 0.25s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+      background: linear-gradient(145deg, rgba(8, 13, 30, 0.94), rgba(4, 7, 18, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
       overflow: hidden;
     }
     @media (hover: hover) and (pointer: fine) {
+      .card-glass {
+        background: rgba(7, 11, 25, 0.84);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
       .card-glass::before {
         content: '';
         position: absolute;
@@ -240,6 +241,7 @@
   </style>
 </head>
 <body class="bg-void text-slate-200 font-sans antialiased min-h-screen relative selection:bg-cyanGlow selection:text-black">
+  <div id="page-top-anchor" class="absolute top-0 left-0 w-full h-px pointer-events-none"></div>
 
   <!-- Custom Cyberpunk Magnetic Cursor (Desktop - Zero Latency 1:1) -->
   <div id="cyber-cursor-dot" class="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyanGlow pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#00f0ff] hidden md:block"></div>
@@ -254,14 +256,14 @@
   <!-- Cyberpunk Procedural Lightning Sparks Canvas -->
   <canvas id="lightning-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-70"></canvas>
 
-  <!-- Ambient Light Gradients -->
-  <div class="fixed top-[-10%] left-[-10%] w-[550px] h-[550px] bg-cyanGlow/15 rounded-full blur-[160px] pointer-events-none z-0 animate-pulse-glow"></div>
-  <div class="fixed bottom-[-15%] right-[-10%] w-[650px] h-[650px] bg-purpleGlow/15 rounded-full blur-[180px] pointer-events-none z-0 animate-pulse-glow" style="animation-delay: 1.5s;"></div>
+  <!-- Ambient Light Gradients (Desktop Only para preservar 100% da VRAM em GPUs mobile iOS) -->
+  <div class="hidden md:block fixed top-[-10%] left-[-10%] w-[550px] h-[550px] bg-cyanGlow/15 rounded-full blur-[160px] pointer-events-none z-0 animate-pulse-glow"></div>
+  <div class="hidden md:block fixed bottom-[-15%] right-[-10%] w-[650px] h-[650px] bg-purpleGlow/15 rounded-full blur-[180px] pointer-events-none z-0 animate-pulse-glow" style="animation-delay: 1.5s;"></div>
 
   <!-- FIXED TOP HEADER & TELEMETRY WRAPPER (100% FIXED EM QUALQUER TELA: MOBILE, TABLET, PC, TV) -->
   <div id="top-fixed-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
     <!-- TOP CYBER TELEMETRY & HUD BAR (HACKARUN / MATRIX COMMAND GRADE) -->
-    <div class="w-full max-w-full bg-void/95 border-b border-cyanGlow/25 py-1.5 px-3 sm:px-4 font-mono text-[10px] text-gray-400 flex items-center justify-between backdrop-blur-md overflow-x-auto whitespace-nowrap select-none scrollbar-none">
+    <div class="w-full max-w-full bg-void/95 border-b border-cyanGlow/25 py-1.5 px-3 sm:px-4 font-mono text-[10px] text-gray-400 flex items-center justify-between md:backdrop-blur-md overflow-x-auto whitespace-nowrap select-none scrollbar-none">
       <div class="flex items-center gap-2 sm:gap-5">
         <span class="flex items-center gap-1.5 text-emeraldGlow font-bold tracking-wider">
           <span class="w-2 h-2 rounded-full bg-emeraldGlow led-live shadow-[0_0_8px_#10b981]"></span>
@@ -294,7 +296,7 @@
     </div>
 
     <!-- Header / Navigation Bar -->
-    <header class="border-b border-white/10 bg-void/90 backdrop-blur-md transition-all duration-300">
+    <header class="border-b border-white/10 bg-void/95 md:bg-void/90 md:backdrop-blur-md transition-all duration-300">
       <div class="max-w-7xl 2xl:max-w-[1480px] mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
         
         <!-- Brand Logo -->
@@ -343,18 +345,18 @@
       </div>
 
       <!-- Mobile & Tablet Quick-Navigation Bar (Visível em celulares e tablets para acesso direto 1-a-5 sem corte) -->
-      <div class="flex xl:hidden items-center justify-between md:justify-center gap-1.5 sm:gap-3 px-3 py-1.5 border-t border-white/5 bg-void/95 overflow-x-auto whitespace-nowrap scrollbar-none font-mono text-[10px] sm:text-xs">
-        <button onclick="switchTab('perfil')" id="mob-nav-perfil" class="mob-nav-btn px-2.5 sm:px-3.5 py-1 rounded-lg bg-cyanGlow/15 border border-cyanGlow/40 text-cyanGlow font-bold transition-all shrink-0">01. Bio & Cérebro</button>
-        <button onclick="switchTab('sistemas')" id="mob-nav-sistemas" class="mob-nav-btn px-2.5 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">02. Sistemas</button>
-        <button onclick="switchTab('rust')" id="mob-nav-rust" class="mob-nav-btn px-2.5 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">03. Rust</button>
-        <button onclick="switchTab('servicos')" id="mob-nav-servicos" class="mob-nav-btn px-2.5 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">04. Serviços</button>
-        <a href="#terminal" class="px-2.5 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">05. CLI</a>
+      <div class="flex xl:hidden items-center justify-between md:justify-center gap-1 sm:gap-3 px-2.5 sm:px-4 py-1.5 border-t border-white/5 bg-void/95 overflow-x-auto whitespace-nowrap scrollbar-none font-mono text-[10px] sm:text-xs">
+        <button onclick="switchTab('perfil')" id="mob-nav-perfil" class="mob-nav-btn px-2 sm:px-3.5 py-1 rounded-lg bg-cyanGlow/15 border border-cyanGlow/40 text-cyanGlow font-bold transition-all shrink-0">01. Bio<span class="hidden sm:inline"> & Cérebro</span></button>
+        <button onclick="switchTab('sistemas')" id="mob-nav-sistemas" class="mob-nav-btn px-2 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">02. Sistemas</button>
+        <button onclick="switchTab('rust')" id="mob-nav-rust" class="mob-nav-btn px-2 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">03. Rust</button>
+        <button onclick="switchTab('servicos')" id="mob-nav-servicos" class="mob-nav-btn px-2 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">04. Serviços</button>
+        <a href="#terminal" class="px-2 sm:px-3.5 py-1 rounded-lg bg-white/5 border border-white/10 text-gray-400 transition-all shrink-0">05. CLI</a>
       </div>
     </header>
   </div>
 
   <!-- Main Content Container with responsive top padding for fixed header -->
-  <main class="relative z-10 max-w-7xl 2xl:max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 pt-40 xl:pt-36 pb-10 space-y-20">
+  <main class="relative z-10 max-w-7xl 2xl:max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 pt-40 xl:pt-36 pb-10 space-y-20 overflow-x-hidden">
 
     <!-- HERO SECTION -->
     <section id="inicio" class="pt-4 pb-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -441,7 +443,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent"></div>
 
                 <!-- HUD Top Elements -->
-                <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-void/85 border border-cyanGlow/40 backdrop-blur font-mono text-[10px] text-cyanGlow z-20">
+                <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-void/90 border border-cyanGlow/40 md:backdrop-blur font-mono text-[10px] text-cyanGlow z-20">
                   <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
                   <span>AI FOUNDER & ARCHITECT</span>
                 </div>
@@ -2312,26 +2314,30 @@
       }
     });
 
-    // 6. Neural Waveform Dynamic Canvas (Audio-Reactive ao Som da Trilha)
+    // 6. Neural Waveform Dynamic Canvas (Audio-Reactive ao Som da Trilha — Sem realocação de buffer por frame)
     const waveCanvas = document.getElementById('waveform-canvas');
     if (waveCanvas) {
       const wCtx = waveCanvas.getContext('2d');
       const dataArray = new Uint8Array(32);
 
+      function resizeWaveCanvas() {
+        const w = waveCanvas.offsetWidth || 300;
+        const h = waveCanvas.offsetHeight || 40;
+        if (waveCanvas.width !== w) waveCanvas.width = w;
+        if (waveCanvas.height !== h) waveCanvas.height = h;
+      }
+      resizeWaveCanvas();
+
       function drawWave() {
-        waveCanvas.width = waveCanvas.offsetWidth;
-        waveCanvas.height = waveCanvas.offsetHeight;
-        wCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+        const width = waveCanvas.width;
+        const height = waveCanvas.height;
+        wCtx.clearRect(0, 0, width, height);
 
         wCtx.strokeStyle = ambientMusicPlaying ? '#00f0ff' : 'rgba(0, 240, 255, 0.55)';
         wCtx.lineWidth = ambientMusicPlaying ? 2 : 1.2;
-        wCtx.shadowBlur = ambientMusicPlaying ? 10 : 0;
-        wCtx.shadowColor = '#00f0ff';
         wCtx.beginPath();
         
         const now = Date.now() * 0.005;
-        const width = waveCanvas.width;
-        const height = waveCanvas.height;
 
         let audioBoost = 0;
         if (ambientMusicPlaying && analyserNode) {
@@ -2346,17 +2352,28 @@
           else wCtx.lineTo(x, y);
         }
         wCtx.stroke();
-        wCtx.shadowBlur = 0;
         requestAnimationFrame(drawWave);
       }
       drawWave();
+      window.addEventListener('resize', resizeWaveCanvas, { passive: true });
     }
 
     // 7. Three.js 3D WebGL Background: Synthwave Canyon Terrain + Holographic Torus Knot + Interactive Shockwaves
+    const isMobileScreen = window.innerWidth < 768;
     const canvas = document.getElementById('bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: !isMobileScreen,
+      powerPreference: 'high-performance'
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(isMobileScreen ? 1 : Math.min(window.devicePixelRatio, 2));
+
+    // Prevenção contra perda de contexto WebGL no Safari Mobile
+    canvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+    }, false);
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x02030b, 0.035);
@@ -2460,11 +2477,20 @@
       createShockwave(ndcX * 6, -ndcY * 3 - 2);
     });
 
+    let lastViewportWidth = window.innerWidth;
+    let lastViewportHeight = window.innerHeight;
     window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      // No mobile (Safari iOS), a barra de endereço inferior recolhe/expande durante o scroll (~80px).
+      // Evita realocar o framebuffer WebGL durante o scroll se a largura não mudou!
+      if (w < 768 && w === lastViewportWidth && Math.abs(h - lastViewportHeight) < 180) return;
+      lastViewportWidth = w;
+      lastViewportHeight = h;
+      camera.aspect = w / h;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+      renderer.setSize(w, h);
+    }, { passive: true });
 
     // FPS Counter & Telemetry Engine
     let lastFrameTime = performance.now();
@@ -2569,20 +2595,24 @@
         frameCount = 0;
         lastFrameTime = nowTime;
         if (fpsEl) fpsEl.innerText = `${Math.min(fps, 120)} FPS`;
+        updateTelemetryClock();
       }
-      updateTelemetryClock();
     }
     render3D();
 
     // 8. Procedural Electric Lightning Sparks Canvas
     const lCanvas = document.getElementById('lightning-canvas');
     const lCtx = lCanvas.getContext('2d');
+    let lastLightningW = 0;
     function resizeLightning() {
-      lCanvas.width = window.innerWidth;
+      const w = window.innerWidth;
+      if (w < 768 && w === lastLightningW) return;
+      lastLightningW = w;
+      lCanvas.width = w;
       lCanvas.height = window.innerHeight;
     }
     resizeLightning();
-    window.addEventListener('resize', resizeLightning);
+    window.addEventListener('resize', resizeLightning, { passive: true });
 
     function createBolt(x1, y1, x2, y2) {
       lCtx.strokeStyle = 'rgba(0, 240, 255, 0.7)';
@@ -3292,35 +3322,42 @@
     initMagneticCursor();
     initVisitorCounter();
 
-    // 13. Universal Cross-Platform Scroll-To-Top Engine (iOS Safari, Android, Desktop, TV)
+    // 13. Universal Cross-Platform Scroll-To-Top Engine (iOS Safari, WKWebView, Android, Desktop, TV)
+    let scrollTopTimer = null;
     window.scrollToTop = function(e) {
       if (e) e.preventDefault();
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.pathname);
+      if (scrollTopTimer) {
+        clearInterval(scrollTopTimer);
+        scrollTopTimer = null;
       }
       playTone(950, 'sine', 0.06, 0.03);
+
+      const topAnchor = document.getElementById('page-top-anchor');
       const startY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
       if (startY <= 0) return;
-      const duration = 420;
+
       const startTime = performance.now();
-      document.documentElement.style.scrollBehavior = 'auto';
-      function step(now) {
-        const elapsed = Math.min(1, (now - startTime) / duration);
-        const easeOutCubic = 1 - Math.pow(1 - elapsed, 3);
-        const nextY = Math.round(startY * (1 - easeOutCubic));
+      const duration = 180; // 180ms por relógio real (independente de FPS ou GPU)
+      scrollTopTimer = setInterval(() => {
+        const progress = Math.min(1, (performance.now() - startTime) / duration);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const nextY = progress >= 1 ? 0 : Math.max(0, Math.round(startY * (1 - easeOut)));
+
         window.scrollTo(0, nextY);
         document.documentElement.scrollTop = nextY;
         document.body.scrollTop = nextY;
-        if (elapsed < 1) {
-          requestAnimationFrame(step);
-        } else {
+
+        if (progress >= 1 || nextY <= 0) {
+          clearInterval(scrollTopTimer);
+          scrollTopTimer = null;
           window.scrollTo(0, 0);
           document.documentElement.scrollTop = 0;
           document.body.scrollTop = 0;
-          document.documentElement.style.scrollBehavior = '';
+          if (topAnchor && topAnchor.scrollIntoView) {
+            topAnchor.scrollIntoView({ behavior: 'auto', block: 'start' });
+          }
         }
-      }
-      requestAnimationFrame(step);
+      }, 12);
     };
 
     // 13.1 Floating Scroll Progress Indicator & Scroll-To-Top
@@ -3332,7 +3369,7 @@
       const progress = Math.min(100, Math.max(0, Math.round((currentY / scrollTotal) * 100)));
       if (scrollPct) scrollPct.innerText = `${progress}%`;
       if (scrollPill) {
-        if (currentY > 300) {
+        if (currentY > 250) {
           scrollPill.classList.remove('opacity-0', 'pointer-events-none');
           scrollPill.classList.add('opacity-100');
         } else {
@@ -3343,10 +3380,10 @@
     }, { passive: true });
   </script>
 
-  <!-- Floating Scroll-To-Top & Reading HUD Pill -->
-  <button type="button" id="scroll-top-pill" onclick="scrollToTop(event)" title="Voltar ao Topo (Atalho: 1, 2, 3, 4, T, M)" class="fixed bottom-5 right-5 z-40 px-3.5 py-2 rounded-xl bg-void/95 border border-cyanGlow/30 hover:border-cyanGlow text-xs font-mono text-gray-300 hover:text-cyanGlow cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,240,255,0.2)] flex items-center gap-2 select-none opacity-0 pointer-events-none duration-300">
-    <i data-lucide="arrow-up" class="w-3.5 h-3.5 text-cyanGlow"></i>
-    <span id="scroll-percentage" class="font-bold">0%</span>
+  <!-- Compact Floating Scroll-To-Top & Reading Percentage Pill (Zero Empty Space, Compact on Mobile & Desktop) -->
+  <button type="button" id="scroll-top-pill" onclick="scrollToTop(event)" title="Voltar ao Topo (Atalho: 1, 2, 3, 4, T, M)" class="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 px-2 py-1 rounded-lg bg-void/95 border border-cyanGlow/40 hover:border-cyanGlow text-[10px] leading-none font-mono text-gray-200 hover:text-cyanGlow cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-[0_0_12px_rgba(0,240,255,0.2)] inline-flex items-center justify-center gap-1 select-none opacity-0 pointer-events-none duration-300">
+    <svg class="w-2.5 h-2.5 text-cyanGlow shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    <span id="scroll-percentage" class="font-bold tracking-tight">0%</span>
   </button>
 </body>
 </html>
