@@ -2277,14 +2277,17 @@
       playTone(850, 'sine', 0.06, 0.03);
 
       if (tabId === 'perfil') {
-        setTimeout(initObsidianGraph, 100);
+        initObsidianGraph();
       }
 
-      // Direcionamento imediato e suave até a seção de abas
+      // Direcionamento imediato e instantâneo sem delay
       if (shouldScroll) {
         const tabsSection = document.getElementById('tabs-section');
         if (tabsSection) {
-          tabsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const rect = tabsSection.getBoundingClientRect();
+          if (rect.top < 0 || rect.top > window.innerHeight * 0.4) {
+            tabsSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+          }
         }
       }
     }
@@ -3875,9 +3878,10 @@
     let holoPoints = null;
     let holoMesh = null;
     let holoWire = null;
+    let holoDust = null;
+    let holoDustData = [];
     let holoBasePositions = null;
     let holoMouthIndices = [];
-    let holoHaloData = [];
     let holoAnimFrameId = null;
     let holoMouseTarget = { x: 0, y: 0 };
     let holoMouseCurrent = { x: 0, y: 0 };
@@ -3929,9 +3933,9 @@
       c.height = 64;
       const ctx = c.getContext('2d');
       const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.25, 'rgba(0, 240, 255, 0.95)');
-      grad.addColorStop(0.65, 'rgba(56, 189, 248, 0.45)');
+      grad.addColorStop(0, 'rgba(180, 245, 255, 1)');
+      grad.addColorStop(0.3, 'rgba(0, 210, 255, 0.9)');
+      grad.addColorStop(0.7, 'rgba(14, 165, 233, 0.4)');
       grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 64, 64);
@@ -3966,33 +3970,26 @@
         holoMouthIndices = model.mouthIndices;
 
         const colors = new Float32Array(positions.length);
-        holoHaloData = [];
 
-        // Coloração volumétrica holográfica da GIDEON (The Flash):
-        // Nariz, olhos, lábios e testa com iluminação ciano/gelo incandescente
+        // Coloração volumétrica holográfica suave Gideon (The Flash):
+        // Elimina mancha branca estourada e gera gradação elegante azul-gelo e cobalto
         for (let i = 0; i < positions.length / 3; i++) {
           const px = positions[i * 3];
           const py = positions[i * 3 + 1];
           const pz = positions[i * 3 + 2];
 
-          // Vértices frontais em relevo facial (olhos, nariz, boca)
-          if (pz > 0.3) {
-            colors[i * 3] = 0.95;     // R
-            colors[i * 3 + 1] = 1.0;  // G (Branco/Gelo incandescente)
-            colors[i * 3 + 2] = 1.0;  // B
+          if (pz > 0.28) {
+            colors[i * 3] = 0.20;     // R: Azul gelo incandescente e suave (relevos faciais nítidos)
+            colors[i * 3 + 1] = 0.90; // G
+            colors[i * 3 + 2] = 1.0;  // B: Ciano/Gelo puro
           } else if (pz > 0.0) {
             colors[i * 3] = 0.0;      // R
-            colors[i * 3 + 1] = 0.92; // G (Ciano elétrico vibrante)
-            colors[i * 3 + 2] = 1.0;  // B
+            colors[i * 3 + 1] = 0.68; // G: Ciano neon volumétrico
+            colors[i * 3 + 2] = 0.95; // B
           } else {
-            colors[i * 3] = 0.03;     // R
-            colors[i * 3 + 1] = 0.55; // G (Azul holográfico profundo)
-            colors[i * 3 + 2] = 0.9;  // B
-          }
-
-          // Partículas que ascendem suavemente pelo topo do crânio
-          if (py > 0.65 && Math.random() < 0.25) {
-            holoHaloData.push({ idx: i, speed: 0.002 + Math.random() * 0.005, basePy: py });
+            colors[i * 3] = 0.02;     // R
+            colors[i * 3 + 1] = 0.36; // G: Azul cobalto profundo translúcido
+            colors[i * 3 + 2] = 0.78; // B
           }
         }
 
@@ -4005,45 +4002,84 @@
         // 1. Nuvem de Pontos Holográfica (GIDEON Point Cloud — Vértices da face humana real)
         const pointTexture = createPointSpriteTexture();
         const pointsMaterial = new THREE.PointsMaterial({
-          size: 0.034,
+          size: 0.036,
           map: pointTexture,
           vertexColors: true,
           transparent: true,
-          opacity: 0.95,
+          opacity: 0.96,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
         holoPoints = new THREE.Points(geometry, pointsMaterial);
         holoHeadGroup.add(holoPoints);
 
-        // 2. Malha Wireframe Holográfica (Gera a grade tridimensional anatômica)
+        // 2. Malha Wireframe Holográfica Sutil (Apenas linhas finas e discretas, sem ofuscar as bolinhas)
         const wireMaterial = new THREE.MeshBasicMaterial({
-          color: 0x00d4ff,
+          color: 0x00a8e8,
           wireframe: true,
           transparent: true,
-          opacity: 0.16,
+          opacity: 0.07,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
         holoWire = new THREE.Mesh(geometry, wireMaterial);
         holoHeadGroup.add(holoWire);
 
-        // 3. Casca Facial Translúcida (Dá o volume sólido e contorno perfeito do rosto)
+        // 3. Casca Facial Translúcida Suave (Silhueta anatômica profunda sem queimar de luz)
         const meshMaterial = new THREE.MeshBasicMaterial({
-          color: 0x0088cc,
+          color: 0x003355,
           transparent: true,
-          opacity: 0.10,
+          opacity: 0.05,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
         holoMesh = new THREE.Mesh(geometry, meshMaterial);
         holoHeadGroup.add(holoMesh);
 
+        // 4. Partículas de Poeira Holográfica Ascendente (INDEPENDENTES, sem deformar o crânio!)
+        const dustCount = 120;
+        const dustPositions = new Float32Array(dustCount * 3);
+        const dustColors = new Float32Array(dustCount * 3);
+        holoDustData = [];
+
+        for (let i = 0; i < dustCount; i++) {
+          const dx = (Math.random() - 0.5) * 1.6;
+          const dy = 0.2 + Math.random() * 1.3;
+          const dz = (Math.random() - 0.5) * 1.2;
+          dustPositions[i * 3] = dx;
+          dustPositions[i * 3 + 1] = dy;
+          dustPositions[i * 3 + 2] = dz;
+
+          dustColors[i * 3] = 0.1;
+          dustColors[i * 3 + 1] = 0.85;
+          dustColors[i * 3 + 2] = 1.0;
+
+          holoDustData.push({
+            speed: 0.003 + Math.random() * 0.006,
+            basePy: -0.2 + Math.random() * 0.4
+          });
+        }
+
+        const dustGeom = new THREE.BufferGeometry();
+        dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+        dustGeom.setAttribute('color', new THREE.BufferAttribute(dustColors, 3));
+
+        const dustMat = new THREE.PointsMaterial({
+          size: 0.026,
+          map: pointTexture,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.85,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        holoDust = new THREE.Points(dustGeom, dustMat);
+        holoHeadGroup.add(holoDust);
+
         // Alinha e centraliza o rosto no enquadramento
         holoHeadGroup.position.set(0, -0.05, 0);
 
       } else {
-        // Fallback rápido caso ainda esteja baixando
         console.warn('Aguardando modelo 3D do holograma...');
       }
     }
@@ -4065,12 +4101,12 @@
 
         // Pulso de energia holográfica durante a fala
         if (holoWire && holoMesh) {
-          const speakPulse = isHoloSpeaking ? (Math.sin(time * 18) * 0.08) : 0;
-          holoWire.material.opacity = 0.16 + speakPulse;
-          holoMesh.material.opacity = 0.10 + speakPulse * 0.5;
+          const speakPulse = isHoloSpeaking ? (Math.sin(time * 18) * 0.03) : 0;
+          holoWire.material.opacity = 0.07 + speakPulse;
+          holoMesh.material.opacity = 0.05 + speakPulse * 0.5;
         }
 
-        // Animação anatômica da boca (Lipsync holográfico)
+        // Animação anatômica da boca (Lipsync holográfico sem tocar no crânio!)
         if (holoPoints && holoMouthIndices.length > 0 && holoBasePositions) {
           const positions = holoPoints.geometry.attributes.position.array;
           const mouthOpen = isHoloSpeaking ? Math.abs(Math.sin(time * 16)) * 0.035 : 0;
@@ -4079,18 +4115,19 @@
             const idx = holoMouthIndices[i];
             positions[idx * 3 + 1] = holoBasePositions[idx * 3 + 1] - mouthOpen;
           }
+          holoPoints.geometry.attributes.position.needsUpdate = true;
+        }
 
-          // Partículas que ascendem pelo topo do crânio
-          for (let i = 0; i < holoHaloData.length; i++) {
-            const item = holoHaloData[i];
-            const pIdx = item.idx * 3;
-            positions[pIdx + 1] += item.speed;
-            if (positions[pIdx + 1] > item.basePy + 0.35) {
-              positions[pIdx + 1] = item.basePy;
+        // Animação das partículas soltas de dados (Flutuam para o éter sem deformar a cabeça!)
+        if (holoDust && holoDustData.length > 0) {
+          const dustPositions = holoDust.geometry.attributes.position.array;
+          for (let i = 0; i < holoDustData.length; i++) {
+            dustPositions[i * 3 + 1] += holoDustData[i].speed;
+            if (dustPositions[i * 3 + 1] > 1.6) {
+              dustPositions[i * 3 + 1] = holoDustData[i].basePy;
             }
           }
-
-          holoPoints.geometry.attributes.position.needsUpdate = true;
+          holoDust.geometry.attributes.position.needsUpdate = true;
         }
       }
 
@@ -4173,11 +4210,11 @@
           playTone(1150, 'triangle', 0.08, 0.05);
           speakVoiceCue("Assistente NEXUS ao seu dispor. Em que posso te ajudar hoje?");
           startHoloAnimation();
-          setTimeout(() => {
+          requestAnimationFrame(() => {
             const inp = document.getElementById('ai-chat-input');
             if (inp) inp.focus();
             if (window.lucide) lucide.createIcons();
-          }, 150);
+          });
         } else {
           panel.classList.add('hidden');
           stopHoloAnimation();
