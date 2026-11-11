@@ -3692,25 +3692,66 @@
       }
     });
 
+    function normalizeQuery(str) {
+      return (str || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\w\s]/gi, ' ')
+        .trim();
+    }
+
     const aiKnowledgeBase = [
       {
-        match: ['preco', 'preço', 'quanto custa', 'valor', 'orcamento', 'orçamento', 'custo', 'investimento', 'bot'],
+        match: ['carreira', 'tempo de carreira', 'experiencia', 'tempo de experiencia', 'trajetoria', 'historico', 'quando comecou', 'anos de experiencia', 'tempo de mercado', 'quanto tempo atua'],
+        reply: `<strong>Trajetória & Carreira de Arthur Fogolin:</strong><br>• Arthur estuda e constrói softwares há mais de 3 anos, atuando profissionalmente no mercado com foco em <strong>Engenharia de Inteligência Artificial e Automação Corporativa</strong>.<br>• Possui múltiplos sistemas robustos em produção contínua para empresas reais (varejo, compliance, auditoria e BPO), com destaque para ERPs com mais de 290 testes automatizados e motores em Rust rodando abaixo de 1.8ms.<br>• Graduando em Inteligência Artificial pela UniCatólica, une o rigor da ciência da computação com velocidade de entrega ágil e foco implacável no retorno financeiro (ROI) de seus clientes.`
+      },
+      {
+        match: ['quem e o arthur', 'quem e arthur', 'quem e voce', 'sobre o arthur', 'sobre voce', 'apresentacao', 'biografia', 'perfil', 'historia do arthur', 'quem e ele'],
+        reply: `<strong>Quem é Arthur Fogolin:</strong><br>• Arthur tem <strong>18 anos</strong>, reside em <strong>Palmas – Tocantins</strong> e é desenvolvedor freelancer e arquiteto de software especializado em IA.<br>• Seu trabalho foca na criação de <strong>agentes autônomos para WhatsApp</strong>, assistentes corporativos B2B, automações de processos sem API (Computer-Use) e sistemas de altíssima performance com Rust e TypeScript.<br>• Destaca-se por não entregar "código cego": seus projetos possuem zero alucinação, kill-switch de segurança imediato e arquitetura auditável.`
+      },
+      {
+        match: ['idade', 'quantos anos', 'data de nascimento', 'nasceu quando', 'idade dele', 'sua idade', 'ano de nascimento', 'jovem'],
+        reply: `<strong>Idade de Arthur Fogolin:</strong><br>• Arthur tem <strong>18 anos</strong> de idade. Desde cedo ingressou na área de tecnologia e atualmente cursa Inteligência Artificial na UniCatólica, já acumulando ampla experiência com sistemas complexos e clientes corporativos em produção.`
+      },
+      {
+        match: ['faculdade', 'estudos', 'catolica', 'unicatolica', 'curso', 'graduacao', 'formacao', 'estuda', 'onde estuda', 'academico', 'estudante'],
+        reply: `<strong>Formação Acadêmica:</strong><br>• Arthur é graduando no curso de <strong>Inteligência Artificial</strong> no Centro Universitário Católica do Tocantins (<strong>UniCatólica</strong>), em Palmas – TO.<br>• Aplica a teoria avançada de redes neurais, álgebra linear, NLP e aprendizado de máquina diretamente em sistemas práticos de alta escala e baixo custo computacional para empresas.`
+      },
+      {
+        match: ['onde mora', 'onde reside', 'cidade', 'palmas', 'tocantins', 'localizacao', 'onde fica', 'onde ele esta', 'mora onde'],
+        reply: `<strong>Localização & Atendimento:</strong><br>• Arthur reside em <strong>Palmas – Tocantins</strong>.<br>• Realiza atendimentos e implantações remotas para empresas em todo o território nacional e internacional com suporte contínuo e reuniões online.`
+      },
+      {
+        match: ['o que faz', 'o que voce faz', 'com o que trabalha', 'servicos', 'trabalho', 'atuacao', 'o que desenvolve', 'o que constroi', 'o que ele faz'],
+        reply: `<strong>Serviços e Soluções Desenvolvidas:</strong><br>1. <strong>Agentes Autônomos de WhatsApp (B2C):</strong> Atendimento, qualificação de leads e fechamento de vendas 24/7 com resposta em menos de 1.4s.<br>2. <strong>Assistentes Executivos B2B:</strong> Integração com ERP/CRM e transcrição de áudios longos em segundos via Whisper.<br>3. <strong>Automações Computer-Use:</strong> Robôs com visão computacional para operar ERPs legados fechados (Totvs, Sankhya).<br>4. <strong>Motores de Alta Performance em Rust:</strong> Microsserviços e CLIs ultra-rápidos que reduzem o custo de nuvem em mais de 80%.`
+      },
+      {
+        match: ['prazo', 'tempo de entrega', 'quanto tempo demora', 'demora quanto', 'tempo para entregar', 'disponibilidade', 'dias uteis'],
+        reply: `<strong>Prazos e Metodologia de Entrega:</strong><br>• <strong>Agentes de WhatsApp:</strong> Entrega e implantação entre <strong>3 a 7 dias úteis</strong>.<br>• <strong>Sistemas Completos e ERPs Integrados:</strong> De <strong>10 a 20 dias úteis</strong>, com homologação rigorosa, ambiente de testes e treinamento da sua equipe.<br>• Arthur atua com comunicação transparente diária via WhatsApp e GitHub.`
+      },
+      {
+        match: ['garantia', 'suporte', 'pos venda', 'manutencao', 'sla'],
+        reply: `<strong>Garantia de Engenharia & Suporte:</strong><br>• Todo sistema entregue conta com <strong>garantia de funcionamento</strong> e suporte técnico com SLA prioritário.<br>• Inclui monitoramento ativo de uptime, blindagem anti-queda, proteção contra sobrecarga e Kill-Switch de segurança imediato.`
+      },
+      {
+        match: ['preco', 'quanto custa', 'valor', 'orcamento', 'custo', 'investimento', 'bot', 'quanto cobra', 'tabela'],
         reply: `<strong>Investimento em Agentes de IA:</strong><br>• <strong>Agente WhatsApp B2C:</strong> A partir de R$ 2.500 a R$ 4.800 (implantação única + SLA &lt; 1.4s).<br>• <strong>ChatGPT B2B & Clínicas:</strong> R$ 3.500 a R$ 7.000 (com transcrição de áudio Opus e integração com ERP).<br>• <strong>Automação Computer-Use (Totvs/Sankhya):</strong> R$ 4.000 a R$ 8.500+.<br><br>👉 Todo projeto conta com <strong>Zero Alucinações</strong> e <strong>Kill-Switch imediato</strong>.`
       },
       {
-        match: ['sistemas', 'cases', 'projetos', 'ph estoque', 'dix', 'producao', 'produção', 'carteira', 'experiencia', 'experiência'],
+        match: ['sistemas', 'cases', 'projetos', 'ph estoque', 'dix', 'producao', 'carteira', 'portfolio', 'exemplos'],
         reply: `<strong>Sistemas de Destaque em Produção:</strong><br>1. <strong>PH Estoque:</strong> ERP e bot comercial para rede varejista (292 testes Vitest e alerta instantâneo quando o estoque zera).<br>2. <strong>DIX BPO Agent:</strong> Triagem de voz e CRM com Whisper e transbordo humano.<br>3. <strong>CIPA MedWork & SSTFARMA:</strong> Votação auditável por CPF e conformidade regulatória NR-5/NR-32.<br>4. <strong>token-cost & fogolin-cli:</strong> Motores nativos em Rust rodando abaixo de 1.8ms.`
       },
       {
-        match: ['kill', 'switch', 'seguranca', 'segurança', 'alucinacao', 'alucinação', 'trava', 'risco'],
+        match: ['kill', 'switch', 'seguranca', 'alucinacao', 'trava', 'risco', 'blindagem'],
         reply: `<strong>Blindagem de Engenharia & Garantias:</strong><br>• <strong>Kill-Switch Obrigatório:</strong> Seletor imediato que desliga a IA na hora e transfere a conversa para atendimento humano.<br>• <strong>Zero Alucinações de Preço:</strong> Os agentes nunca "inventam" valores; toda resposta consulta antes a base relacional tipada (PostgreSQL).<br>• <strong>Proteção Anti-Flood:</strong> Limite de mensagens para evitar spam ou custos indesejados.`
       },
       {
-        match: ['whatsapp', 'contato', 'reuniao', 'reunião', 'falar', 'contratar', 'agenda', 'email', 'telefone'],
+        match: ['whatsapp', 'contato', 'reuniao', 'falar', 'contratar', 'agenda', 'email', 'telefone', 'chamar'],
         reply: `<strong>Contato Direto com Arthur Fogolin:</strong><br>• <strong>WhatsApp:</strong> <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20estou%20conversando%20com%20sua%20IA%20e%20gostaria%20de%20fechar%20um%20projeto!" target="_blank" class="text-cyanGlow underline font-bold">+55 (63) 99120-6201</a><br>• <strong>E-mail:</strong> arthurfogolinrocha01@gmail.com<br>• <strong>Cidade:</strong> Palmas – TO (Atendimento remoto para todo o Brasil).`
       },
       {
-        match: ['rust', 'stack', 'tecnologia', 'linguagens', 'next', 'python'],
+        match: ['rust', 'stack', 'tecnologia', 'linguagens', 'next', 'python', 'typescript', 'framework', 'gemini'],
         reply: `<strong>Stack Tecnológica de Arthur Fogolin:</strong><br>• <strong>Performance Pura:</strong> Rust 1.99 nativo (latência ultra-baixa sem Garbage Collector).<br>• <strong>Sistemas Web:</strong> Next.js 16, TypeScript, Tailwind CSS, Supabase RLS, PostgreSQL e Drizzle ORM.<br>• <strong>IA & Agentes:</strong> Gemini Flash & Carbon, Claude Code, Groq Whisper Opus, Evolution API v2.`
       }
     ];
@@ -3762,12 +3803,20 @@
       history.scrollTop = history.scrollHeight;
       playTone(850, 'sine', 0.04, 0.02);
 
-      // 2. Análise semântica e resposta da IA
+      // 2. Análise semântica e resposta da IA (com suporte a frases e palavras-chave dispersas)
       setTimeout(() => {
-        const lower = userText.toLowerCase();
-        let matched = aiKnowledgeBase.find(item => item.match.some(m => lower.includes(m)));
+        const normUser = normalizeQuery(userText);
+        let matched = aiKnowledgeBase.find(item => item.match.some(m => {
+          const normM = normalizeQuery(m);
+          if (normUser.includes(normM)) return true;
+          const words = normM.split(' ').filter(w => w.length > 2);
+          if (words.length > 1 && words.every(w => normUser.includes(w))) return true;
+          return false;
+        }));
 
-        let replyHtml = matched ? matched.reply : `Entendi! Posso arquitetar uma solução sob medida para sua necessidade com IA autônoma e alta precisão. Gostaria de enviar sua demanda diretamente para o WhatsApp pessoal do Arthur com um clique?`;
+        let replyHtml = matched 
+          ? matched.reply 
+          : `Sou o assistente especializado na trajetória, biografia e serviços de <strong>Arthur Fogolin</strong>. Posso te responder sobre a carreira do Arthur, sistemas de IA em produção, orçamentos, prazos de entrega, idade ou formação na UniCatólica. Como posso te ajudar com o trabalho do Arthur?`;
 
         const aiBubble = document.createElement('div');
         aiBubble.className = 'flex items-start gap-2 animate-fadeIn';
@@ -3883,20 +3932,24 @@
         const wave = document.getElementById('ai-speaking-wave');
         const rings = document.getElementById('ai-holo-rings');
         const avatar = document.getElementById('ai-holo-avatar');
+        const projBox = document.getElementById('ai-holo-projector-box');
         utter.onstart = () => {
           if (wave) wave.classList.remove('hidden');
           if (rings) rings.classList.remove('hidden');
           if (avatar) avatar.style.transform = 'scale(1.08)';
+          if (projBox) projBox.classList.add('speaking');
         };
         utter.onend = () => {
           if (wave) wave.classList.add('hidden');
           if (rings) rings.classList.add('hidden');
           if (avatar) avatar.style.transform = 'scale(1)';
+          if (projBox) projBox.classList.remove('speaking');
         };
         utter.onerror = () => {
           if (wave) wave.classList.add('hidden');
           if (rings) rings.classList.add('hidden');
           if (avatar) avatar.style.transform = 'scale(1)';
+          if (projBox) projBox.classList.remove('speaking');
         };
         window.speechSynthesis.speak(utter);
       } catch (e) {}
@@ -3939,19 +3992,26 @@
       <!-- Panel Header com Mini Holograma Interativo -->
       <div class="px-4 py-3 bg-surface/95 border-b border-white/10 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="relative w-11 h-11 rounded-xl overflow-hidden border border-cyanGlow shadow-[0_0_15px_rgba(0,240,255,0.5)] bg-surface shrink-0 holo-projector">
-            <img id="ai-holo-avatar" src="/assets/arthur_ai_executive_real.jpg" alt="Avatar Holográfico Arthur" class="w-full h-full object-cover transition-transform duration-300">
-            <!-- Pulso Holográfico Sonora da Fala (Ativa quando a IA fala) -->
-            <div id="ai-speaking-wave" class="hidden absolute inset-0 bg-gradient-to-t from-cyanGlow/40 via-purpleGlow/20 to-transparent animate-pulse"></div>
-            <div id="ai-holo-rings" class="hidden holo-ring-pulse"></div>
-            <div class="absolute bottom-0 inset-x-0 h-1 bg-cyanGlow"></div>
+          <div id="ai-holo-projector-box" class="relative w-12 h-12 rounded-xl border border-cyanGlow/80 shadow-[0_0_20px_rgba(0,240,255,0.6)] bg-surface shrink-0 holo-projector p-0.5 group">
+            <div class="w-full h-full rounded-[10px] overflow-hidden relative">
+              <img id="ai-holo-avatar" src="/assets/arthur_ai_executive_real.jpg" alt="Avatar Holográfico Arthur" class="w-full h-full object-cover transition-transform duration-300">
+              <!-- Pulso Holográfico Sonora da Fala (Ativa quando a IA fala) -->
+              <div id="ai-speaking-wave" class="hidden absolute inset-0 bg-gradient-to-t from-cyanGlow/40 via-purpleGlow/20 to-transparent animate-pulse"></div>
+              <div id="ai-holo-rings" class="hidden holo-ring-pulse"></div>
+            </div>
+            <!-- Projeção Laser Inferior e Miras HUD Cibernéticas -->
+            <div class="absolute -bottom-1.5 inset-x-2 h-1.5 bg-gradient-to-t from-cyanGlow to-transparent blur-[1px]"></div>
+            <div class="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-cyanGlow"></div>
+            <div class="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-cyanGlow"></div>
+            <div class="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-cyanGlow"></div>
+            <div class="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-cyanGlow"></div>
           </div>
           <div>
             <h4 class="font-orbitron font-extrabold text-white text-xs sm:text-sm tracking-wider flex items-center gap-1.5">
               <span>Arthur Fogolin • IA</span>
               <span class="px-1.5 py-0.2 rounded bg-emeraldGlow/15 border border-emeraldGlow/40 text-[9px] text-emeraldGlow font-mono">ONLINE</span>
             </h4>
-            <span class="text-[10px] text-cyanGlow tracking-wider block font-mono">HOLOGRAMA VIRTUAL AUTÔNOMO</span>
+            <span class="text-[10px] text-cyanGlow tracking-wider block font-mono">HOLOGRAMA VIRTUAL // 60 FPS</span>
           </div>
         </div>
         <button onclick="toggleArthurAi()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all cursor-pointer">
