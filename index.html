@@ -434,24 +434,25 @@
       100% { background-position: 0 100%; }
     }
 
-    /* Luzes Verticais Ascendentes do Pedestal */
+    /* Luzes Verticais Ascendentes do Pedestal — Feixe Etéreo Volumétrico Suave */
     .holo-vertical-lights {
       position: absolute;
       bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
-      width: 270px;
-      height: 310px;
-      clip-path: polygon(18% 0%, 82% 0%, 96% 100%, 4% 100%);
-      background: linear-gradient(to top, rgba(0, 240, 255, 0.48) 0%, rgba(0, 240, 255, 0.16) 60%, transparent 100%);
+      width: 290px;
+      height: 370px;
+      clip-path: polygon(10% 0%, 90% 0%, 98% 100%, 2% 100%);
+      background: linear-gradient(to top, rgba(0, 210, 255, 0.20) 0%, rgba(0, 160, 255, 0.06) 55%, transparent 100%);
       pointer-events: none;
       z-index: 1;
-      opacity: 0.92;
-      animation: holoBeamFlicker 3s ease-in-out infinite alternate;
+      opacity: 0.85;
+      filter: blur(10px);
+      animation: holoBeamFlicker 4s ease-in-out infinite alternate;
     }
     @keyframes holoBeamFlicker {
-      0% { opacity: 0.8; transform: translateX(-50%) scaleX(0.97); }
-      100% { opacity: 1; transform: translateX(-50%) scaleX(1.03); }
+      0% { opacity: 0.75; transform: translateX(-50%) scaleX(0.98); }
+      100% { opacity: 0.95; transform: translateX(-50%) scaleX(1.02); }
     }
 
     /* Modulação Labial Vocoder Futurista Concentrada na Boca (Sem chacoalhar o corpo) */
@@ -3878,6 +3879,7 @@
     let holoPoints = null;
     let holoMesh = null;
     let holoWire = null;
+    let holoEyes = null;
     let holoDust = null;
     let holoDustData = [];
     let holoBasePositions = null;
@@ -3971,25 +3973,40 @@
 
         const colors = new Float32Array(positions.length);
 
-        // Coloração volumétrica holográfica suave Gideon (The Flash):
-        // Elimina mancha branca estourada e gera gradação elegante azul-gelo e cobalto
+        // Coloração volumétrica holográfica com FRESNEL RIM LIGHT cinematográfico (Gideon/The Flash):
+        // As bordas (mandíbula, orelhas, contornos) recebem brilho ciano intenso, e a frente recebe azul etéreo suave
+        const normals = model.normals;
         for (let i = 0; i < positions.length / 3; i++) {
           const px = positions[i * 3];
           const py = positions[i * 3 + 1];
           const pz = positions[i * 3 + 2];
+          const nz = normals ? normals[i * 3 + 2] : 0.5;
 
-          if (pz > 0.28) {
-            colors[i * 3] = 0.20;     // R: Azul gelo incandescente e suave (relevos faciais nítidos)
-            colors[i * 3 + 1] = 0.90; // G
-            colors[i * 3 + 2] = 1.0;  // B: Ciano/Gelo puro
-          } else if (pz > 0.0) {
-            colors[i * 3] = 0.0;      // R
-            colors[i * 3 + 1] = 0.68; // G: Ciano neon volumétrico
-            colors[i * 3 + 2] = 0.95; // B
+          // Cálculo do fator Fresnel (quanto mais de perfil ou na borda, mais luz de contorno)
+          const fresnel = Math.max(0, 1.0 - Math.abs(nz));
+
+          // Vértices dos lábios e contorno do nariz
+          const isLips = (Math.abs(px) < 0.25 && py > -0.05 && py < 0.18 && pz > 0.32);
+
+          if (isLips) {
+            colors[i * 3] = 0.15;     // R
+            colors[i * 3 + 1] = 0.85; // G (Ciano definido para boca articulada)
+            colors[i * 3 + 2] = 1.0;  // B
+          } else if (fresnel > 0.65) {
+            // Bordas externas da silhueta (Rim Light brilhante)
+            colors[i * 3] = 0.10;
+            colors[i * 3 + 1] = 0.92;
+            colors[i * 3 + 2] = 1.0;
+          } else if (pz > 0.1) {
+            // Frente do rosto (Maçãs e testa translúcidas e suaves, sem mancha estourada)
+            colors[i * 3] = 0.02;
+            colors[i * 3 + 1] = 0.52;
+            colors[i * 3 + 2] = 0.88;
           } else {
-            colors[i * 3] = 0.02;     // R
-            colors[i * 3 + 1] = 0.36; // G: Azul cobalto profundo translúcido
-            colors[i * 3 + 2] = 0.78; // B
+            // Profundidade traseira, nuca e ombros
+            colors[i * 3] = 0.01;
+            colors[i * 3 + 1] = 0.28;
+            colors[i * 3 + 2] = 0.68;
           }
         }
 
@@ -4002,34 +4019,57 @@
         // 1. Nuvem de Pontos Holográfica (GIDEON Point Cloud — Vértices da face humana real)
         const pointTexture = createPointSpriteTexture();
         const pointsMaterial = new THREE.PointsMaterial({
-          size: 0.036,
+          size: 0.035,
           map: pointTexture,
           vertexColors: true,
           transparent: true,
-          opacity: 0.96,
+          opacity: 0.95,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
         holoPoints = new THREE.Points(geometry, pointsMaterial);
         holoHeadGroup.add(holoPoints);
 
-        // 2. Malha Wireframe Holográfica Sutil (Apenas linhas finas e discretas, sem ofuscar as bolinhas)
+        // 2. Olhos Holográficos Vivos de IA (Elimina o efeito de cavidades/buracos escuros vazios)
+        const eyeGeom = new THREE.BufferGeometry();
+        eyeGeom.setAttribute('position', new THREE.Float32BufferAttribute([
+          -0.19, 0.335, 0.22,
+           0.17, 0.33, 0.21
+        ], 3));
+        const eyeColors = new Float32Array([
+          0.85, 1.0, 1.0,
+          0.85, 1.0, 1.0
+        ]);
+        eyeGeom.setAttribute('color', new THREE.BufferAttribute(eyeColors, 3));
+        const eyeMat = new THREE.PointsMaterial({
+          size: 0.052,
+          map: pointTexture,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.98,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        holoEyes = new THREE.Points(eyeGeom, eyeMat);
+        holoHeadGroup.add(holoEyes);
+
+        // 3. Malha Wireframe Holográfica Sutil (Apenas linhas finas e discretas, sem ofuscar as bolinhas)
         const wireMaterial = new THREE.MeshBasicMaterial({
-          color: 0x00a8e8,
+          color: 0x0099dd,
           wireframe: true,
           transparent: true,
-          opacity: 0.07,
+          opacity: 0.06,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
         holoWire = new THREE.Mesh(geometry, wireMaterial);
         holoHeadGroup.add(holoWire);
 
-        // 3. Casca Facial Translúcida Suave (Silhueta anatômica profunda sem queimar de luz)
+        // 4. Casca Facial Translúcida Suave (Silhueta anatômica profunda sem queimar de luz)
         const meshMaterial = new THREE.MeshBasicMaterial({
-          color: 0x003355,
+          color: 0x002244,
           transparent: true,
-          opacity: 0.05,
+          opacity: 0.04,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
@@ -4102,8 +4142,13 @@
         // Pulso de energia holográfica durante a fala
         if (holoWire && holoMesh) {
           const speakPulse = isHoloSpeaking ? (Math.sin(time * 18) * 0.03) : 0;
-          holoWire.material.opacity = 0.07 + speakPulse;
-          holoMesh.material.opacity = 0.05 + speakPulse * 0.5;
+          holoWire.material.opacity = 0.06 + speakPulse;
+          holoMesh.material.opacity = 0.04 + speakPulse * 0.5;
+        }
+
+        // Pulso neural de atividade viva nos olhos
+        if (holoEyes) {
+          holoEyes.material.opacity = 0.85 + Math.sin(time * 2.5) * 0.15;
         }
 
         // Animação anatômica da boca (Lipsync holográfico sem tocar no crânio!)
