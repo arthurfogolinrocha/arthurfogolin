@@ -309,7 +309,7 @@
     .eq-playing .eq-bar:nth-child(3) { animation: eqBounce 0.8s ease-in-out infinite 0.3s; background-color: #10b981 !important; }
     .eq-playing .eq-bar:nth-child(4) { animation: eqBounce 0.6s ease-in-out infinite 0.1s; background-color: #00f0ff !important; }
 
-    /* Cyberpunk Hologram Scanlines & Sci-Fi Glitch Aura */
+    /* Cyberpunk Hologram Scanlines & Sci-Fi Talking Head Glitch */
     .holo-projector {
       position: relative;
     }
@@ -319,29 +319,71 @@
       inset: 0;
       background: repeating-linear-gradient(
         0deg,
-        rgba(0, 240, 255, 0.15) 0px,
-        rgba(0, 240, 255, 0.15) 1.5px,
+        rgba(0, 240, 255, 0.18) 0px,
+        rgba(0, 240, 255, 0.18) 1.5px,
         transparent 1.5px,
         transparent 4px
       );
       pointer-events: none;
-      animation: holoScanlines 4s linear infinite;
+      animation: holoScanlines 3.5s linear infinite;
     }
+
+    /* Animação Natural de Fala e Gestos Holográficos (Head Bobbing & Micro-Articulação) */
+    @keyframes holoHeadTalk {
+      0% { transform: translateY(0) rotate(0deg) scale(1); }
+      15% { transform: translateY(-1.5px) rotate(0.6deg) scale(1.03); }
+      30% { transform: translateY(1.2px) rotate(-0.5deg) scale(0.99); }
+      45% { transform: translateY(-2px) rotate(0.4deg) scale(1.04); }
+      60% { transform: translateY(0.8px) rotate(-0.4deg) scale(1.01); }
+      75% { transform: translateY(-1.2px) rotate(0.5deg) scale(1.02); }
+      90% { transform: translateY(1px) rotate(-0.2deg) scale(1.01); }
+      100% { transform: translateY(0) rotate(0deg) scale(1); }
+    }
+
+    .holo-projector:hover img {
+      filter: drop-shadow(2px 0 0 rgba(0, 240, 255, 0.7)) drop-shadow(-2px 0 0 rgba(236, 72, 153, 0.6)) contrast(1.1) brightness(1.15);
+      transform: scale(1.05);
+    }
+
+    .holo-projector.speaking img {
+      animation: holoHeadTalk 1.6s ease-in-out infinite alternate !important;
+      filter: drop-shadow(2px 0 0 rgba(0, 240, 255, 0.7)) drop-shadow(-2px 0 0 rgba(236, 72, 153, 0.6)) contrast(1.15) brightness(1.25) !important;
+    }
+
+    /* Vocoder Holográfico Labial (Ondas de Frequência Sonora na Região da Boca) */
+    .holo-mouth-beam {
+      position: absolute;
+      bottom: 23%;
+      left: 28%;
+      right: 28%;
+      height: 12%;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.6), rgba(236, 72, 153, 0.5), rgba(0, 240, 255, 0.6), transparent);
+      filter: blur(1.5px);
+      border-radius: 9999px;
+      pointer-events: none;
+      animation: holoMouthPulse 0.22s ease-in-out infinite alternate;
+      z-index: 20;
+    }
+    @keyframes holoMouthPulse {
+      0% { opacity: 0.3; transform: scaleX(0.75) scaleY(0.7); }
+      100% { opacity: 0.95; transform: scaleX(1.2) scaleY(1.4); }
+    }
+
     @keyframes holoScanlines {
       0% { background-position: 0 0; }
       100% { background-position: 0 100%; }
     }
     .holo-ring-pulse {
       position: absolute;
-      inset: -5px;
-      border: 2px solid rgba(0, 240, 255, 0.8);
+      inset: -6px;
+      border: 2px solid rgba(0, 240, 255, 0.85);
       border-radius: inherit;
-      animation: holoRingEmit 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+      animation: holoRingEmit 1.6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
       pointer-events: none;
     }
     @keyframes holoRingEmit {
       0% { transform: scale(0.9); opacity: 1; }
-      100% { transform: scale(1.45); opacity: 0; }
+      100% { transform: scale(1.5); opacity: 0; }
     }
 
     /* Clean Print Styles for Executive CV */
@@ -3839,7 +3881,40 @@
         if (window.lucide) lucide.createIcons();
         history.scrollTop = history.scrollHeight;
         playTone(1100, 'triangle', 0.08, 0.04);
+
+        // Ativa a simulação de fala do holograma (movimento natural de cabeça, vocoder na boca e anéis de onda)
+        triggerHoloTalkingAnimation(3200);
+
+        // Se o áudio estiver disponível, fala uma síntese verbal rápida da resposta
+        try {
+          const plainSummary = replyHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split('.')[0] + '.';
+          if (plainSummary.length > 5 && plainSummary.length < 120) {
+            speakVoiceCue(plainSummary, 1.2);
+          }
+        } catch(e) {}
       }, 350);
+    };
+
+    let holoTalkTimer = null;
+    window.triggerHoloTalkingAnimation = function(durationMs = 3200) {
+      const projBox = document.getElementById('ai-holo-projector-box');
+      const mouthBeam = document.getElementById('ai-mouth-beam');
+      const rings = document.getElementById('ai-holo-rings');
+      const wave = document.getElementById('ai-speaking-wave');
+      
+      if (projBox) projBox.classList.add('speaking');
+      if (mouthBeam) mouthBeam.classList.remove('hidden');
+      if (rings) rings.classList.remove('hidden');
+      if (wave) wave.classList.remove('hidden');
+
+      if (holoTalkTimer) clearTimeout(holoTalkTimer);
+      holoTalkTimer = setTimeout(() => {
+        if (projBox) projBox.classList.remove('speaking');
+        if (mouthBeam) mouthBeam.classList.add('hidden');
+        if (rings) rings.classList.add('hidden');
+        if (wave) wave.classList.add('hidden');
+        holoTalkTimer = null;
+      }, durationMs);
     };
 
     function escapeHtml(str) {
@@ -3931,23 +4006,27 @@
         // Efeito de boca / onda holográfica no avatar enquanto a voz fala
         const wave = document.getElementById('ai-speaking-wave');
         const rings = document.getElementById('ai-holo-rings');
+        const mouthBeam = document.getElementById('ai-mouth-beam');
         const avatar = document.getElementById('ai-holo-avatar');
         const projBox = document.getElementById('ai-holo-projector-box');
         utter.onstart = () => {
           if (wave) wave.classList.remove('hidden');
           if (rings) rings.classList.remove('hidden');
+          if (mouthBeam) mouthBeam.classList.remove('hidden');
           if (avatar) avatar.style.transform = 'scale(1.08)';
           if (projBox) projBox.classList.add('speaking');
         };
         utter.onend = () => {
           if (wave) wave.classList.add('hidden');
           if (rings) rings.classList.add('hidden');
+          if (mouthBeam) mouthBeam.classList.add('hidden');
           if (avatar) avatar.style.transform = 'scale(1)';
           if (projBox) projBox.classList.remove('speaking');
         };
         utter.onerror = () => {
           if (wave) wave.classList.add('hidden');
           if (rings) rings.classList.add('hidden');
+          if (mouthBeam) mouthBeam.classList.add('hidden');
           if (avatar) avatar.style.transform = 'scale(1)';
           if (projBox) projBox.classList.remove('speaking');
         };
@@ -3997,6 +4076,7 @@
               <img id="ai-holo-avatar" src="/assets/arthur_ai_executive_real.jpg" alt="Avatar Holográfico Arthur" class="w-full h-full object-cover transition-transform duration-300">
               <!-- Pulso Holográfico Sonora da Fala (Ativa quando a IA fala) -->
               <div id="ai-speaking-wave" class="hidden absolute inset-0 bg-gradient-to-t from-cyanGlow/40 via-purpleGlow/20 to-transparent animate-pulse"></div>
+              <div id="ai-mouth-beam" class="hidden holo-mouth-beam"></div>
               <div id="ai-holo-rings" class="hidden holo-ring-pulse"></div>
             </div>
             <!-- Projeção Laser Inferior e Miras HUD Cibernéticas -->
