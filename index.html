@@ -1623,6 +1623,19 @@
                 fogolin status
               </code>
             </div>
+
+            <div class="card-glass rounded-2xl p-6 border border-purpleGlow/40 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-orbitron font-bold text-white text-base">fogolin-mcp</span>
+                <span class="font-mono text-[10px] text-purpleGlow bg-purpleGlow/15 px-2 py-0.5 rounded border border-purpleGlow/40">Model Context Protocol</span>
+              </div>
+              <p class="text-gray-300 text-xs leading-relaxed font-light">
+                Servidor MCP nativo em Rust (JSON-RPC 2.0) que conecta agentes de IA a bancos PostgreSQL e ERPs corporativos em 2 microssegundos.
+              </p>
+              <code class="block p-2.5 rounded-lg bg-void/90 font-mono text-[11px] text-emeraldGlow border border-white/10">
+                fogolin-mcp (tools: erp, roi, kill-switch)
+              </code>
+            </div>
           </div>
 
         </div>
@@ -3384,6 +3397,17 @@
   • Claude 3.7 Sonnet:  R$ 939,77 / mês
   <span class="text-gray-400">Tempo de execução no Mac: 1.85ms</span>
       `,
+      mcp: () => `
+  <span class="text-purple-400 font-bold">=== ⚡ Fogolin MCP Server (Rust JSON-RPC 2.0) ===</span>
+  • Protocolo: Model Context Protocol (v2024-11-05) sobre Stdio
+  • Ferramentas expostas:
+    1. <span class="text-cyanGlow">query_enterprise_erp</span>: Consulta estoque/faturamento em 2 microssegundos
+    2. <span class="text-emeraldGlow">calculate_agent_roi</span>: Simulação de economia financeira líquida
+    3. <span class="text-red-400">execute_kill_switch</span>: Trava de emergência instantânea
+    4. <span class="text-yellow-400">system_health_check</span>: Telemetria de memória e latência do binário
+  • Status: Compilado em Release | Latência: 2µs | Binário: /scratch/fogolin-mcp
+      `,
+      'fogolin-mcp': () => commands.mcp(),
       hackarun: () => `
   <span class="text-yellow-400 font-bold">🏆 1º HackaRun UniCatólica 2026</span>
   • Local: UniCatólica (Bloco II) & Capim Dourado Shopping
