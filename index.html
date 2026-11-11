@@ -3862,7 +3862,8 @@
       }
     }, { passive: true });
 
-    // 14. NOVO: Motor do NEXUS AI — Assistente Neural 3D & Co-Piloto (Módulo 1)
+    // 14. NOVO: Motor 3D Point Cloud do Holograma Humano GIDEON (Three.js 60fps)
+    // Inspirado diretamente na GIDEON de The Flash (rosto humano volumétrico escaneado)
     let aiAssistantOpen = false;
     let isHoloSpeaking = false;
     let holoScene = null;
@@ -3875,6 +3876,25 @@
     let holoAnimFrameId = null;
     let holoMouseTarget = { x: 0, y: 0 };
     let holoMouseCurrent = { x: 0, y: 0 };
+    let gideonDataCache = null;
+
+    async function loadGideonFaceData() {
+      if (gideonDataCache) return gideonDataCache;
+      try {
+        const res = await fetch('/assets/gideon_points.json');
+        if (res.ok) {
+          gideonDataCache = await res.json();
+          return gideonDataCache;
+        }
+      } catch (e) {
+        console.warn('Gideon json fallback');
+      }
+      return null;
+    }
+    // Pré-carrega os dados anatômicos de Gideon em background imediatamente
+    if (typeof window !== 'undefined') {
+      loadGideonFaceData();
+    }
 
     function createPointSpriteTexture() {
       const c = document.createElement('canvas');
@@ -3883,15 +3903,15 @@
       const ctx = c.getContext('2d');
       const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.25, 'rgba(0, 240, 255, 0.95)');
-      grad.addColorStop(0.65, 'rgba(16, 185, 129, 0.4)');
+      grad.addColorStop(0.3, 'rgba(0, 240, 255, 0.95)');
+      grad.addColorStop(0.7, 'rgba(56, 189, 248, 0.45)');
       grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 64, 64);
       return new THREE.CanvasTexture(c);
     }
 
-    function init3DHeadHologram() {
+    async function init3DHeadHologram() {
       const canvas = document.getElementById('holo-neural-canvas');
       if (!canvas || !window.THREE) return;
 
@@ -3905,103 +3925,56 @@
       holoRenderer.setSize(width, height, false);
 
       holoScene = new THREE.Scene();
-      holoCamera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      holoCamera.position.set(0, 0.08, 3.15);
+      holoCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+      holoCamera.position.set(0, 0.05, 2.75);
 
-      // Gera nuvem de pontos 3D da cabeça humana volumétrica (3.500+ pontos)
       const positions = [];
       const colors = [];
       holoBasePositions = [];
       holoMouthIndices = [];
       holoHaloData = [];
 
-      const uSteps = 60;
-      const vSteps = 65;
+      // Carrega os pontos do rosto autêntico de Gideon
+      const gideonData = await loadGideonFaceData();
 
-      for (let i = 0; i < uSteps; i++) {
-        const u = (i / uSteps) * Math.PI * 2;
-        for (let j = 0; j < vSteps; j++) {
-          const v = (j / vSteps) * Math.PI;
-          let rX = 0.84;
-          let rY = 1.14;
-          let rZ = 0.94;
-          let x = rX * Math.sin(v) * Math.sin(u);
-          let y = rY * Math.cos(v);
-          let z = rZ * Math.sin(v) * Math.cos(u);
-          if (y < -0.9) continue;
+      if (gideonData && gideonData.points && gideonData.points.length > 0) {
+        for (let i = 0; i < gideonData.points.length; i++) {
+          const pt = gideonData.points[i];
+          const px = pt[0];
+          const py = pt[1];
+          const pz = pt[2];
+          const b = pt[3];
 
-          let isMouth = false;
-          let isEye = false;
+          positions.push(px, py, pz);
+          holoBasePositions.push(px, py, pz);
 
-          if (z > 0) {
-            const faceAngle = Math.atan2(x, z);
-            const absAngle = Math.abs(faceAngle);
-            if (absAngle < 1.18) {
-              // Cavidade ocular dos olhos
-              if (y > 0.05 && y < 0.25 && Math.abs(x) > 0.12 && Math.abs(x) < 0.42) {
-                z -= 0.14 * Math.cos((absAngle - 0.25) * 4);
-                if (Math.abs(x) > 0.18 && Math.abs(x) < 0.35 && y > 0.09 && y < 0.21) isEye = true;
-              }
-              // Ponte e ponta do nariz
-              if (y > -0.15 && y < 0.25 && Math.abs(x) < 0.14) {
-                const nose = (1 - Math.abs(x) / 0.14) * (1 - Math.abs(y - 0.0) / 0.2);
-                z += Math.max(0, nose * 0.28);
-              }
-              // Lábios e boca
-              if (y > -0.38 && y < -0.18 && Math.abs(x) < 0.22) {
-                const lip = (1 - Math.abs(x) / 0.22);
-                if (y > -0.27) {
-                  z += lip * 0.12 * Math.sin((y + 0.27) / 0.09 * Math.PI);
-                } else {
-                  z += lip * 0.14 * Math.sin((-0.27 - y) / 0.11 * Math.PI);
-                  isMouth = true;
-                }
-              }
-              // Queixo
-              if (y > -0.62 && y < -0.42 && Math.abs(x) < 0.24) {
-                z += (1 - Math.abs(x) / 0.24) * 0.15;
-              }
-              // Tapering da mandíbula
-              if (y < -0.35) {
-                x *= (1 - (-0.35 - y) * 0.25);
-              }
-            }
-          }
-
-          // Ruído orgânico de escaneamento neural
-          const noise = (Math.random() - 0.5) * 0.016;
-          x += noise;
-          y += noise;
-          z += noise;
-
-          const idx = positions.length / 3;
-          positions.push(x, y, z);
-          holoBasePositions.push(x, y, z);
-
-          if (isEye) {
-            colors.push(1.0, 1.0, 1.0); // Olhos em destaque branco puro
-          } else if (z > 0.2) {
-            colors.push(0.0, 0.94, 1.0); // Rosto em neon ciano intenso
+          // Coloração holográfica inspirada na GIDEON (The Flash):
+          // Olhos, nariz e contornos com brilho gelo/ciano intenso
+          if (b > 0.75) {
+            colors.push(0.95, 1.0, 1.0); // Destaque branco/gelo incandescente
+          } else if (b > 0.45) {
+            colors.push(0.0, 0.92, 1.0); // Neon ciano holográfico vivo
           } else {
-            colors.push(0.06, 0.78, 0.65); // Laterais e crânio em tom esmeralda/matriz
+            colors.push(0.05, 0.65, 0.88); // Azul etéreo translúcido
           }
 
-          if (isMouth) holoMouthIndices.push(idx);
+          if (py > 0.8) {
+            holoHaloData.push({ idx: i, speed: 0.003 + Math.random() * 0.006, basePy: py });
+          }
         }
-      }
-
-      // Halo de dados: partículas cósmicas se desintegrando no topo (idêntico à foto)
-      for (let k = 0; k < 350; k++) {
-        const theta = Math.random() * Math.PI * 2;
-        const rad = 0.15 + Math.random() * 0.85;
-        const px = Math.cos(theta) * rad;
-        const py = 0.75 + Math.random() * 0.85;
-        const pz = Math.sin(theta) * rad;
-        const idx = positions.length / 3;
-        positions.push(px, py, pz);
-        holoBasePositions.push(px, py, pz);
-        colors.push(0.0, 0.95, 1.0);
-        holoHaloData.push({ idx, speed: 0.004 + Math.random() * 0.008, basePy: py });
+        holoMouthIndices = gideonData.mouth || [];
+      } else {
+        // Fallback procedural se json ainda não carregou
+        for (let i = 0; i < 1500; i++) {
+          const u = Math.random() * Math.PI * 2;
+          const v = Math.random() * Math.PI;
+          const px = Math.sin(v) * Math.cos(u) * 0.8;
+          const py = Math.cos(v) * 1.1;
+          const pz = Math.sin(v) * Math.sin(u) * 0.8;
+          positions.push(px, py, pz);
+          holoBasePositions.push(px, py, pz);
+          colors.push(0.0, 0.94, 1.0);
+        }
       }
 
       const geometry = new THREE.BufferGeometry();
@@ -4010,11 +3983,11 @@
 
       const texture = createPointSpriteTexture();
       const material = new THREE.PointsMaterial({
-        size: 0.046,
+        size: 0.038,
         map: texture,
         vertexColors: true,
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.96,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
@@ -4069,9 +4042,9 @@
       }
     }
 
-    function startHoloAnimation() {
+    async function startHoloAnimation() {
       if (holoAnimFrameId) cancelAnimationFrame(holoAnimFrameId);
-      init3DHeadHologram();
+      await init3DHeadHologram();
       holoAnimFrameId = requestAnimationFrame(render3DHeadHologram);
     }
 
@@ -4139,7 +4112,7 @@
         if (aiAssistantOpen) {
           panel.classList.remove('hidden');
           playTone(1150, 'triangle', 0.08, 0.05);
-          speakVoiceCue("NEXUS assistente neural online.");
+          speakVoiceCue("Assistente NEXUS ao seu dispor. Em que posso te ajudar hoje?");
           startHoloAnimation();
           setTimeout(() => {
             const inp = document.getElementById('ai-chat-input');
@@ -4584,7 +4557,7 @@ Teclas <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> mudam as a
           <!-- Etiqueta Holográfica Flutuante sob a Cabeça 3D -->
           <div class="mt-1 px-4 py-1 rounded-full bg-void/90 border border-cyanGlow/60 shadow-[0_0_18px_rgba(0,240,255,0.45)] text-[10px] sm:text-xs font-mono text-cyanGlow font-bold flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
-            <span>NEXUS // CONSCIÊNCIA NEURAL 3D (POINT CLOUD)</span>
+            <span>NEXUS // CONSCIÊNCIA HOLOGRÁFICA (GIDEON MATRIX)</span>
           </div>
         </div>
 
@@ -4617,7 +4590,7 @@ Teclas <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code> mudam as a
           <!-- Mensagem Inicial de Boas-Vindas e Co-Piloto -->
           <div class="p-4 sm:p-5 rounded-2xl bg-surface/85 border border-cyanGlow/40 text-sm sm:text-base leading-relaxed text-gray-100 shadow-md">
             <span class="text-[10px] sm:text-xs font-mono text-cyanGlow font-bold block mb-1.5">● NEXUS AI // CO-PILOTO</span>
-            Olá! Sou <strong>NEXUS</strong>, a inteligência neural e co-piloto do portfólio de <strong>Arthur Fogolin</strong>.
+            Olá! Sou <strong>NEXUS</strong>, seu assistente e co-piloto ao seu dispor no portfólio de <strong>Arthur Fogolin</strong>.
             <br><br>
             Posso te apresentar sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega ou <strong>te guiar por qualquer seção do site</strong>.
             <div class="mt-3.5 flex flex-wrap gap-2 pt-2 border-t border-white/10">
