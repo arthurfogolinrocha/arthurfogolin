@@ -4009,20 +4009,21 @@
           // Cálculo do fator Fresnel (quanto mais de perfil ou na borda, mais luz de contorno)
           const fresnel = Math.max(0, 1.0 - Math.abs(nz));
 
-          // Vértices dos lábios e contorno do nariz
-          const isLips = (Math.abs(px) < 0.25 && py > -0.05 && py < 0.18 && pz > 0.32);
+          // Vértices da face e lábios equilibrados (sem saturação acumulada na boca)
+          const isLips = (Math.abs(px) < 0.15 && py > 0.02 && py < 0.12 && pz > 0.34);
 
           if (isLips) {
-            colors[i * 3] = 0.15;     // R
-            colors[i * 3 + 1] = 0.85; // G (Ciano definido para boca articulada)
-            colors[i * 3 + 2] = 1.0;  // B
+            // Lábios sutis e definidos com a mesma intensidade etérea
+            colors[i * 3] = 0.04;
+            colors[i * 3 + 1] = 0.60;
+            colors[i * 3 + 2] = 0.92;
           } else if (fresnel > 0.65) {
             // Bordas externas da silhueta (Rim Light brilhante)
             colors[i * 3] = 0.10;
             colors[i * 3 + 1] = 0.92;
             colors[i * 3 + 2] = 1.0;
           } else if (pz > 0.1) {
-            // Frente do rosto (Maçãs e testa translúcidas e suaves, sem mancha estourada)
+            // Frente do rosto (Maçãs, queixo e testa translúcidas e homogêneas)
             colors[i * 3] = 0.02;
             colors[i * 3 + 1] = 0.52;
             colors[i * 3 + 2] = 0.88;
