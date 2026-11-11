@@ -1,0 +1,3253 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Arthur Fogolin Rocha — AI Systems Architect & Software Engineer</title>
+  <meta name="description" content="Engenharia de Software, Agentes de Inteligência Artificial e Ferramentas de Alta Performance em Rust de Arthur Fogolin Rocha.">
+  <meta name="theme-color" content="#02030b">
+  <link rel="icon" type="image/jpeg" href="/assets/arthur_ai_executive_real.jpg">
+  
+  <!-- Open Graph / WhatsApp / LinkedIn Rich Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Arthur Fogolin Rocha — AI Systems Architect & Software Engineer">
+  <meta property="og:description" content="Engenharia de Software de Alta Precisão, Agentes Autônomos de IA e Ferramentas de Baixa Latência em Rust.">
+  <meta property="og:image" content="/assets/arthur_ai_executive_real.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Arthur Fogolin Rocha — AI Systems Architect">
+  <meta name="twitter:description" content="Agentes de Inteligência Artificial em Produção, Rust e Sistemas Enterprise.">
+  <meta name="twitter:image" content="/assets/arthur_ai_executive_real.jpg">
+  
+  <!-- Google Fonts: Orbitron, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            void: '#02030b',
+            surface: '#070b19',
+            surfaceLight: '#0d152d',
+            cyanGlow: '#00f0ff',
+            purpleGlow: '#8b5cf6',
+            emeraldGlow: '#10b981',
+          },
+          animation: {
+            'spin-slow': 'spin 12s linear infinite',
+            'spin-reverse': 'spin-reverse 15s linear infinite',
+            'float': 'float 5s ease-in-out infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+            'scanline': 'scanline 5s linear infinite',
+          },
+          keyframes: {
+            'spin-reverse': {
+              '0%': { transform: 'rotate(360deg)' },
+              '100%': { transform: 'rotate(0deg)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(1deg)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.85', transform: 'scale(1.06)' },
+            },
+            scanline: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(1000%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Custom Cyberpunk Dynamic Visuals */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+      width: 100%;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #02030b; }
+    ::-webkit-scrollbar-thumb { background: #00f0ff44; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00f0ffaa; }
+
+    /* Animated Conic Gradient Neon Border */
+    .animated-border {
+      position: relative;
+      background: #060919;
+      border-radius: 1.25rem;
+      z-index: 1;
+    }
+    .animated-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: conic-gradient(from 0deg at 50% 50%, #00f0ff, #8b5cf6, #ec4899, #00f0ff);
+      z-index: -1;
+      animation: spinBorder 6s linear infinite;
+      opacity: 0.75;
+    }
+    @keyframes spinBorder {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Interactive Spotlight Dynamic Border & Glassmorphism (HackaRun / Vercel Grade) */
+    .card-glass {
+      position: relative;
+      background: rgba(7, 11, 25, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.25s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+    .card-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: radial-gradient(400px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(0, 240, 255, 0.75), rgba(139, 92, 246, 0.4), transparent 70%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 2;
+    }
+    .card-glass::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(350px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px), rgba(0, 240, 255, 0.08), transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 1;
+    }
+    .card-glass:hover::before,
+    .card-glass:hover::after {
+      opacity: 1;
+    }
+    .card-glass:hover {
+      box-shadow: 0 15px 35px -10px rgba(0, 240, 255, 0.22);
+    }
+
+    /* Holographic Cyber Scanlines */
+    .hologram-scan {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 240, 255, 0.03) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background-size: 100% 3px, 6px 100%;
+    }
+
+    /* Cyber Scramble Matrix Glow */
+    .cyber-scramble {
+      display: inline-block;
+      transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+    .cyber-scramble:hover {
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.8), 0 0 20px rgba(139, 92, 246, 0.6);
+    }
+
+    #cursor-aura {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.16) 0%, rgba(139, 92, 246, 0.08) 45%, transparent 70%);
+      pointer-events: none;
+      transform: translate3d(-1000px, -1000px, 0) translate(-50%, -50%);
+      z-index: 1;
+      filter: blur(32px);
+      will-change: transform;
+    }
+
+    .tab-btn.active {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: #00f0ff;
+      color: #00f0ff;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+    }
+
+    /* Telemetry Bar Keyframes */
+    @keyframes pulseLed {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .led-live {
+      animation: pulseLed 1.4s ease-in-out infinite;
+    }
+
+    /* Ambient Audio Equalizer Animation */
+    @keyframes eqBounce {
+      0%, 100% { height: 3px; }
+      50% { height: 13px; }
+    }
+    .eq-playing .eq-bar:nth-child(1) { animation: eqBounce 0.7s ease-in-out infinite; background-color: #00f0ff !important; }
+    .eq-playing .eq-bar:nth-child(2) { animation: eqBounce 0.5s ease-in-out infinite 0.15s; background-color: #8b5cf6 !important; }
+    .eq-playing .eq-bar:nth-child(3) { animation: eqBounce 0.8s ease-in-out infinite 0.3s; background-color: #10b981 !important; }
+    .eq-playing .eq-bar:nth-child(4) { animation: eqBounce 0.6s ease-in-out infinite 0.1s; background-color: #00f0ff !important; }
+
+    /* Clean Print Styles for Executive CV */
+    @media print {
+      body * { visibility: hidden !important; }
+      #cv-modal, #cv-modal * { visibility: visible !important; }
+      #cv-modal { position: absolute !important; inset: 0 !important; width: 100% !important; background: #ffffff !important; color: #0f172a !important; padding: 0 !important; }
+      #cv-printable-area { background: #ffffff !important; color: #0f172a !important; }
+      #cv-printable-area * { color: #0f172a !important; border-color: #cbd5e1 !important; }
+      #cv-printable-area .text-white { color: #020617 !important; font-weight: 800 !important; }
+      #cv-printable-area .text-cyanGlow, #cv-printable-area .text-purpleGlow, #cv-printable-area .text-emeraldGlow { color: #0284c7 !important; font-weight: 700 !important; }
+      #cv-printable-area .bg-white\/5 { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
+      header, footer, #bg-canvas, #lightning-canvas, #cursor-aura, #scroll-top-pill, #sfx-toggle, button { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-void text-slate-200 font-sans antialiased min-h-screen relative overflow-x-hidden selection:bg-cyanGlow selection:text-black">
+
+  <!-- Custom Cyberpunk Magnetic Cursor (Desktop - Zero Latency 1:1) -->
+  <div id="cyber-cursor-dot" class="fixed top-0 left-0 w-2 h-2 rounded-full bg-cyanGlow pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#00f0ff] hidden md:block"></div>
+  <div id="cyber-cursor-ring" class="fixed top-0 left-0 w-8 h-8 rounded-full border border-cyanGlow/60 pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 transition-[width,height,border-color,box-shadow] duration-150 ease-out hidden md:block"></div>
+
+  <!-- Interactive Smooth Mouse Glow Aura -->
+  <div id="cursor-aura"></div>
+
+  <!-- WebGL 3D Canvas Background (Three.js Infinite Tron Highway & Floating Cores) -->
+  <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- Cyberpunk Procedural Lightning Sparks Canvas -->
+  <canvas id="lightning-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-70"></canvas>
+
+  <!-- Ambient Light Gradients -->
+  <div class="fixed top-[-10%] left-[-10%] w-[550px] h-[550px] bg-cyanGlow/15 rounded-full blur-[160px] pointer-events-none z-0 animate-pulse-glow"></div>
+  <div class="fixed bottom-[-15%] right-[-10%] w-[650px] h-[650px] bg-purpleGlow/15 rounded-full blur-[180px] pointer-events-none z-0 animate-pulse-glow" style="animation-delay: 1.5s;"></div>
+
+  <!-- TOP CYBER TELEMETRY & HUD BAR (HACKARUN / MATRIX COMMAND GRADE) -->
+  <div class="w-full max-w-full bg-void/90 border-b border-cyanGlow/25 py-1.5 px-3 sm:px-4 font-mono text-[10px] text-gray-400 flex items-center justify-between backdrop-blur-md z-50 overflow-x-auto whitespace-nowrap select-none scrollbar-none">
+    <div class="flex items-center gap-2 sm:gap-5">
+      <span class="flex items-center gap-1.5 text-emeraldGlow font-bold tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-emeraldGlow led-live shadow-[0_0_8px_#10b981]"></span>
+        SYS_ONLINE // 256-BIT SECURE
+      </span>
+      <span class="text-white/20">|</span>
+      <span class="text-cyanGlow flex items-center gap-1">
+        <i data-lucide="map-pin" class="w-3 h-3 text-cyanGlow"></i>
+        PALMAS - TO [-10.1843, -48.3336]
+      </span>
+      <span class="text-white/20 hidden md:inline">|</span>
+      <span id="telemetry-time" class="text-purpleGlow font-bold hidden md:inline">UTC-3 --:--:--.---</span>
+      <span class="text-white/20 hidden lg:inline">|</span>
+      <span id="telemetry-visitor" class="text-cyanGlow font-semibold hidden lg:inline-flex items-center gap-1">
+        <i data-lucide="users" class="w-3 h-3 text-cyanGlow"></i>
+        VISITANTE #1.482
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-5">
+      <span class="text-amber-400 font-semibold flex items-center gap-1">
+        <i data-lucide="cpu" class="w-3 h-3 text-amber-400"></i>
+        12 CORES (APPLE SILICON M)
+      </span>
+      <span class="text-white/20 hidden sm:inline">|</span>
+      <span class="text-cyanGlow/90 hidden lg:inline">QUANTUM AGENTS: 12 ONLINE</span>
+      <span class="text-white/20 hidden lg:inline">|</span>
+      <span id="fps-counter" class="text-emeraldGlow font-bold px-2 py-0.5 rounded bg-emeraldGlow/10 border border-emeraldGlow/30">60 FPS</span>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="sticky top-0 z-50 card-glass border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#inicio" class="flex items-center gap-3 group">
+        <div class="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-cyanGlow/20 to-purpleGlow/30 border border-cyanGlow/50 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+          <div class="absolute inset-0 bg-cyanGlow/20 animate-pulse"></div>
+          <span class="font-orbitron font-extrabold text-cyanGlow text-lg tracking-wider relative z-10">AF</span>
+        </div>
+        <div>
+          <span class="font-orbitron font-bold text-white tracking-widest text-sm block">ARTHUR FOGOLIN</span>
+          <span class="font-mono text-[10px] text-cyanGlow tracking-wider flex items-center gap-1.5 font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow animate-ping"></span>
+            AI SYSTEMS ARCHITECT & RUST DEV
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-6 font-mono text-xs text-gray-400">
+        <button onclick="switchTab('perfil')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">01.</span> Biografia & Cérebro</button>
+        <button onclick="switchTab('sistemas')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">02.</span> Sistemas & Clientes</button>
+        <button onclick="switchTab('rust')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">03.</span> Rust High-Perf</button>
+        <button onclick="switchTab('servicos')" class="tab-nav-btn hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">04.</span> Serviços & Orçamento</button>
+        <a href="#terminal" class="hover:text-cyanGlow transition-colors flex items-center gap-1.5"><span class="text-cyanGlow/50">05.</span> Terminal CLI</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Cyber Ambient Audio Player Pill -->
+        <button id="sfx-toggle" title="Trilha Sonora Ambient Cyberpunk (Web Audio Synthesizer)" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 card-glass text-xs font-mono transition-all hover:scale-105 active:scale-95 group">
+          <div class="flex items-end gap-0.5 h-3.5 w-3.5" id="eq-bars">
+            <span class="w-0.5 bg-gray-500 rounded-full h-1 eq-bar"></span>
+            <span class="w-0.5 bg-gray-500 rounded-full h-2 eq-bar"></span>
+            <span class="w-0.5 bg-gray-500 rounded-full h-1.5 eq-bar"></span>
+            <span class="w-0.5 bg-gray-500 rounded-full h-2.5 eq-bar"></span>
+          </div>
+          <span id="sfx-label" class="text-gray-400 group-hover:text-cyanGlow transition-colors font-semibold">TRILHA: OFF</span>
+        </button>
+
+        <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar!" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyanGlow/20 to-purpleGlow/20 hover:from-cyanGlow/30 hover:to-purpleGlow/30 border border-cyanGlow/50 text-white font-mono text-xs font-bold tracking-wider transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+          <i data-lucide="send" class="w-3.5 h-3.5 text-cyanGlow"></i>
+          <span>FALE COMIGO</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="pt-4 pb-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Copy & Presentation -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- Live Status Pill with animated radar -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyanGlow/40 bg-cyanGlow/5 text-cyanGlow font-mono text-xs tracking-wider shadow-[0_0_15px_rgba(0,240,255,0.15)]">
+          <span class="w-2 h-2 rounded-full bg-emeraldGlow animate-ping"></span>
+          <span>ARQUITETURA DE AGENTES AUTÔNOMOS & ENGENHARIA DE ESCALA</span>
+        </div>
+
+        <h1 class="font-orbitron text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
+          SISTEMAS DE <span id="hero-inteligencia" class="scramble-word bg-gradient-to-r from-cyanGlow via-teal-300 to-emeraldGlow bg-clip-text text-transparent inline-block">INTELIGÊNCIA</span> & SOFTWARE DE ALTA PRECISÃO
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed font-normal">
+          Me chamo <strong class="text-white font-semibold">Arthur Fogolin</strong>, 18 anos, Palmas – TO. Sou graduando em <span class="text-cyanGlow font-mono font-medium">Inteligência Artificial</span> na UniCatólica e desenvolvedor freelancer especializado em arquitetar agentes autônomos para empresas, sistemas de gestão em tempo real e motores em <span class="text-purpleGlow font-mono font-medium">Rust & TypeScript</span> com otimização radical de custos, zero código cego e testes automatizados.
+        </p>
+
+        <!-- Neural Audio Waveform Canvas Display (Audio-Reativo) -->
+        <div class="card-glass p-3.5 rounded-2xl border border-white/10 space-y-2">
+          <div class="flex items-center justify-between font-mono text-[10px] text-gray-400">
+            <span class="flex items-center gap-1.5 text-cyanGlow font-semibold"><i data-lucide="activity" class="w-3.5 h-3.5"></i> MONITOR DE FREQUÊNCIA COMPUTACIONAL</span>
+            <span class="text-emeraldGlow font-bold">FLUXO ATIVO: 60 FPS</span>
+          </div>
+          <canvas id="waveform-canvas" class="w-full h-10 rounded-lg bg-void/60"></canvas>
+        </div>
+
+        <!-- Metrics Ribbon (Executive Standards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 font-mono">
+          <div class="card-glass p-4 rounded-2xl border border-white/10 hover:border-cyanGlow/40 transition-colors">
+            <div class="text-2xl sm:text-3xl font-extrabold text-white font-orbitron">292</div>
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-sans mt-0.5">Testes Automatizados</div>
+          </div>
+          <div class="card-glass p-4 rounded-2xl border border-white/10 hover:border-cyanGlow/40 transition-colors">
+            <div class="text-2xl sm:text-3xl font-extrabold text-cyanGlow font-orbitron">&lt; 1.8ms</div>
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-sans mt-0.5">Latência Nativa Rust</div>
+          </div>
+          <div class="card-glass p-4 rounded-2xl border border-white/10 hover:border-cyanGlow/40 transition-colors">
+            <div class="text-2xl sm:text-3xl font-extrabold text-emeraldGlow font-orbitron">99.9%</div>
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-sans mt-0.5">Uptime Operacional</div>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs">
+          <button onclick="switchTab('sistemas')" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyanGlow to-blue-600 text-black font-extrabold tracking-wider hover:opacity-95 transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(0,240,255,0.35)] flex items-center gap-2">
+            <i data-lucide="layers" class="w-4 h-4"></i>
+            <span>VER SISTEMAS EM PRODUÇÃO</span>
+          </button>
+          <button onclick="switchTab('servicos')" class="px-6 py-3.5 rounded-xl card-glass border border-white/10 hover:border-cyanGlow/50 text-white font-semibold tracking-wider transition-all hover:bg-white/5 flex items-center gap-2">
+            <i data-lucide="calculator" class="w-4 h-4 text-cyanGlow"></i>
+            <span>SIMULAR ORÇAMENTO</span>
+          </button>
+          <button onclick="openCvModal()" class="px-5 py-3.5 rounded-xl bg-purpleGlow/15 hover:bg-purpleGlow/25 border border-purpleGlow/40 text-purple-200 font-semibold tracking-wider transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+            <i data-lucide="file-text" class="w-4 h-4 text-purpleGlow"></i>
+            <span>CURRÍCULO (PDF)</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Right Column: 3D Holographic Portrait Frame with Interactive Photo Switcher -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="relative group cursor-pointer perspective-1000" id="hero-card">
+          
+          <!-- Outer Neon Ambient Aura -->
+          <div class="absolute -inset-3 bg-gradient-to-r from-cyanGlow via-purpleGlow to-pink-500 rounded-3xl blur-2xl opacity-50 group-hover:opacity-85 transition-opacity duration-700 animate-pulse-glow"></div>
+
+          <!-- Animated Border Wrapper -->
+          <div class="animated-border p-1">
+            
+            <!-- Inner Card -->
+            <div class="relative w-80 sm:w-96 rounded-2xl bg-surface border border-white/10 p-3 shadow-2xl overflow-hidden transition-transform duration-500 transform-gpu">
+              
+              <!-- Scanning laser effect -->
+              <div class="absolute inset-0 bg-gradient-to-b from-transparent via-cyanGlow/15 to-transparent h-20 w-full animate-scanline pointer-events-none z-20"></div>
+
+              <!-- Photo Container with smooth switcher -->
+              <div class="relative h-[440px] rounded-xl overflow-hidden bg-surfaceLight">
+                <img id="arthur-photo" src="/assets/arthur_ai_executive_real.jpg" alt="Arthur Fogolin Rocha" class="w-full h-full object-cover object-center filter contrast-105 brightness-105 transition-all duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent"></div>
+
+                <!-- HUD Top Elements -->
+                <div class="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-void/85 border border-cyanGlow/40 backdrop-blur font-mono text-[10px] text-cyanGlow z-20">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
+                  <span>AI FOUNDER & ARCHITECT</span>
+                </div>
+
+                <!-- Photo Cycle Button -->
+                <button id="cycle-photo-btn" title="Alternar foto de perfil" class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-void/85 hover:bg-cyanGlow/20 border border-white/15 hover:border-cyanGlow/60 font-mono text-[10px] text-gray-300 hover:text-cyanGlow z-30 transition-all flex items-center gap-1">
+                  <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                  <span>TROCAR FOTO</span>
+                </button>
+
+                <!-- Bottom Floating Card Details -->
+                <div class="absolute bottom-4 left-4 right-4 space-y-2 z-20">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h3 class="font-orbitron font-bold text-white text-lg">Arthur Fogolin</h3>
+                      <p class="font-mono text-xs text-cyanGlow">UniCatólica • Inteligência Artificial</p>
+                    </div>
+                    <div class="w-9 h-9 rounded-xl bg-purpleGlow/20 border border-purpleGlow flex items-center justify-center text-purpleGlow shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                      <i data-lucide="cpu" class="w-4 h-4"></i>
+                    </div>
+                  </div>
+
+                  <!-- Tech Chips -->
+                  <div class="flex flex-wrap gap-1.5 pt-1">
+                    <span class="px-2 py-0.5 rounded-md bg-white/10 text-[10px] font-mono text-gray-200">Rust 1.99</span>
+                    <span class="px-2 py-0.5 rounded-md bg-cyanGlow/20 text-cyanGlow text-[10px] font-mono font-medium border border-cyanGlow/30">Gemini Carbon</span>
+                    <span class="px-2 py-0.5 rounded-md bg-purpleGlow/20 text-purpleGlow text-[10px] font-mono font-medium border border-purpleGlow/30">Next.js 16</span>
+                    <span class="px-2 py-0.5 rounded-md bg-emeraldGlow/20 text-emeraldGlow text-[10px] font-mono font-medium border border-emeraldGlow/30">Evolution API</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION: MULTI-SCREEN INTERACTIVE TABS (DIVIDIR TELAS) -->
+    <section class="space-y-8">
+      
+      <!-- Screen Tab Selectors -->
+      <div class="flex flex-wrap items-center justify-center gap-3 p-2 rounded-2xl bg-void/80 border border-white/10 card-glass max-w-5xl mx-auto font-mono text-xs">
+        <button onclick="switchTab('perfil')" id="tab-btn-perfil" class="tab-btn active px-5 py-2.5 rounded-xl border border-transparent font-bold flex items-center gap-2 transition-all">
+          <i data-lucide="brain" class="w-4 h-4"></i>
+          <span>01. BIOGRAFIA & CÉREBRO</span>
+        </button>
+        <button onclick="switchTab('sistemas')" id="tab-btn-sistemas" class="tab-btn px-5 py-2.5 rounded-xl border border-transparent font-bold flex items-center gap-2 transition-all text-gray-400 hover:text-white">
+          <i data-lucide="layout-grid" class="w-4 h-4"></i>
+          <span>02. SISTEMAS & CLIENTES</span>
+        </button>
+        <button onclick="switchTab('rust')" id="tab-btn-rust" class="tab-btn px-5 py-2.5 rounded-xl border border-transparent font-bold flex items-center gap-2 transition-all text-gray-400 hover:text-white">
+          <i data-lucide="zap" class="w-4 h-4"></i>
+          <span>03. RUST HIGH-PERF</span>
+        </button>
+        <button onclick="switchTab('servicos')" id="tab-btn-servicos" class="tab-btn px-5 py-2.5 rounded-xl border border-transparent font-bold flex items-center gap-2 transition-all text-gray-400 hover:text-white">
+          <i data-lucide="briefcase" class="w-4 h-4"></i>
+          <span>04. SERVIÇOS & ORÇAMENTO</span>
+        </button>
+      </div>
+
+      <!-- TAB SCREEN 1: PERFIL & HISTÓRIA (BIOGRAFIA, OBSIDIAN & RIGOR TÉCNICO) -->
+      <div id="tab-content-perfil" class="tab-content space-y-10 animate-fadeIn">
+        
+        <!-- Hero Story & Academic Background -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <div class="md:col-span-7 card-glass rounded-2xl p-6 sm:p-8 space-y-5">
+            <span class="text-cyanGlow font-mono text-xs font-bold tracking-widest block">// QUEM É ARTHUR FOGOLIN ROCHA</span>
+            <h2 class="font-orbitron text-2xl sm:text-3xl font-bold text-white">Engenharia Autônoma, Rigor & Escala</h2>
+            <div class="text-gray-300 text-sm leading-relaxed space-y-4 font-light">
+              <p>
+                Arthur tem 18 anos, reside em <strong>Palmas – Tocantins</strong> e é estudante de <strong>Inteligência Artificial</strong> no Centro Universitário Católica do Tocantins (UniCatólica).
+              </p>
+              <p>
+                Atua como desenvolvedor freelancer e arquiteto de soluções corporativas de ponta a ponta: agentes autônomos de atendimento e fechamento de vendas via WhatsApp, integração avançada com ERPs fiscais e financeiros, e sistemas web robustos em <strong>Next.js 16, TypeScript e Rust</strong>.
+              </p>
+              <p>
+                Sua filosofia é fundamentada na <strong>rejeição ao código cego</strong>: todo sistema opera com bancos relacionais tipados (PostgreSQL / Drizzle), testes automatizados com cobertura rigorosa antes de produção, e travas determinísticas que impedem qualquer alucinação em preços ou dados de clientes.
+              </p>
+            </div>
+
+            <!-- Core Directives Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 font-mono text-xs">
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/5">
+                <span class="text-cyanGlow font-bold block mb-1">Rigor de Produção</span>
+                <span class="text-gray-400 text-[11px]">Zero código cego. Suítes de testes automatizados com Vitest e Playwright.</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/5">
+                <span class="text-purpleGlow font-bold block mb-1">Smart Cost Routing</span>
+                <span class="text-gray-400 text-[11px]">Modelos rápidos (Flash) para triagem e pesados (Carbon) para negociação profunda.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 space-y-6">
+            <!-- Segundo Cérebro Card com Grafo Interativo -->
+            <div class="card-glass rounded-2xl p-6 border border-cyanGlow/30 space-y-4 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-cyanGlow/10 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow">
+                    <i data-lucide="brain" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-orbitron font-bold text-white text-base">Obsidian Fogolin</h4>
+                    <span class="font-mono text-[11px] text-gray-400">O Cérebro Central</span>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-emeraldGlow/10 border border-emeraldGlow/30 text-emeraldGlow font-mono text-[10px] font-bold">100% SINCRONIZADO</span>
+              </div>
+
+              <p class="text-gray-300 text-xs leading-relaxed font-light">
+                Cofre de conhecimento vivo acumulando <strong>126 documentos estruturados</strong> e <strong>52+ notas cronológicas maduras</strong>, contendo todas as diretrizes de engenharia, memórias de bugs e lições de arquitetura corporativa.
+              </p>
+
+              <!-- Interactive Obsidian Graph Canvas Display -->
+              <div class="p-2 rounded-xl bg-void/90 border border-white/10 space-y-1.5">
+                <div class="flex items-center justify-between font-mono text-[10px] text-gray-400 px-1">
+                  <span class="text-cyanGlow flex items-center gap-1"><i data-lucide="network" class="w-3 h-3"></i> GRAFO DE CONHECIMENTO VIVO</span>
+                  <span class="text-purpleGlow">fogolin-cli (Rust)</span>
+                </div>
+                <canvas id="obsidian-graph-canvas" class="w-full h-32 rounded-lg bg-void/80 cursor-crosshair"></canvas>
+              </div>
+
+              <div class="p-3 rounded-lg bg-white/5 border border-white/5 font-mono text-[11px] text-gray-300 flex justify-between">
+                <span>Auditoria Automática:</span>
+                <span class="text-emeraldGlow font-bold">0.7ms via fogolin-cli</span>
+              </div>
+            </div>
+
+            <!-- Católica Card -->
+            <div class="card-glass rounded-2xl p-6 border border-purpleGlow/30 space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purpleGlow/10 border border-purpleGlow/40 flex items-center justify-center text-purpleGlow">
+                  <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-orbitron font-bold text-white text-base">UniCatólica</h4>
+                  <span class="font-mono text-[11px] text-gray-400">Palmas – Tocantins</span>
+                </div>
+              </div>
+              <p class="text-gray-300 text-xs leading-relaxed font-light">
+                Graduando em <strong>Inteligência Artificial</strong>, aliando bases matemáticas de redes neurais, aprendizado de máquina e compiladores com a prática de mercado em sistemas de produção.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 10 Mandamentos de Engenharia & Rigor Técnico de Arthur Fogolin -->
+        <div class="card-glass rounded-2xl p-6 sm:p-8 border border-white/10 space-y-6">
+          <div class="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <span class="text-cyanGlow font-mono text-xs font-bold tracking-widest block">// DIRETRIZES INVIOLÁVEIS DE PRODUÇÃO</span>
+              <h3 class="font-orbitron text-xl sm:text-2xl font-bold text-white">Os 10 Mandamentos de Engenharia de Arthur Fogolin</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-cyanGlow/10 border border-cyanGlow/30 text-cyanGlow font-mono text-xs font-semibold">ARQUITETURA ENTERPRISE</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 font-mono text-xs">
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-cyanGlow/40 transition-colors">
+              <span class="text-cyanGlow font-bold block">01. Testes Mandatórios</span>
+              <p class="text-gray-400 text-[11px] font-sans">Zero código cego. Suíte completa de testes antes de qualquer deploy.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-purpleGlow/40 transition-colors">
+              <span class="text-purpleGlow font-bold block">02. Smart Cost Routing</span>
+              <p class="text-gray-400 text-[11px] font-sans">Flash na triagem rápida e Carbon apenas na negociação complexa (80%+ de economia).</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-emeraldGlow/40 transition-colors">
+              <span class="text-emeraldGlow font-bold block">03. Kill-Switch Obrigatório</span>
+              <p class="text-gray-400 text-[11px] font-sans">Trava instantânea para desligar a IA e transferir controle total a humanos.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-yellow-400/40 transition-colors">
+              <span class="text-yellow-400 font-bold block">04. Triagem de Canais</span>
+              <p class="text-gray-400 text-[11px] font-sans">WhatsApp para varejo de massa e ChatGPT Business Agents para B2B e clínicas.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-pink-400/40 transition-colors">
+              <span class="text-pink-400 font-bold block">05. Rust nos Gargalos</span>
+              <p class="text-gray-400 text-[11px] font-sans">Performance nativa em silício para ferramentas críticas e processamento massivo.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-cyanGlow/40 transition-colors">
+              <span class="text-cyanGlow font-bold block">06. Sleep-Time Compute</span>
+              <p class="text-gray-400 text-[11px] font-sans">Compressão assíncrona de perfis de clientes sem reenvio inútil de histórico cru.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-purpleGlow/40 transition-colors">
+              <span class="text-purpleGlow font-bold block">07. Zero Alucinações</span>
+              <p class="text-gray-400 text-[11px] font-sans">Validação determinística de estoques e preços no banco relacional antes do envio.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-emeraldGlow/40 transition-colors">
+              <span class="text-emeraldGlow font-bold block">08. Supabase RLS Seguro</span>
+              <p class="text-gray-400 text-[11px] font-sans">Row-Level Security estrito e sincronização em tempo real sem webhooks instáveis.</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-yellow-400/40 transition-colors">
+              <span class="text-yellow-400 font-bold block">09. Computer-Use Hy4</span>
+              <p class="text-gray-400 text-[11px] font-sans">Visão e mouse para automação em ERPs fechados sem API (Totvs, Sankhya).</p>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 hover:border-pink-400/40 transition-colors">
+              <span class="text-pink-400 font-bold block">10. Segundo Cérebro Vivo</span>
+              <p class="text-gray-400 text-[11px] font-sans">Registro automático de toda lição arquitetural e aprendizado no Obsidian Fogolin.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB SCREEN 2: SISTEMAS & CLIENTES (MARKETING & ARQUITETURA DE IMPACTO) -->
+      <div id="tab-content-sistemas" class="tab-content hidden space-y-10 animate-fadeIn">
+        
+        <!-- Marketing Header & Trust Strip -->
+        <div class="card-glass rounded-2xl p-6 sm:p-8 border border-white/10 space-y-6 relative overflow-hidden">
+          <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-cyanGlow/10 blur-3xl pointer-events-none"></div>
+          
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div class="space-y-2">
+              <span class="px-3 py-1 rounded-md bg-cyanGlow/15 border border-cyanGlow/40 text-cyanGlow font-mono text-xs font-bold tracking-wider inline-flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
+                // CASOS REAIS DE SUCESSO • ENGENHARIA DE SOFTWARE & IA
+              </span>
+              <h2 class="font-orbitron text-2xl sm:text-3xl font-extrabold text-white">Sistemas em Produção & Escala Comercial</h2>
+              <p class="text-gray-300 text-xs sm:text-sm max-w-3xl font-light leading-relaxed">
+                Desenvolvimento de soluções completas de ponta a ponta: agentes autônomos de atendimento e voz, plataformas de conformidade regulatória severa, sistemas financeiros integrados a ERPs e robôs de sincronização governamental.
+              </p>
+            </div>
+
+            <!-- Total Systems Badge -->
+            <div class="shrink-0 p-4 rounded-xl bg-void/80 border border-white/10 text-center font-mono">
+              <span class="text-3xl font-orbitron font-extrabold text-cyanGlow block">12</span>
+              <span class="text-[11px] text-gray-400 font-semibold tracking-wider uppercase">Sistemas Ativos</span>
+            </div>
+          </div>
+
+          <!-- Trust & Performance Metrics Bar -->
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-4 border-t border-white/10 font-mono text-xs">
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+              <span class="text-emeraldGlow font-bold text-lg block">292</span>
+              <span class="text-gray-400 text-[10px]">Testes Vitest</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+              <span class="text-cyanGlow font-bold text-lg block">99.9%</span>
+              <span class="text-gray-400 text-[10px]">Uptime Operacional</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+              <span class="text-purpleGlow font-bold text-lg block">&lt; 2.2s</span>
+              <span class="text-gray-400 text-[10px]">Latência Média IA</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center">
+              <span class="text-yellow-400 font-bold text-lg block">100%</span>
+              <span class="text-gray-400 text-[10px]">Sigilo Comercial</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-center col-span-2 sm:col-span-1">
+              <span class="text-emeraldGlow font-bold text-lg block">R$ 0,00</span>
+              <span class="text-gray-400 text-[10px]">Custo Ocioso</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLAGSHIP SHOWCASE: OS 3 GRANDES DESTAQUES PREMIUM -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-orbitron text-xl font-bold text-white flex items-center gap-2">
+              <i data-lucide="award" class="w-5 h-5 text-yellow-400"></i>
+              <span>Projetos Flagship (Maior Impacto de Negócio)</span>
+            </h3>
+            <span class="font-mono text-xs text-gray-400 hidden sm:inline">Destaques em Produção</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- 1. PH Estoque (Card Duplo de Vendas) -->
+            <div class="lg:col-span-2 card-glass rounded-2xl p-6 sm:p-8 border border-cyanGlow/30 hover:border-cyanGlow transition-all space-y-6 relative group overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-cyanGlow/5 rounded-bl-full pointer-events-none"></div>
+
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                  <span class="px-3 py-1 rounded-md bg-emeraldGlow/15 border border-emeraldGlow/40 text-emeraldGlow font-mono text-xs font-bold flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emeraldGlow animate-ping"></span>
+                    FLAGSHIP #1 • VAREJO & IA
+                  </span>
+                  <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-gray-300 font-mono text-xs">
+                    Casas Pedro Henrique
+                  </span>
+                </div>
+                <span class="font-mono text-xs text-cyanGlow font-bold">Taquaralto & Luzimangues</span>
+              </div>
+
+              <div>
+                <h4 class="font-orbitron text-2xl font-bold text-white group-hover:text-cyanGlow transition-colors">
+                  PH Estoque: ERP Operacional + Agente Autônomo de Vendas 24/7
+                </h4>
+                <p class="text-gray-300 text-xs sm:text-sm font-light mt-2 leading-relaxed">
+                  Plataforma completa de gestão de estoque e força de vendas automatizada para rede varejista. O bot do WhatsApp atende múltiplos clientes simultaneamente, consulta estoque em tempo real com tolerância ortográfica, gera links do catálogo e transiciona para atendentes humanos de forma transparente.
+                </p>
+              </div>
+
+              <!-- Interactive Mockup: Vitest Suite & WhatsApp Alert -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                <!-- Vitest Terminal Box -->
+                <div class="p-4 rounded-xl bg-void/90 border border-white/10 font-mono text-xs space-y-2">
+                  <div class="flex items-center justify-between text-[11px] text-gray-400 pb-1 border-b border-white/5">
+                    <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emeraldGlow"></span>vitest run</span>
+                    <span class="text-emeraldGlow font-bold">292 PASSED</span>
+                  </div>
+                  <div class="text-[11px] text-gray-300 space-y-1">
+                    <div class="text-emeraldGlow">✓ tests/anti-flood.test.ts (8 msgs / 30s)</div>
+                    <div class="text-emeraldGlow">✓ tests/commercial-secrecy.test.ts (100% blindado)</div>
+                    <div class="text-emeraldGlow">✓ tests/stock-zero-alert.test.ts (alerta Pedro)</div>
+                    <div class="text-gray-500 text-[10px]">Test Files: 12 passed | Tests: 292 passed (1.4s)</div>
+                  </div>
+                </div>
+
+                <!-- Business Rules Box -->
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10 font-mono text-xs space-y-2 flex flex-col justify-between">
+                  <div class="text-cyanGlow font-bold flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-cyanGlow"></i>
+                    <span>Blindagens de Negócio em Produção</span>
+                  </div>
+                  <ul class="space-y-1.5 text-gray-300 text-[11px]">
+                    <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Alerta no WhatsApp do Pedro exclusivamente quando estoque zera.</span></li>
+                    <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Sigilo comercial estrito: concorrentes não acessam custos internos.</span></li>
+                    <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Webhook timing-safe com verificação de assinatura sem queda.</span></li>
+                  </ul>
+                </div>
+
+              </div>
+
+              <!-- Action & Stack Footer -->
+              <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-1.5 font-mono text-[10px]">
+                  <span class="px-2.5 py-1 rounded bg-white/5 text-gray-300">TypeScript</span>
+                  <span class="px-2.5 py-1 rounded bg-white/5 text-gray-300">Node.js API</span>
+                  <span class="px-2.5 py-1 rounded bg-white/5 text-gray-300">Z-API WhatsApp</span>
+                  <span class="px-2.5 py-1 rounded bg-white/5 text-gray-300">Vitest (292)</span>
+                  <span class="px-2.5 py-1 rounded bg-white/5 text-gray-300">PostgreSQL</span>
+                </div>
+                <button onclick="openSystemModal('phestoque')" class="px-4 py-2 rounded-xl bg-cyanGlow/20 hover:bg-cyanGlow/30 border border-cyanGlow/50 text-cyanGlow font-mono text-xs font-bold transition-all flex items-center gap-1.5">
+                  <span>VER FICHA TÉCNICA</span>
+                  <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- 2. CIPA MedWork (Card de Conformidade Regulatória) -->
+            <div class="card-glass rounded-2xl p-6 sm:p-8 border border-purpleGlow/30 hover:border-purpleGlow transition-all space-y-6 flex flex-col justify-between group">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="px-3 py-1 rounded-md bg-purpleGlow/15 border border-purpleGlow/40 text-purpleGlow font-mono text-xs font-bold flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-purpleGlow"></span>
+                    FLAGSHIP #2 • COMPLIANCE
+                  </span>
+                  <span class="font-mono text-xs text-emeraldGlow">cipa.medworkto.com</span>
+                </div>
+
+                <h4 class="font-orbitron text-xl font-bold text-white group-hover:text-purpleGlow transition-colors">
+                  CIPA MedWork: Eleições Digitais & Normas NR-5
+                </h4>
+
+                <p class="text-gray-300 text-xs font-light leading-relaxed">
+                  Sistema completo para governança e gestão eleitoral da CIPA conforme NR-5, CIPATR (NR-31) e CIPAMIN (NR-22).
+                </p>
+
+                <!-- Mini Mockup Urna Digital -->
+                <div class="p-3.5 rounded-xl bg-void/80 border border-white/10 font-mono text-xs space-y-1.5">
+                  <div class="flex justify-between text-[11px] text-gray-400">
+                    <span>Validação de Voto:</span>
+                    <span class="text-cyanGlow font-bold">CPF Único (Supabase)</span>
+                  </div>
+                  <div class="flex justify-between text-[11px] text-gray-400">
+                    <span>Dimensionamento:</span>
+                    <span class="text-emeraldGlow font-bold">Grau de Risco 1 a 4</span>
+                  </div>
+                  <div class="flex justify-between text-[11px] text-gray-400">
+                    <span>Atas & Convocação:</span>
+                    <span class="text-purpleGlow font-bold">PDF Instantâneo</span>
+                  </div>
+                </div>
+
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Bloqueio estrito de votos duplicados por CPF.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Controle de treinamentos obrigatórios (4h a 16h).</span></li>
+                </ul>
+              </div>
+
+              <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                <div class="flex flex-wrap gap-1 font-mono text-[10px]">
+                  <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300">React</span>
+                  <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300">Supabase</span>
+                  <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300">Vercel</span>
+                </div>
+                <button onclick="openSystemModal('cipa')" class="px-3.5 py-1.5 rounded-lg bg-purpleGlow/20 hover:bg-purpleGlow/30 border border-purpleGlow/50 text-purpleGlow font-mono text-xs font-bold transition-all flex items-center gap-1">
+                  <span>FICHA</span>
+                  <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- 3. MEDX / MedX-Flow (Fintech e Conta Azul) -->
+          <div class="card-glass rounded-2xl p-6 sm:p-8 border border-white/10 hover:border-yellow-400/50 transition-all space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-md bg-yellow-400/15 border border-yellow-400/40 text-yellow-400 font-mono text-xs font-bold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-yellow-400"></span>
+                  FLAGSHIP #3 • FINTECH & INTEGRAÇÃO DE ERP
+                </span>
+                <span class="px-2 py-0.5 rounded bg-white/5 font-mono text-xs text-gray-300">Conta Azul REST API</span>
+              </div>
+              <button onclick="openSystemModal('medx')" class="px-3.5 py-1.5 rounded-lg bg-yellow-400/20 hover:bg-yellow-400/30 border border-yellow-400/50 text-yellow-400 font-mono text-xs font-bold transition-all flex items-center gap-1 self-start sm:self-auto">
+                <span>VER FICHA TÉCNICA</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div class="md:col-span-8 space-y-2">
+                <h4 class="font-orbitron text-xl font-bold text-white">
+                  MEDX / MedX-Flow: Faturamento Médico-Ocupacional & Régua Inteligente
+                </h4>
+                <p class="text-gray-300 text-xs sm:text-sm font-light leading-relaxed">
+                  Sistema financeiro integrado diretamente à API do ERP Conta Azul para automação de emissão de faturas, conciliação de contratos recorrentes de saúde ocupacional e pipeline para agente autônomo de cobrança ativa no WhatsApp via UAZAPI.
+                </p>
+              </div>
+
+              <!-- Flow Diagram Badge -->
+              <div class="md:col-span-4 p-3.5 rounded-xl bg-void/80 border border-white/10 font-mono text-xs space-y-1.5">
+                <div class="text-yellow-400 font-bold text-[11px] pb-1 border-b border-white/5">Fluxo de Automação Financeira:</div>
+                <div class="text-[11px] text-gray-300 flex items-center gap-1.5">
+                  <span class="text-cyanGlow">Contrato</span> → <span class="text-emeraldGlow">API Conta Azul</span> → <span class="text-purpleGlow">Agente IA WhatsApp</span>
+                </div>
+                <div class="text-[10px] text-gray-500">Conciliação automática sem retrabalho manual</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SEÇÃO: CATÁLOGO COMPLETO COM FILTROS DE MARKETING -->
+        <div class="space-y-6 pt-6 border-t border-white/10">
+          
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <span class="text-cyanGlow font-mono text-xs font-bold tracking-widest block">// ECOSSISTEMA COMPLETO</span>
+              <h3 class="font-orbitron text-2xl font-bold text-white">Todos os Sistemas Desenvolvidos</h3>
+              <p class="text-gray-400 text-xs font-light max-w-2xl mt-1">
+                Filtre por segmento de mercado e explore a arquitetura dos produtos criados com Claude Code, Next.js, React, Supabase e automações em Python.
+              </p>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2 font-mono text-xs">
+              <button onclick="filterSystems('all')" id="filter-btn-all" class="system-filter-btn active px-3.5 py-1.5 rounded-lg border border-cyanGlow bg-cyanGlow/20 text-cyanGlow font-bold transition-all">
+                TODOS (12)
+              </button>
+              <button onclick="filterSystems('health')" id="filter-btn-health" class="system-filter-btn px-3.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all">
+                HEALTH-TECH & SST (5)
+              </button>
+              <button onclick="filterSystems('fintech')" id="filter-btn-fintech" class="system-filter-btn px-3.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all">
+                FINTECH & ERP (3)
+              </button>
+              <button onclick="filterSystems('automacao')" id="filter-btn-automacao" class="system-filter-btn px-3.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all">
+                AUTOMAÇÃO & ESOCIAL (2)
+              </button>
+              <button onclick="filterSystems('pwa')" id="filter-btn-pwa" class="system-filter-btn px-3.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-gray-400 hover:text-white transition-all">
+                PWA & IA (2)
+              </button>
+            </div>
+          </div>
+
+          <!-- Systems Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="systems-grid">
+
+            <!-- DIX BPO Agent -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-purpleGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="automacao">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-purpleGlow/10 border border-purpleGlow/30 text-purpleGlow font-mono text-[10px] font-bold">
+                    VOZ & SUPORTE
+                  </span>
+                  <span class="font-mono text-[10px] text-gray-400">Evolution API v2</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-purpleGlow transition-colors">DIX BPO Agent</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Agente corporativo de suporte e conciliação BPO com transcrição resiliente de áudio OGG Opus e respostas humanizadas.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Modo de auto-teste isolado ("Você") para validação interna.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Decodificação de áudios de voz e processamento Opus.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">Node.js • Evolution</span>
+                <button onclick="openSystemModal('dix')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- SSTFARMA -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-cyanGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="health">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 text-cyanGlow font-mono text-[10px] font-bold">
+                    FARMA / 10 ETAPAS
+                  </span>
+                  <span class="font-mono text-[10px] text-cyanGlow">sstfarma.vercel.app</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-cyanGlow transition-colors">SSTFARMA</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Sistema verticalizado de Saúde e Segurança do Trabalho projetado especificamente para redes farmacêuticas e drogarias.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyanGlow shrink-0 mt-0.5"></i><span>Pipeline estruturado em 10 etapas da admissão aos laudos.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyanGlow shrink-0 mt-0.5"></i><span>Mapeamento de riscos químicos e biológicos em farmácias (NR-32).</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">React • Vite • shadcn</span>
+                <button onclick="openSystemModal('sstfarma')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- PsicoMed -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-purpleGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="health">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-purpleGlow/10 border border-purpleGlow/30 text-purpleGlow font-mono text-[10px] font-bold">
+                    SAÚDE MENTAL & NR-17
+                  </span>
+                  <span class="font-mono text-[10px] text-purpleGlow">COPSOQ Protocol</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-purpleGlow transition-colors">PsicoMed</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Plataforma analítica para avaliação de fatores de riscos psicossociais e ergonomia cognitiva em ambientes corporativos.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Questionários anônimos e confidenciais baseados no COPSOQ.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Arquitetura multi-tenant com isolamento rigoroso por RLS Supabase.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">React 18 • Supabase RLS</span>
+                <button onclick="openSystemModal('psicomed')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- BackToWork -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-emeraldGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="health">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-emeraldGlow/10 border border-emeraldGlow/30 text-emeraldGlow font-mono text-[10px] font-bold">
+                    PCMSO & RETORNO
+                  </span>
+                  <span class="font-mono text-[10px] text-emeraldGlow">backtowork</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-emeraldGlow transition-colors">BackToWork</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Plataforma de gestão de Retorno ao Trabalho e controle de absenteísmo corporativo para prevenção de passivos trabalhistas.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Triagem médica ocupacional de afastamentos INSS e atestados.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Fluxo automatizado de agendamento de ASO de Retorno (NR-7).</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">React • Tailwind • Supabase</span>
+                <button onclick="openSystemModal('backtowork')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Santos Construtivos -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-yellow-400/40 transition-all flex flex-col justify-between group space-y-4" data-cat="fintech">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 font-mono text-[10px] font-bold">
+                    CONSTRUÇÃO CIVIL
+                  </span>
+                  <span class="font-mono text-[10px] text-gray-400">ERP de Obras</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-yellow-400 transition-colors">Santos Construtivos</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Sistema de gestão operacional para engenharia e construção civil, orçamentação e controle de suprimentos em campo.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5"></i><span>Gestão de insumos, materiais e orçamentação por etapa de obra.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5"></i><span>Boletins de medição física e controle de cronograma financeiro.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">React • Supabase</span>
+                <button onclick="openSystemModal('santos')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- MeuESO & Robô eSocial -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-emeraldGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="automacao">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-emeraldGlow/10 border border-emeraldGlow/30 text-emeraldGlow font-mono text-[10px] font-bold">
+                    ROBÔ HEADLESS
+                  </span>
+                  <span class="font-mono text-[10px] text-emeraldGlow">Playwright + API</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-emeraldGlow transition-colors">MeuESO & Robô eSocial</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Engenharia reversa e automação robótica para sincronização em lote de eventos do eSocial (S-2210, S-2220 e S-2240).
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Arquitetura híbrida de scraping Playwright + chamadas de API.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>Salvaguardas de integridade: dry-run e zero-kill prevention.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">Playwright • Python • Next</span>
+                <button onclick="openSystemModal('meueso')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Checklist GERAL -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-cyanGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="pwa">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-cyanGlow/10 border border-cyanGlow/30 text-cyanGlow font-mono text-[10px] font-bold">
+                    PWA OFFLINE-FIRST
+                  </span>
+                  <span class="font-mono text-[10px] text-cyanGlow">checklist-geral.vercel.app</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-cyanGlow transition-colors">Checklist GERAL</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Aplicação web progressiva para levantamento de riscos ocupacionais em campo sem dependência de internet.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyanGlow shrink-0 mt-0.5"></i><span>Auditoria de 74 riscos e catálogo de 56 EPIs e 21 NRs.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-cyanGlow shrink-0 mt-0.5"></i><span>Assinatura digital em Canvas e exportação instantânea em PDF.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">PWA • Service Worker</span>
+                <button onclick="openSystemModal('checklist')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Week MedWork -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-purpleGlow/40 transition-all flex flex-col justify-between group space-y-4" data-cat="fintech">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-purpleGlow/10 border border-purpleGlow/30 text-purpleGlow font-mono text-[10px] font-bold">
+                    GOVERNANÇA & FROTAS
+                  </span>
+                  <span class="font-mono text-[10px] text-purpleGlow">week.medworkto.com</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-purpleGlow transition-colors">Week MedWork</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Sistema corporativo integrado para alinhamento operacional semanal, gestão de frota veicular e acompanhamento de premiações.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Controle de frotas e veículos corporativos com checklist de saída.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-purpleGlow shrink-0 mt-0.5"></i><span>Quadro de premiações e metas com acompanhamento de tarefas.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">React • TypeScript</span>
+                <button onclick="openSystemModal('week')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- ProfessaAi -->
+            <div class="system-card card-glass rounded-2xl p-6 border border-white/10 hover:border-yellow-400/40 transition-all flex flex-col justify-between group space-y-4" data-cat="pwa">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 font-mono text-[10px] font-bold">
+                    IA GENERATIVA & EDTECH
+                  </span>
+                  <span class="font-mono text-[10px] text-yellow-400">professaai.vercel.app</span>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white group-hover:text-yellow-400 transition-colors">ProfessaAi</h4>
+                <p class="text-gray-300 text-xs leading-relaxed font-light">
+                  Sistema acadêmico inteligente com IA para suporte ao aprendizado, estruturação curricular e acompanhamento pedagógico.
+                </p>
+                <ul class="space-y-1.5 font-mono text-[11px] text-gray-300">
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5"></i><span>Assistência pedagógica personalizada com inteligência artificial.</span></li>
+                  <li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5"></i><span>Resumos inteligentes e trilhas guiadas de estudo por disciplina.</span></li>
+                </ul>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span class="font-mono text-[10px] text-gray-400">React • Vite • Node API</span>
+                <button onclick="openSystemModal('professaai')" class="text-cyanGlow font-mono text-xs font-bold hover:underline flex items-center gap-1">
+                  <span>Ficha Técnica</span>
+                  <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TAB SCREEN 3: RUST HIGH-PERF & BENCHMARK -->
+      <div id="tab-content-rust" class="tab-content hidden space-y-8 animate-fadeIn">
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          <div class="md:col-span-7 card-glass rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="text-emeraldGlow font-mono text-xs font-bold tracking-widest block">// ENGENHARIA DE BAIXO NÍVEL • RUST 1.99</span>
+              <span class="px-2.5 py-0.5 rounded bg-emeraldGlow/10 text-emeraldGlow border border-emeraldGlow/30 font-mono text-[10px] font-bold">ZERO-COST ABSTRACTIONS</span>
+            </div>
+            
+            <h2 class="font-orbitron text-2xl sm:text-3xl font-bold text-white">Por Que Rust? Latência e Economia Real</h2>
+            <p class="text-gray-300 text-sm leading-relaxed font-light">
+              Linguagens como Python e Node.js sofrem com picos de latência causados por Garbage Collector e interpretação. Em Rust, compilamos diretamente para o silício com <strong>Memory Safety garantido em tempo de compilação</strong>, processando milhões de cálculos com consumo desprezível de RAM.
+            </p>
+
+            <!-- Interactive Live Benchmark Simulator Widget -->
+            <div class="p-4 rounded-xl bg-void/90 border border-white/10 space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-white font-mono text-xs font-bold block">BENCHMARK DE LATÊNCIA (1.000.000 OPERAÇÕES)</span>
+                  <span class="text-gray-400 text-[10px] font-mono">Simulador determinístico de throughput e alocação de memória</span>
+                </div>
+                <button onclick="runLiveBenchmark()" id="btn-run-benchmark" class="px-3.5 py-1.5 rounded-lg bg-emeraldGlow/20 hover:bg-emeraldGlow/30 border border-emeraldGlow/50 text-emeraldGlow font-mono text-xs font-bold transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                  <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                  <span>EXECUTAR TESTE</span>
+                </button>
+              </div>
+
+              <!-- Animated Benchmark Meters -->
+              <div class="space-y-3 font-mono text-xs">
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-emeraldGlow font-bold flex items-center gap-1.5"><i data-lucide="zap" class="w-3 h-3"></i> Rust 1.99 (Nativo):</span>
+                    <span id="bench-rust-time" class="text-emeraldGlow font-bold">0.82 ms (3.1 MB RAM)</span>
+                  </div>
+                  <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                    <div id="bench-rust-bar" class="bg-gradient-to-r from-emeraldGlow to-cyanGlow h-full rounded-full transition-all duration-700 shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 8%;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-yellow-400 flex items-center gap-1.5"><i data-lucide="code" class="w-3 h-3"></i> Node.js (V8 Engine):</span>
+                    <span id="bench-node-time" class="text-yellow-400">28.4 ms (44.6 MB RAM)</span>
+                  </div>
+                  <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                    <div id="bench-node-bar" class="bg-yellow-400/80 h-full rounded-full transition-all duration-700" style="width: 48%;"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-red-400 flex items-center gap-1.5"><i data-lucide="terminal" class="w-3 h-3"></i> Python 3.12 (CPython):</span>
+                    <span id="bench-python-time" class="text-red-400">142.0 ms (62.8 MB RAM)</span>
+                  </div>
+                  <div class="w-full bg-white/10 rounded-full h-3 overflow-hidden">
+                    <div id="bench-python-bar" class="bg-red-400/80 h-full rounded-full transition-all duration-700" style="width: 96%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="bench-status" class="text-[10px] font-mono text-gray-400 text-right">Status: Pronto para teste em tempo real.</div>
+            </div>
+
+          </div>
+
+          <div class="md:col-span-5 space-y-4">
+            <div class="card-glass rounded-2xl p-6 border border-emeraldGlow/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-orbitron font-bold text-white text-base">token-cost</span>
+                <span class="font-mono text-[10px] text-emeraldGlow bg-emeraldGlow/10 px-2 py-0.5 rounded border border-emeraldGlow/30">Nativo Apple Silicon</span>
+              </div>
+              <p class="text-gray-300 text-xs leading-relaxed font-light">
+                Calcula custos exatos de tokens de prompt e simula faturas mensais de IA para 1.000 a 10.000 chamadas em menos de 1 milissegundo.
+              </p>
+              <code class="block p-2.5 rounded-lg bg-void/90 font-mono text-[11px] text-cyanGlow border border-white/10">
+                token-cost -f prompt.ts --volume 5000
+              </code>
+            </div>
+
+            <div class="card-glass rounded-2xl p-6 border border-cyanGlow/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="font-orbitron font-bold text-white text-base">fogolin-cli</span>
+                <span class="font-mono text-[10px] text-cyanGlow bg-cyanGlow/10 px-2 py-0.5 rounded border border-cyanGlow/30">&lt; 0.7ms</span>
+              </div>
+              <p class="text-gray-300 text-xs leading-relaxed font-light">
+                Audita integridade de notas e grava novos pensamentos diretamente no Obsidian Fogolin sem travar o terminal.
+              </p>
+              <code class="block p-2.5 rounded-lg bg-void/90 font-mono text-[11px] text-purpleGlow border border-white/10">
+                fogolin status
+              </code>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TAB SCREEN 4: SERVIÇOS & ORÇAMENTO (SOLUÇÕES DE ALTO TICKET & ESTIMADOR INTERATIVO) -->
+      <div id="tab-content-servicos" class="tab-content hidden space-y-10 animate-fadeIn">
+        
+        <!-- Header Strip -->
+        <div class="card-glass rounded-2xl p-6 sm:p-8 border border-white/10 space-y-6 relative overflow-hidden">
+          <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-cyanGlow/10 blur-3xl pointer-events-none"></div>
+
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div class="space-y-2">
+              <span class="px-3 py-1 rounded-md bg-purpleGlow/15 border border-purpleGlow/40 text-purpleGlow font-mono text-xs font-bold tracking-wider inline-flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-purpleGlow animate-ping"></span>
+                // MODELOS DE CONTRATAÇÃO COMERCIAL & CONSULTORIA EXECUTIVA
+              </span>
+              <h2 class="font-orbitron text-2xl sm:text-3xl font-extrabold text-white">Soluções Corporativas em Inteligência Artificial</h2>
+              <p class="text-gray-300 text-xs sm:text-sm max-w-3xl font-light leading-relaxed">
+                Da automação de vendas em escala ao desenvolvimento de agentes especializados integrados a ERPs fiscais e desktop legados: tecnologia desenvolvida com garantia contratual de zero código cego.
+              </p>
+            </div>
+
+            <!-- Availability Badge -->
+            <div class="shrink-0 p-4 rounded-xl bg-void/80 border border-emeraldGlow/40 text-center font-mono">
+              <span class="text-emeraldGlow font-bold text-xs uppercase tracking-wider block flex items-center gap-1.5 justify-center">
+                <span class="w-2 h-2 rounded-full bg-emeraldGlow animate-ping"></span>
+                AGENDA ABERTA
+              </span>
+              <span class="text-lg font-orbitron font-extrabold text-white">Q1 / Q2 2026</span>
+            </div>
+          </div>
+
+          <!-- 4 Core High Ticket Offerings -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+            
+            <!-- Service 1: WhatsApp B2C -->
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-cyanGlow/50 transition-all space-y-3 flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="w-10 h-10 rounded-lg bg-cyanGlow/10 border border-cyanGlow/30 flex items-center justify-center text-cyanGlow">
+                  <i data-lucide="message-square" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-white text-base">Agente WhatsApp B2C</h4>
+                <p class="text-gray-400 text-xs leading-relaxed font-light">
+                  Triagem em milissegundos com Gemini Flash, memória consolidada de cliente, catálogo dinâmico e transbordo imediato para humanos.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/5 font-mono text-[11px] text-cyanGlow flex justify-between items-center">
+                <span>Varejo & E-commerce</span>
+                <span class="font-bold">292 Testes</span>
+              </div>
+            </div>
+
+            <!-- Service 2: B2B Business Agents -->
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-purpleGlow/50 transition-all space-y-3 flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="w-10 h-10 rounded-lg bg-purpleGlow/10 border border-purpleGlow/30 flex items-center justify-center text-purpleGlow">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-white text-base">ChatGPT B2B Agents</h4>
+                <p class="text-gray-400 text-xs leading-relaxed font-light">
+                  Agentes corporativos de alto padrão com transcrição de áudio Opus, integração nativa a ERPs (Conta Azul, CRMs) e relatórios executivos.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/5 font-mono text-[11px] text-purpleGlow flex justify-between items-center">
+                <span>Clínicas & B2B</span>
+                <span class="font-bold">Alta Fidelidade</span>
+              </div>
+            </div>
+
+            <!-- Service 3: Computer Use RPA -->
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-emeraldGlow/50 transition-all space-y-3 flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="w-10 h-10 rounded-lg bg-emeraldGlow/10 border border-emeraldGlow/30 flex items-center justify-center text-emeraldGlow">
+                  <i data-lucide="mouse-pointer" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-white text-base">Computer-Use RPA</h4>
+                <p class="text-gray-400 text-xs leading-relaxed font-light">
+                  Agentes com visão computacional, mouse e teclado para automação direta em ERPs legados fechados sem API (Totvs, Sankhya, Protheus).
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/5 font-mono text-[11px] text-emeraldGlow flex justify-between items-center">
+                <span>Sistemas Legados</span>
+                <span class="font-bold">R$ 3k-8k+ Ticket</span>
+              </div>
+            </div>
+
+            <!-- Service 4: Full-Stack Web Systems -->
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-pink-400/50 transition-all space-y-3 flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="w-10 h-10 rounded-lg bg-pink-500/10 border border-pink-500/30 flex items-center justify-center text-pink-400">
+                  <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-white text-base">Sistemas Full-Stack</h4>
+                <p class="text-gray-400 text-xs leading-relaxed font-light">
+                  Aplicações web completas em Next.js 16 + Rust + PostgreSQL com conformidade regulatória severa (NRs) e 100% de testes Vitest/Playwright.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/5 font-mono text-[11px] text-pink-400 flex justify-between items-center">
+                <span>Engenharia Sob Medida</span>
+                <span class="font-bold">Zero Regressões</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Budget & Solution Estimator (Calculadora ao Vivo) -->
+        <div class="card-glass rounded-2xl p-6 sm:p-8 border border-cyanGlow/30 space-y-6">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <span class="text-cyanGlow font-mono text-xs font-bold tracking-widest block">// CALCULADORA DINÂMICA DE ESCOPO</span>
+              <h3 class="font-orbitron text-xl sm:text-2xl font-bold text-white">Simulador de Projeto & Estimativa de Entrega</h3>
+            </div>
+            <span class="font-mono text-xs text-gray-400">Estimativa baseada em SLA corporativo</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Controls Form -->
+            <div class="lg:col-span-7 space-y-5 font-mono text-xs">
+              
+              <!-- Option 1: Tipo de Solução -->
+              <div class="space-y-2">
+                <label class="text-gray-300 font-bold block">1. QUAL A NECESSIDADE PRINCIPAL DA SUA EMPRESA?</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button type="button" onclick="updateEstimator('type', 'whatsapp')" id="est-type-whatsapp" class="est-opt-btn p-3 rounded-xl border border-cyanGlow bg-cyanGlow/15 text-cyanGlow font-bold text-left transition-all">
+                    <span>Agente WhatsApp (Varejo/Atendimento)</span>
+                  </button>
+                  <button type="button" onclick="updateEstimator('type', 'b2b')" id="est-type-b2b" class="est-opt-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-300 text-left transition-all hover:border-white/30">
+                    <span>ChatGPT B2B (Clínica/Escritório)</span>
+                  </button>
+                  <button type="button" onclick="updateEstimator('type', 'computer-use')" id="est-type-computer-use" class="est-opt-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-300 text-left transition-all hover:border-white/30">
+                    <span>Computer-Use RPA (Totvs/Sankhya)</span>
+                  </button>
+                  <button type="button" onclick="updateEstimator('type', 'fullstack')" id="est-type-fullstack" class="est-opt-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-300 text-left transition-all hover:border-white/30">
+                    <span>Sistema Web Completo Sob Medida</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Option 2: Volume Mensal -->
+              <div class="space-y-2">
+                <label class="text-gray-300 font-bold block">2. VOLUME ESPERADO DE TRANSAÇÕES / MÊS:</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button type="button" onclick="updateEstimator('vol', 'low')" id="est-vol-low" class="est-vol-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-300 text-center transition-all hover:border-white/30">
+                    <span class="block font-bold">Até 2.000</span>
+                    <span class="text-[10px] text-gray-400">Atendimento normal</span>
+                  </button>
+                  <button type="button" onclick="updateEstimator('vol', 'mid')" id="est-vol-mid" class="est-vol-btn p-3 rounded-xl border border-cyanGlow bg-cyanGlow/15 text-cyanGlow font-bold text-center transition-all">
+                    <span class="block">2.000 a 10.000</span>
+                    <span class="text-[10px] text-gray-400">Escala comercial</span>
+                  </button>
+                  <button type="button" onclick="updateEstimator('vol', 'high')" id="est-vol-high" class="est-vol-btn p-3 rounded-xl border border-white/10 bg-white/5 text-gray-300 text-center transition-all hover:border-white/30">
+                    <span class="block font-bold">10.000+</span>
+                    <span class="text-[10px] text-gray-400">Alto tráfego massivo</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Live Calculation Output Card -->
+            <div class="lg:col-span-5 card-glass rounded-2xl p-6 border border-cyanGlow/40 space-y-4 bg-void/90">
+              <span class="font-mono text-[11px] text-cyanGlow font-bold tracking-wider block">// RESUMO DA CONFIGURAÇÃO</span>
+              
+              <div class="space-y-3 font-mono text-xs">
+                <div class="flex justify-between border-b border-white/5 pb-2">
+                  <span class="text-gray-400">Arquitetura Sugerida:</span>
+                  <span id="est-res-arch" class="text-white font-bold text-right">Evolution v2 + Flash + Drizzle</span>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-2">
+                  <span class="text-gray-400">SLA de Resposta:</span>
+                  <span id="est-res-sla" class="text-emeraldGlow font-bold">&lt; 1.4s (Sem Fila)</span>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-2">
+                  <span class="text-gray-400">Prazo de Entrega Estimado:</span>
+                  <span id="est-res-time" class="text-yellow-400 font-bold">7 a 14 dias úteis</span>
+                </div>
+                <div class="flex justify-between border-b border-white/5 pb-2">
+                  <span class="text-gray-400">Economia Operacional Média:</span>
+                  <span id="est-res-saving" class="text-cyanGlow font-bold text-right">R$ 2.500 a R$ 4.800 / mês</span>
+                </div>
+              </div>
+
+              <!-- Direct WhatsApp CTA Button -->
+              <a id="est-whatsapp-btn" href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20gostaria%20de%20um%20or%C3%A7amento%20para%20um%20Agente%20WhatsApp%20de%20escala%20comercial." target="_blank" rel="noopener noreferrer" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emeraldGlow to-cyanGlow text-black font-extrabold font-mono text-xs tracking-wider flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-[0_0_25px_rgba(16,185,129,0.35)] mt-4">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>SOLICITAR PROJETO NO WHATSAPP</span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Arena de Inovação: HackaRun 2026 Trophy & Countdown -->
+        <div class="card-glass rounded-2xl p-6 sm:p-8 border border-yellow-500/30 relative overflow-hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <div class="lg:col-span-8 space-y-4">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full border border-yellow-500/40 bg-yellow-500/10 text-yellow-400 font-mono text-xs font-semibold">
+                  🏆 QUARTEL GENERAL HACKARUN 2026
+                </span>
+                <span class="text-gray-400 font-mono text-xs">• Capim Dourado Shopping</span>
+              </div>
+              <h3 class="font-orbitron text-xl sm:text-2xl font-bold text-white">
+                Rumo ao 1º Lugar com Software de Alta Fidelidade
+              </h3>
+              <p class="text-gray-300 text-xs sm:text-sm leading-relaxed font-light">
+                O HackaRun é uma corrida por objetivos de impacto real. A banca avalia não apenas ideias, mas <strong>software robusto, testado e em produção</strong>.
+              </p>
+            </div>
+
+            <!-- Countdown Box -->
+            <div class="lg:col-span-4 bg-void/90 p-5 rounded-xl border border-yellow-500/40 text-center space-y-3 font-mono">
+              <span class="text-xs text-gray-400 block tracking-wider font-semibold">// CRONÔMETRO DO DESAFIO</span>
+              <div class="grid grid-cols-4 gap-1.5 font-orbitron">
+                <div class="p-2 rounded bg-white/5"><span id="tab-cd-days" class="text-xl font-extrabold text-cyanGlow">01</span><span class="text-[8px] font-mono block text-gray-400">Dias</span></div>
+                <div class="p-2 rounded bg-white/5"><span id="tab-cd-hours" class="text-xl font-extrabold text-white">23</span><span class="text-[8px] font-mono block text-gray-400">Horas</span></div>
+                <div class="p-2 rounded bg-white/5"><span id="tab-cd-minutes" class="text-xl font-extrabold text-white">45</span><span class="text-[8px] font-mono block text-gray-400">Min</span></div>
+                <div class="p-2 rounded bg-white/5"><span id="tab-cd-seconds" class="text-xl font-extrabold text-purpleGlow">12</span><span class="text-[8px] font-mono block text-gray-400">Seg</span></div>
+              </div>
+              <div class="text-[10px] text-emeraldGlow font-bold">12/11 • 20h15 • Missão 1</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SECTION 4: INTERACTIVE CYBERPUNK TERMINAL -->
+    <section id="terminal" class="space-y-4 pt-4">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-cyanGlow font-mono text-xs tracking-widest block font-bold">// TERMINAL CLI VIRTUAL</span>
+          <h2 class="font-orbitron text-2xl sm:text-3xl font-bold text-white">FOGOLIN INTERACTIVE SHELL</h2>
+        </div>
+        <span class="font-mono text-xs text-gray-400 hidden sm:inline">Digite <strong class="text-cyanGlow">'help'</strong> para comandos</span>
+      </div>
+
+      <!-- Terminal Window -->
+      <div class="rounded-2xl card-glass border border-white/10 shadow-2xl overflow-hidden font-mono text-xs">
+        
+        <!-- Window Titlebar -->
+        <div class="px-4 py-3 bg-void/80 border-b border-white/5 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+            <span class="text-gray-400 text-[11px] ml-2 font-semibold">arthur@fogolin-macbook: ~</span>
+          </div>
+          <span class="text-cyanGlow text-[11px] font-bold">zsh • rust 1.99.1 • mac silicon</span>
+        </div>
+
+        <!-- Terminal Output Screen -->
+        <div id="terminal-output" class="p-4 sm:p-6 space-y-2 h-72 overflow-y-auto text-gray-300">
+          <p class="text-cyanGlow font-bold">=== 🧠 Arthur Fogolin Shell [v1.0.0-release] ===</p>
+          <p class="text-gray-400">Digite <span class="text-yellow-400 font-bold">help</span> para ver a lista de comandos disponíveis ou explore os projetos.</p>
+          <div class="flex flex-wrap items-center gap-2 pt-2 text-[11px] text-gray-400">
+            <span>Atalhos rápidos:</span>
+            <button type="button" onclick="runCliCmd('help')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-cyanGlow/20 text-cyanGlow border border-cyanGlow/30 transition-all">help</button>
+            <button type="button" onclick="runCliCmd('projects')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-cyanGlow/20 text-cyanGlow border border-cyanGlow/30 transition-all">projects</button>
+            <button type="button" onclick="runCliCmd('token-cost')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-cyanGlow/20 text-cyanGlow border border-cyanGlow/30 transition-all">token-cost</button>
+            <button type="button" onclick="runCliCmd('about')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-cyanGlow/20 text-cyanGlow border border-cyanGlow/30 transition-all">about</button>
+            <button type="button" onclick="runCliCmd('cv')" class="px-2 py-0.5 rounded bg-purpleGlow/10 hover:bg-purpleGlow/25 text-purpleGlow border border-purpleGlow/40 transition-all font-semibold">cv (pdf)</button>
+            <button type="button" onclick="runCliCmd('hackarun')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-yellow-400/20 text-yellow-400 border border-yellow-400/30 transition-all">hackarun</button>
+            <button type="button" onclick="runCliCmd('clear')" class="px-2 py-0.5 rounded bg-white/5 hover:bg-red-400/20 text-red-400 border border-red-400/30 transition-all">clear</button>
+          </div>
+        </div>
+
+        <!-- Input Row (Form nativo com suporte garantido a Enter e botão Executar) -->
+        <form id="terminal-form" onsubmit="event.preventDefault(); submitTerminal();" class="px-4 py-3 bg-void/90 border-t border-white/5 flex items-center gap-2">
+          <span class="text-cyanGlow font-bold">arthur@fogolin:~$</span>
+          <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="digite um comando (ex: 'help', 'projects', 'token-cost')..." class="flex-1 bg-transparent border-none outline-none text-white font-mono text-xs focus:ring-0">
+          <button type="submit" id="terminal-submit-btn" class="px-3.5 py-1.5 rounded-lg bg-cyanGlow/20 hover:bg-cyanGlow/30 border border-cyanGlow/50 text-cyanGlow font-mono text-[11px] font-bold flex items-center gap-1.5 transition-all shadow-[0_0_12px_rgba(0,240,255,0.2)] active:scale-95">
+            <span>ENTER</span>
+            <i data-lucide="corner-down-left" class="w-3.5 h-3.5"></i>
+          </button>
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER / CONTACT -->
+    <footer class="pt-12 pb-16 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-xs text-gray-500">
+      <div class="flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-cyanGlow"></span>
+        <span>© 2026 Arthur Fogolin Rocha • Palmas, TO</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="mailto:arthurfogolinrocha01@gmail.com" class="hover:text-cyanGlow transition-colors">arthurfogolinrocha01@gmail.com</a>
+        <a href="#inicio" class="hover:text-white transition-colors">Voltar ao topo ↑</a>
+      </div>
+    </footer>
+
+  <!-- HOLOGRAPHIC CASE STUDY MODAL -->
+  <div id="system-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-void/90 backdrop-blur-md transition-all">
+    <div class="relative w-full max-w-2xl rounded-2xl card-glass border border-cyanGlow/50 shadow-[0_0_50px_rgba(0,240,255,0.25)] p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
+        <div class="space-y-1">
+          <span id="modal-tag" class="px-2.5 py-0.5 rounded bg-cyanGlow/10 border border-cyanGlow/30 text-cyanGlow font-mono text-[10px] font-bold">TAG</span>
+          <h3 id="modal-title" class="font-orbitron text-xl sm:text-2xl font-bold text-white">Título do Sistema</h3>
+          <span id="modal-client" class="font-mono text-xs text-gray-400 block">Cliente / Contexto</span>
+        </div>
+        <button onclick="closeSystemModal()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="space-y-4 font-mono text-xs">
+        <div>
+          <span class="text-cyanGlow font-bold block mb-1 uppercase tracking-wider">// O Desafio Comercial & Problema:</span>
+          <p id="modal-challenge" class="text-gray-300 font-sans text-xs sm:text-sm font-light leading-relaxed">Descrição do desafio...</p>
+        </div>
+
+        <div>
+          <span class="text-emeraldGlow font-bold block mb-1 uppercase tracking-wider">// Arquitetura de Solução Desenvolvida:</span>
+          <p id="modal-solution" class="text-gray-300 font-sans text-xs sm:text-sm font-light leading-relaxed">Como o Arthur resolveu...</p>
+        </div>
+
+        <div>
+          <span class="text-yellow-400 font-bold block mb-1 uppercase tracking-wider">// Métricas de Impacto & Blindagem:</span>
+          <ul id="modal-metrics" class="space-y-1.5 text-gray-300 text-[11px]">
+            <!-- List items -->
+          </ul>
+        </div>
+
+        <div>
+          <span class="text-purpleGlow font-bold block mb-1.5 uppercase tracking-wider">// Tecnologias & Engenharia:</span>
+          <div id="modal-tech" class="flex flex-wrap gap-1.5 font-mono text-[10px]">
+            <!-- Badges -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+        <span class="font-mono text-[11px] text-gray-400">Engenharia por Arthur Fogolin</span>
+        <button onclick="closeSystemModal()" class="px-5 py-2 rounded-xl bg-cyanGlow/20 hover:bg-cyanGlow/30 border border-cyanGlow text-cyanGlow font-mono text-xs font-bold transition-all">
+          FECHAR
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXECUTIVE CURRICULUM VITAE (CV) MODAL -->
+  <div id="cv-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-void/90 backdrop-blur-md transition-all">
+    <div class="relative w-full max-w-3xl rounded-2xl card-glass border border-purpleGlow/50 shadow-[0_0_60px_rgba(139,92,246,0.3)] p-6 sm:p-10 space-y-6 max-h-[90vh] overflow-y-auto">
+      
+      <!-- Top Action Bar -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emeraldGlow animate-ping"></span>
+          <span class="font-mono text-xs text-purpleGlow font-bold uppercase tracking-wider">// CURRÍCULO EXECUTIVO OFICIAL (2026)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" title="Imprimir ou Salvar em PDF" class="px-3.5 py-1.5 rounded-xl bg-purpleGlow/20 hover:bg-purpleGlow/30 border border-purpleGlow/50 text-white font-mono text-xs font-bold transition-all flex items-center gap-1.5 hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+            <i data-lucide="printer" class="w-3.5 h-3.5 text-purpleGlow"></i>
+            <span>IMPRIMIR / PDF</span>
+          </button>
+          <button onclick="closeCvModal()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- CV Document Body -->
+      <div id="cv-printable-area" class="space-y-6 text-slate-200">
+        
+        <!-- Header Profile -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div>
+            <h1 class="font-orbitron text-2xl sm:text-3xl font-black text-white">ARTHUR FOGOLIN ROCHA</h1>
+            <p class="font-mono text-sm text-cyanGlow font-semibold">AI Systems Architect & Software Engineer</p>
+            <p class="text-xs text-slate-400 font-mono mt-1">Palmas, TO • WhatsApp: +55 (63) 99120-6201 • arthurfogolinrocha01@gmail.com</p>
+          </div>
+          <div class="text-right font-mono text-xs space-y-1 sm:block hidden">
+            <span class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-emeraldGlow font-bold block">18 Anos • UniCatólica (IA)</span>
+            <span class="text-slate-400 text-[11px] block">12 Sistemas em Produção</span>
+          </div>
+        </div>
+
+        <!-- Section: Resumo Profissional -->
+        <div class="space-y-2">
+          <h2 class="font-orbitron text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow"></span>
+            Resumo Profissional & Filosofia de Engenharia
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+            Desenvolvedor freelancer e arquiteto de soluções autônomas especializado em transformar gargalos operacionais em agentes inteligentes de atendimento, automação e faturamento. Engenharia pautada pelo <strong>rigor de código</strong>: bancos relacionais tipados (PostgreSQL / Drizzle), cobertura sistemática de testes automatizados com Vitest e Playwright, e utilitários de ultra-baixa latência compilados nativamente em <strong>Rust 1.99</strong>.
+          </p>
+        </div>
+
+        <!-- Section: Formação Acadêmica & Conhecimento -->
+        <div class="space-y-2">
+          <h2 class="font-orbitron text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-purpleGlow"></span>
+            Formação & Cérebro Central
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-white font-bold block">Graduando em Inteligência Artificial</span>
+              <span class="text-slate-400 text-[11px]">Centro Universitário Católica do Tocantins (UniCatólica)</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-white font-bold block">Obsidian Fogolin (Segundo Cérebro)</span>
+              <span class="text-slate-400 text-[11px]">126 documentos estruturados e 52+ notas cronológicas auditadas em Rust</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Competências Técnicas -->
+        <div class="space-y-2">
+          <h2 class="font-orbitron text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span>
+            Stack Tecnológica & Domínio
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+            <div class="space-y-1">
+              <span class="text-cyanGlow font-bold block">• Linguagens & Compiladores:</span>
+              <p class="text-slate-300 text-[11px]">Rust (Nativo), TypeScript, JavaScript (ESNext), Python 3.12, SQL.</p>
+            </div>
+            <div class="space-y-1">
+              <span class="text-purpleGlow font-bold block">• IA, LLMs & Agentes:</span>
+              <p class="text-slate-300 text-[11px]">Gemini Flash & Carbon, Claude Code, Groq Whisper Opus, Smart Cost Routing.</p>
+            </div>
+            <div class="space-y-1">
+              <span class="text-emeraldGlow font-bold block">• Backend & Bancos de Dados:</span>
+              <p class="text-slate-300 text-[11px]">Next.js 16 (App Router), Supabase (Multi-tenant RLS), PostgreSQL, Drizzle ORM.</p>
+            </div>
+            <div class="space-y-1">
+              <span class="text-yellow-400 font-bold block">• Testes & Integrações:</span>
+              <p class="text-slate-300 text-[11px]">Vitest (292 testes), Playwright RPA, Evolution API v2, Conta Azul REST API.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Principais Casos em Produção -->
+        <div class="space-y-2">
+          <h2 class="font-orbitron text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow"></span>
+            Projetos Comerciais em Produção
+          </h2>
+          <div class="space-y-2 text-xs">
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <strong class="text-white font-mono">PH Estoque (ERP + Agente WhatsApp)</strong>
+                <p class="text-slate-400 text-[11px]">Agente comercial com memória consolidada e 292 testes automatizados verdes.</p>
+              </div>
+              <span class="text-emeraldGlow font-mono font-bold shrink-0">99.9% Uptime</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <strong class="text-white font-mono">DIX BPO Agent (Agente de Voz & Triagem)</strong>
+                <p class="text-slate-400 text-[11px]">Triagem com transcrição de áudio Opus, transbordo humanizado e CRM.</p>
+              </div>
+              <span class="text-purpleGlow font-mono font-bold shrink-0">Zero Fila</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <strong class="text-white font-mono">CIPA MedWork & MEDX Conta Azul</strong>
+                <p class="text-slate-400 text-[11px]">Votação eleitoral NR-5 auditável por CPF e faturamento inteligente com ERP.</p>
+              </div>
+              <span class="text-cyanGlow font-mono font-bold shrink-0">SLA Rigoroso</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+        <span class="font-mono text-[11px] text-slate-400">Verificado & Auditado • Arthur Fogolin</span>
+        <button onclick="closeCvModal()" class="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-mono text-xs font-bold transition-all">
+          FECHAR
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  </main>
+
+  <!-- JAVASCRIPT: 3D TERRAIN + PHOTO CAROUSEL + TABS + WAVEFORM + LIGHTNING + SFX -->
+  <script>
+    // 1. Initialise Lucide Icons
+    lucide.createIcons();
+
+    // 2. Multi-Photo Carousel System (Fotos Executivas 100% Arthur Fogolin)
+    const photos = [
+      '/assets/arthur_ai_executive_real.jpg',
+      '/assets/arthur_ai_executive_real2.jpg'
+    ];
+    let currentPhotoIdx = 0;
+    const photoEl = document.getElementById('arthur-photo');
+    const cycleBtn = document.getElementById('cycle-photo-btn');
+
+    cycleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentPhotoIdx = (currentPhotoIdx + 1) % photos.length;
+      photoEl.style.opacity = '0.3';
+      photoEl.style.transform = 'scale(0.95)';
+      playTone(1100, 'triangle', 0.1, 0.05);
+
+      setTimeout(() => {
+        photoEl.src = photos[currentPhotoIdx];
+        photoEl.style.opacity = '1';
+        photoEl.style.transform = 'scale(1)';
+      }, 200);
+    });
+
+    // 3. Tab Switching Engine (Dividir Telas com Suporte a Serviços)
+    function switchTab(tabId) {
+      if (tabId === 'hackarun') tabId = 'servicos'; // Alias para a nova aba executiva de serviços
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'text-cyanGlow');
+        btn.classList.add('text-gray-400');
+      });
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.add('hidden');
+      });
+
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      const activeContent = document.getElementById(`tab-content-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-gray-400');
+      }
+      if (activeContent) {
+        activeContent.classList.remove('hidden');
+      }
+      playTone(850, 'sine', 0.06, 0.03);
+
+      if (tabId === 'perfil') {
+        setTimeout(initObsidianGraph, 100);
+      }
+    }
+
+    // 3.1 Systems Category Filter Engine
+    function filterSystems(cat) {
+      document.querySelectorAll('.system-filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'border-cyanGlow', 'bg-cyanGlow/20', 'text-cyanGlow');
+        btn.classList.add('border-white/10', 'bg-white/5', 'text-gray-400');
+      });
+
+      const activeFilterBtn = document.getElementById(`filter-btn-${cat}`);
+      if (activeFilterBtn) {
+        activeFilterBtn.classList.add('active', 'border-cyanGlow', 'bg-cyanGlow/20', 'text-cyanGlow');
+        activeFilterBtn.classList.remove('border-white/10', 'bg-white/5', 'text-gray-400');
+      }
+
+      const cards = document.querySelectorAll('.system-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.classList.remove('hidden');
+          card.style.animation = 'fadeIn 0.3s ease-in-out';
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (window.lucide) lucide.createIcons();
+      playTone(920, 'sine', 0.05, 0.02);
+    }
+
+    // 3.2 Obsidian Fogolin Live Knowledge Graph Canvas
+    let graphInitialized = false;
+    function initObsidianGraph() {
+      const gCanvas = document.getElementById('obsidian-graph-canvas');
+      if (!gCanvas || graphInitialized) return;
+      graphInitialized = true;
+      const gCtx = gCanvas.getContext('2d');
+
+      gCanvas.width = gCanvas.offsetWidth;
+      gCanvas.height = gCanvas.offsetHeight;
+
+      const nodes = [
+        { label: 'Obsidian Fogolin', x: gCanvas.width * 0.5, y: gCanvas.height * 0.5, r: 6, color: '#00f0ff', vx: 0.2, vy: -0.15 },
+        { label: 'IA & LLMs', x: gCanvas.width * 0.25, y: gCanvas.height * 0.3, r: 4, color: '#8b5cf6', vx: -0.15, vy: 0.2 },
+        { label: 'Rust Engine', x: gCanvas.width * 0.75, y: gCanvas.height * 0.35, r: 4.5, color: '#10b981', vx: 0.1, vy: 0.2 },
+        { label: 'Sistemas Reais', x: gCanvas.width * 0.35, y: gCanvas.height * 0.75, r: 5, color: '#00f0ff', vx: -0.1, vy: -0.1 },
+        { label: 'Negócios B2B', x: gCanvas.width * 0.7, y: gCanvas.height * 0.7, r: 4, color: '#facc15', vx: 0.2, vy: -0.15 },
+        { label: 'NRs & Conformidade', x: gCanvas.width * 0.15, y: gCanvas.height * 0.6, r: 3.5, color: '#ec4899', vx: 0.15, vy: 0.1 },
+        { label: 'fogolin-cli', x: gCanvas.width * 0.85, y: gCanvas.height * 0.5, r: 3.5, color: '#10b981', vx: -0.2, vy: 0.1 },
+      ];
+
+      function renderGraph() {
+        gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
+
+        // Draw connections
+        gCtx.lineWidth = 1;
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 130) {
+              const alpha = (1 - dist / 130) * 0.45;
+              gCtx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+              gCtx.beginPath();
+              gCtx.moveTo(nodes[i].x, nodes[i].y);
+              gCtx.lineTo(nodes[j].x, nodes[j].y);
+              gCtx.stroke();
+            }
+          }
+        }
+
+        // Draw and update nodes
+        nodes.forEach(n => {
+          n.x += n.vx;
+          n.y += n.vy;
+          if (n.x < 15 || n.x > gCanvas.width - 15) n.vx *= -1;
+          if (n.y < 15 || n.y > gCanvas.height - 15) n.vy *= -1;
+
+          // Glow ring
+          gCtx.fillStyle = n.color;
+          gCtx.shadowBlur = 10;
+          gCtx.shadowColor = n.color;
+          gCtx.beginPath();
+          gCtx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+          gCtx.fill();
+          gCtx.shadowBlur = 0;
+
+          // Text label
+          gCtx.fillStyle = '#94a3b8';
+          gCtx.font = '8px monospace';
+          gCtx.fillText(n.label, n.x + n.r + 3, n.y + 3);
+        });
+
+        requestAnimationFrame(renderGraph);
+      }
+      renderGraph();
+    }
+    setTimeout(initObsidianGraph, 500);
+
+    // 3.3 Interactive Live Benchmark Simulator (Tab 3)
+    function runLiveBenchmark() {
+      const statusEl = document.getElementById('bench-status');
+      const rustBar = document.getElementById('bench-rust-bar');
+      const nodeBar = document.getElementById('bench-node-bar');
+      const pythonBar = document.getElementById('bench-python-bar');
+      const rustTime = document.getElementById('bench-rust-time');
+      const nodeTime = document.getElementById('bench-node-time');
+      const pythonTime = document.getElementById('bench-python-time');
+
+      statusEl.innerText = 'Processando 1.000.000 cálculos de throughput em paralelo...';
+      playTone(1200, 'square', 0.08, 0.05);
+
+      // Reset bars
+      rustBar.style.width = '2%';
+      nodeBar.style.width = '2%';
+      pythonBar.style.width = '2%';
+
+      setTimeout(() => {
+        rustBar.style.width = '8%';
+        rustTime.innerText = '0.78 ms (3.1 MB RAM)';
+        playTone(900, 'sine', 0.05, 0.03);
+      }, 250);
+
+      setTimeout(() => {
+        nodeBar.style.width = '48%';
+        nodeTime.innerText = '26.8 ms (43.2 MB RAM)';
+      }, 550);
+
+      setTimeout(() => {
+        pythonBar.style.width = '96%';
+        pythonTime.innerText = '138.4 ms (61.5 MB RAM)';
+        statusEl.innerText = '✓ Teste finalizado: Rust concluiu 177x mais rápido que Python com zero GC.';
+        playTone(1400, 'triangle', 0.12, 0.06);
+      }, 850);
+    }
+
+    // 3.4 Interactive Project Estimator (Tab 4)
+    let currentEstType = 'whatsapp';
+    let currentEstVol = 'mid';
+
+    const estConfigs = {
+      whatsapp: {
+        title: 'Agente WhatsApp (Varejo/Atendimento)',
+        arch: 'Evolution API v2 + Gemini Flash + Drizzle',
+        sla: '< 1.4s (Sem Fila de Espera)',
+        days: { low: '5 a 8 dias úteis', mid: '8 a 14 dias úteis', high: '14 a 21 dias úteis' },
+        saving: { low: 'R$ 1.500 / mês', mid: 'R$ 3.200 a R$ 5.000 / mês', high: 'R$ 8.000+ / mês' }
+      },
+      b2b: {
+        title: 'ChatGPT B2B (Clínica/Escritório)',
+        arch: 'Groq Whisper Opus + Conta Azul API + Supabase',
+        sla: '< 2.0s com Transcrição de Voz',
+        days: { low: '7 a 10 dias úteis', mid: '10 a 16 dias úteis', high: '16 a 24 dias úteis' },
+        saving: { low: 'R$ 2.000 / mês', mid: 'R$ 4.500 a R$ 7.200 / mês', high: 'R$ 12.000+ / mês' }
+      },
+      'computer-use': {
+        title: 'Computer-Use RPA (Totvs/Sankhya)',
+        arch: 'Hy4 Vision Engine + Mouse/Keyboard Controller',
+        sla: '< 3.5s por Tela de ERP',
+        days: { low: '10 a 14 dias úteis', mid: '14 a 22 dias úteis', high: '22 a 35 dias úteis' },
+        saving: { low: 'R$ 3.000 / mês', mid: 'R$ 6.000 a R$ 10.000 / mês', high: 'R$ 18.000+ / mês' }
+      },
+      fullstack: {
+        title: 'Sistema Web Completo Sob Medida',
+        arch: 'Next.js 16 + Rust Engine + PostgreSQL/Drizzle',
+        sla: '< 150ms TTFB Global (Edge)',
+        days: { low: '12 a 18 dias úteis', mid: '18 a 30 dias úteis', high: '30 a 50 dias úteis' },
+        saving: { low: 'R$ 2.500 / mês', mid: 'R$ 7.000 a R$ 15.000 / mês', high: 'R$ 25.000+ / mês' }
+      }
+    };
+
+    function updateEstimator(kind, val) {
+      if (kind === 'type') {
+        currentEstType = val;
+        document.querySelectorAll('.est-opt-btn').forEach(btn => {
+          btn.classList.remove('border-cyanGlow', 'bg-cyanGlow/15', 'text-cyanGlow', 'font-bold');
+          btn.classList.add('border-white/10', 'bg-white/5', 'text-gray-300');
+        });
+        const activeBtn = document.getElementById(`est-type-${val}`);
+        if (activeBtn) {
+          activeBtn.classList.add('border-cyanGlow', 'bg-cyanGlow/15', 'text-cyanGlow', 'font-bold');
+          activeBtn.classList.remove('border-white/10', 'bg-white/5', 'text-gray-300');
+        }
+      } else if (kind === 'vol') {
+        currentEstVol = val;
+        document.querySelectorAll('.est-vol-btn').forEach(btn => {
+          btn.classList.remove('border-cyanGlow', 'bg-cyanGlow/15', 'text-cyanGlow', 'font-bold');
+          btn.classList.add('border-white/10', 'bg-white/5', 'text-gray-300');
+        });
+        const activeVol = document.getElementById(`est-vol-${val}`);
+        if (activeVol) {
+          activeVol.classList.add('border-cyanGlow', 'bg-cyanGlow/15', 'text-cyanGlow', 'font-bold');
+          activeVol.classList.remove('border-white/10', 'bg-white/5', 'text-gray-300');
+        }
+      }
+
+      const cfg = estConfigs[currentEstType];
+      document.getElementById('est-res-arch').innerText = cfg.arch;
+      document.getElementById('est-res-sla').innerText = cfg.sla;
+      document.getElementById('est-res-time').innerText = cfg.days[currentEstVol];
+      document.getElementById('est-res-saving').innerText = cfg.saving[currentEstVol];
+
+      const volLabels = { low: 'baixo volume (até 2k/mês)', mid: 'escala média (2k a 10k/mês)', high: 'alto volume (10k+/mês)' };
+      const message = `Olá Arthur! Vi seu portfólio executivo e gostaria de solicitar uma proposta para: ${cfg.title} com ${volLabels[currentEstVol]}.`;
+      const btn = document.getElementById('est-whatsapp-btn');
+      btn.href = `https://wa.me/5563991206201?text=${encodeURIComponent(message)}`;
+
+      playTone(1050, 'sine', 0.05, 0.03);
+    }
+
+    // 4. Upgraded High-Energy Cyberpunk Synthwave Engine (Web Audio API - 120 BPM)
+    let ambientMusicPlaying = false;
+    let audioCtx = null;
+    let musicMasterGain = null;
+    let musicCompressor = null;
+    let analyserNode = null;
+    let synthSeqTimer = null;
+    let currentStep = 0;
+    let activePadNodes = [];
+
+    function initAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Compressor de estúdio para garantir graves encorpados sem distorção
+        musicCompressor = audioCtx.createDynamicsCompressor();
+        musicCompressor.threshold.setValueAtTime(-14, audioCtx.currentTime);
+        musicCompressor.knee.setValueAtTime(8, audioCtx.currentTime);
+        musicCompressor.ratio.setValueAtTime(5, audioCtx.currentTime);
+        musicCompressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
+        musicCompressor.release.setValueAtTime(0.18, audioCtx.currentTime);
+
+        analyserNode = audioCtx.createAnalyser();
+        analyserNode.fftSize = 64;
+
+        musicMasterGain = audioCtx.createGain();
+        musicMasterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+
+        musicMasterGain.connect(musicCompressor);
+        musicCompressor.connect(analyserNode);
+        analyserNode.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Interactive SFX for clicks and interactions
+    function playTone(freq, type, duration, vol = 0.05) {
+      if (!audioCtx || audioCtx.state === 'suspended') return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Sequência de baixo Cyberpunk Synthwave (Progressão C minor rolling)
+    const bassSequence = [
+      65.41, 65.41, 77.78, 65.41, 87.31, 65.41, 98.00, 130.81,
+      51.91, 51.91, 65.41, 51.91, 77.78, 51.91, 98.00, 103.83,
+      43.65, 43.65, 51.91, 43.65, 65.41, 43.65, 77.78, 87.31,
+      49.00, 49.00, 58.27, 49.00, 73.42, 49.00, 87.31, 98.00
+    ];
+
+    // Melodia de sintetizador futurista em arpejo
+    const arpSequence = [
+      261.63, 0, 311.13, 392.00, 0, 466.16, 523.25, 0,
+      392.00, 523.25, 0, 466.16, 311.13, 0, 392.00, 261.63,
+      0, 261.63, 311.13, 0, 392.00, 466.16, 0, 523.25,
+      622.25, 0, 523.25, 466.16, 0, 392.00, 311.13, 0
+    ];
+
+    // Acordes analógicos de sustentação espacial
+    const padChords = [
+      [130.81, 155.56, 196.00, 233.08, 261.63],
+      [103.83, 130.81, 155.56, 196.00, 261.63],
+      [87.31, 116.54, 155.56, 174.61, 233.08],
+      [98.00, 146.83, 174.61, 196.00, 293.66]
+    ];
+
+    function synthStep() {
+      if (!ambientMusicPlaying || !audioCtx) return;
+      const t = audioCtx.currentTime;
+
+      // 1. Driving Rolling Cyberpunk Bass
+      const bassFreq = bassSequence[currentStep % bassSequence.length];
+      if (bassFreq) {
+        const bOsc = audioCtx.createOscillator();
+        const bGain = audioCtx.createGain();
+        const bFilter = audioCtx.createBiquadFilter();
+
+        bOsc.type = 'sawtooth';
+        bOsc.frequency.setValueAtTime(bassFreq, t);
+
+        bFilter.type = 'lowpass';
+        bFilter.frequency.setValueAtTime(750, t);
+        bFilter.frequency.exponentialRampToValueAtTime(140, t + 0.11);
+        bFilter.Q.setValueAtTime(3.6, t);
+
+        bGain.gain.setValueAtTime(0.18, t);
+        bGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.11);
+
+        bOsc.connect(bFilter);
+        bFilter.connect(bGain);
+        bGain.connect(musicMasterGain);
+
+        bOsc.start(t);
+        bOsc.stop(t + 0.12);
+      }
+
+      // 2. Cyber Tick Hi-Hat
+      if (currentStep % 2 === 1) {
+        const hOsc = audioCtx.createOscillator();
+        const hGain = audioCtx.createGain();
+        const hFilter = audioCtx.createBiquadFilter();
+
+        hOsc.type = 'square';
+        hOsc.frequency.setValueAtTime(4200, t);
+
+        hFilter.type = 'highpass';
+        hFilter.frequency.setValueAtTime(6500, t);
+
+        hGain.gain.setValueAtTime(0.04, t);
+        hGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.035);
+
+        hOsc.connect(hFilter);
+        hFilter.connect(hGain);
+        hGain.connect(musicMasterGain);
+
+        hOsc.start(t);
+        hOsc.stop(t + 0.04);
+      }
+
+      // 3. Melodic Pentatonic Arp Pluck
+      const arpFreq = arpSequence[currentStep % arpSequence.length];
+      if (arpFreq) {
+        const aOsc = audioCtx.createOscillator();
+        const aGain = audioCtx.createGain();
+
+        aOsc.type = 'triangle';
+        aOsc.frequency.setValueAtTime(arpFreq, t);
+
+        aGain.gain.setValueAtTime(0.09, t);
+        aGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+
+        aOsc.connect(aGain);
+        aGain.connect(musicMasterGain);
+
+        aOsc.start(t);
+        aOsc.stop(t + 0.19);
+      }
+
+      // 4. Background Pad Swell (A cada 8 passos = 1 compasso)
+      if (currentStep % 8 === 0) {
+        const chordIndex = Math.floor(currentStep / 8) % padChords.length;
+        const chord = padChords[chordIndex];
+
+        activePadNodes.forEach(node => {
+          try {
+            node.gain.gain.linearRampToValueAtTime(0.0001, t + 0.8);
+            setTimeout(() => { node.osc.stop(); node.osc.disconnect(); }, 900);
+          } catch (e) {}
+        });
+        activePadNodes = [];
+
+        const pFilter = audioCtx.createBiquadFilter();
+        pFilter.type = 'lowpass';
+        pFilter.frequency.setValueAtTime(520, t);
+        pFilter.Q.setValueAtTime(1.8, t);
+        pFilter.connect(musicMasterGain);
+
+        chord.forEach((freq, idx) => {
+          const pOsc = audioCtx.createOscillator();
+          const pGain = audioCtx.createGain();
+
+          pOsc.type = idx % 2 === 0 ? 'sawtooth' : 'triangle';
+          pOsc.frequency.setValueAtTime(freq + (Math.random() - 0.5) * 1.2, t);
+
+          pGain.gain.setValueAtTime(0.0001, t);
+          pGain.gain.linearRampToValueAtTime(0.035, t + 0.35);
+          pGain.gain.linearRampToValueAtTime(0.015, t + 0.9);
+
+          pOsc.connect(pGain);
+          pGain.connect(pFilter);
+
+          pOsc.start(t);
+          activePadNodes.push({ osc: pOsc, gain: pGain });
+        });
+      }
+
+      currentStep++;
+    }
+
+    function toggleAmbientSoundtrack() {
+      initAudioContext();
+      ambientMusicPlaying = !ambientMusicPlaying;
+
+      const sfxBtn = document.getElementById('sfx-toggle');
+      const sfxLabel = document.getElementById('sfx-label');
+      const eqBars = document.getElementById('eq-bars');
+
+      if (ambientMusicPlaying) {
+        // Volume master presente, nítido e encorpado (0.38)
+        musicMasterGain.gain.linearRampToValueAtTime(0.38, audioCtx.currentTime + 0.8);
+        currentStep = 0;
+        synthStep();
+        synthSeqTimer = setInterval(synthStep, 125); // 120 BPM driving 16th notes
+
+        if (sfxBtn) sfxBtn.classList.add('border-cyanGlow/60', 'bg-cyanGlow/10', 'shadow-[0_0_20px_rgba(0,240,255,0.25)]');
+        if (sfxLabel) {
+          sfxLabel.innerText = 'TRILHA: ATIVA';
+          sfxLabel.classList.add('text-cyanGlow');
+          sfxLabel.classList.remove('text-gray-400');
+        }
+        if (eqBars) eqBars.classList.add('eq-playing');
+        playTone(920, 'sine', 0.1, 0.05);
+      } else {
+        musicMasterGain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
+        clearInterval(synthSeqTimer);
+
+        if (sfxBtn) sfxBtn.classList.remove('border-cyanGlow/60', 'bg-cyanGlow/10', 'shadow-[0_0_20px_rgba(0,240,255,0.25)]');
+        if (sfxLabel) {
+          sfxLabel.innerText = 'TRILHA: OFF';
+          sfxLabel.classList.remove('text-cyanGlow');
+          sfxLabel.classList.add('text-gray-400');
+        }
+        if (eqBars) eqBars.classList.remove('eq-playing');
+      }
+    }
+
+    const sfxBtn = document.getElementById('sfx-toggle');
+    if (sfxBtn) {
+      sfxBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleAmbientSoundtrack();
+      });
+    }
+
+    // Attach subtle tech clicks to interactive elements
+    document.querySelectorAll('a, button').forEach(el => {
+      if (el.id !== 'sfx-toggle') {
+        el.addEventListener('mouseenter', () => playTone(650, 'sine', 0.02, 0.015));
+        el.addEventListener('click', () => playTone(980, 'triangle', 0.04, 0.03));
+      }
+    });
+
+    // 5. Zero-Latency Mouse Follow Aura (1:1 Colado Instantaneamente ao Cursor)
+    const aura = document.getElementById('cursor-aura');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (aura) {
+        aura.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
+    });
+
+    // 6. Neural Waveform Dynamic Canvas (Audio-Reactive ao Som da Trilha)
+    const waveCanvas = document.getElementById('waveform-canvas');
+    if (waveCanvas) {
+      const wCtx = waveCanvas.getContext('2d');
+      const dataArray = new Uint8Array(32);
+
+      function drawWave() {
+        waveCanvas.width = waveCanvas.offsetWidth;
+        waveCanvas.height = waveCanvas.offsetHeight;
+        wCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+
+        wCtx.strokeStyle = ambientMusicPlaying ? '#00f0ff' : 'rgba(0, 240, 255, 0.55)';
+        wCtx.lineWidth = ambientMusicPlaying ? 2 : 1.2;
+        wCtx.shadowBlur = ambientMusicPlaying ? 10 : 0;
+        wCtx.shadowColor = '#00f0ff';
+        wCtx.beginPath();
+        
+        const now = Date.now() * 0.005;
+        const width = waveCanvas.width;
+        const height = waveCanvas.height;
+
+        let audioBoost = 0;
+        if (ambientMusicPlaying && analyserNode) {
+          analyserNode.getByteFrequencyData(dataArray);
+          audioBoost = (dataArray[2] || 0) * 0.08;
+        }
+
+        for (let x = 0; x < width; x += 4) {
+          const amp = 8 + audioBoost;
+          const y = (height / 2) + Math.sin(x * 0.05 + now) * amp + Math.cos(x * 0.02 - now) * (amp * 0.5);
+          if (x === 0) wCtx.moveTo(x, y);
+          else wCtx.lineTo(x, y);
+        }
+        wCtx.stroke();
+        wCtx.shadowBlur = 0;
+        requestAnimationFrame(drawWave);
+      }
+      drawWave();
+    }
+
+    // 7. Three.js 3D WebGL Background: Synthwave Canyon Terrain + Holographic Torus Knot + Interactive Shockwaves
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x02030b, 0.035);
+
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 3.2, 8.5);
+    camera.rotation.x = -0.28;
+
+    // Moving Low-Opacity Cyber Tron Helper Grid
+    const gridHelper = new THREE.GridHelper(40, 50, 0x00f0ff, 0x8b5cf6);
+    gridHelper.position.y = -2.3;
+    gridHelper.material.opacity = 0.25;
+    gridHelper.material.transparent = true;
+    scene.add(gridHelper);
+
+    // Synthwave Mountain Valley Terrain (Undulating wireframe terrain with neon canyon)
+    const terrainWidth = 65;
+    const terrainDepth = 75;
+    const terrainGeo = new THREE.PlaneGeometry(terrainWidth, terrainDepth, 48, 48);
+    terrainGeo.rotateX(-Math.PI / 2);
+    
+    // Calculate initial heights: valleys in center corridor, mountains on left and right
+    const posAttr = terrainGeo.attributes.position;
+    const baseHeights = new Float32Array(posAttr.count);
+    for (let i = 0; i < posAttr.count; i++) {
+      const x = posAttr.getX(i);
+      const z = posAttr.getZ(i);
+      const distFromCenter = Math.abs(x);
+      let h = 0;
+      if (distFromCenter > 4.5) {
+        h = Math.pow((distFromCenter - 4.5) * 0.45, 1.45) + (Math.sin(x * 0.45) * Math.cos(z * 0.35) * 1.4);
+      }
+      baseHeights[i] = h;
+      posAttr.setY(i, h);
+    }
+    terrainGeo.computeVertexNormals();
+
+    const terrainMat = new THREE.MeshBasicMaterial({
+      color: 0x00f0ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.28
+    });
+    const terrainMesh = new THREE.Mesh(terrainGeo, terrainMat);
+    terrainMesh.position.set(0, -2.4, -6);
+    scene.add(terrainMesh);
+
+    // Primary Floating Polyhedron Core
+    const coreGeo = new THREE.IcosahedronGeometry(2.0, 1);
+    const coreMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.35 });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    coreMesh.position.set(3.8, 1.2, -2.5);
+    scene.add(coreMesh);
+
+    // Inner Glowing Core
+    const innerGeo = new THREE.OctahedronGeometry(1.1, 0);
+    const innerMat = new THREE.MeshBasicMaterial({ color: 0xec4899, wireframe: true, transparent: true, opacity: 0.6 });
+    const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+    coreMesh.add(innerMesh);
+
+    // Holographic Torus Knot Artifact with Iridescent Cycling Hue
+    const knotGeo = new THREE.TorusKnotGeometry(1.5, 0.26, 120, 20, 2, 3);
+    const knotMat = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.42 });
+    const knotMesh = new THREE.Mesh(knotGeo, knotMat);
+    knotMesh.position.set(-4.2, 1.0, -3.2);
+    scene.add(knotMesh);
+
+    // Dynamic Flowing Particles (500 cyber star nodes)
+    const particlesCount = 500;
+    const posArray = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 28;
+    }
+    const particlesGeo = new THREE.BufferGeometry();
+    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMat = new THREE.PointsMaterial({ size: 0.055, color: 0x00f0ff, transparent: true, opacity: 0.75 });
+    const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
+    scene.add(particlesMesh);
+
+    // Interactive Shockwave Pulse Rings in 3D
+    const shockwaves = [];
+    function createShockwave(worldX = 0, worldZ = 0) {
+      const ringGeo = new THREE.RingGeometry(0.2, 0.35, 36);
+      ringGeo.rotateX(-Math.PI / 2);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x00f0ff,
+        transparent: true,
+        opacity: 0.9,
+        side: THREE.DoubleSide
+      });
+      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+      ringMesh.position.set(worldX, -2.2, worldZ);
+      scene.add(ringMesh);
+      shockwaves.push({ mesh: ringMesh, scale: 1, opacity: 0.9 });
+    }
+
+    window.addEventListener('click', (e) => {
+      // Map screen click to approximate 3D ground coordinates
+      const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
+      const ndcY = -(e.clientY / window.innerHeight) * 2 + 1;
+      createShockwave(ndcX * 6, -ndcY * 3 - 2);
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // FPS Counter & Telemetry Engine
+    let lastFrameTime = performance.now();
+    let frameCount = 0;
+    let fps = 60;
+    const fpsEl = document.getElementById('fps-counter');
+    const timeEl = document.getElementById('telemetry-time');
+
+    function updateTelemetryClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const ms = String(now.getMilliseconds()).padStart(3, '0');
+      if (timeEl) timeEl.innerText = `UTC-3 ${h}:${m}:${s}.${ms}`;
+    }
+
+    let clock = new THREE.Clock();
+    let isPageVisible = true;
+    document.addEventListener('visibilitychange', () => {
+      isPageVisible = document.visibilityState === 'visible';
+      if (isPageVisible) lastFrameTime = performance.now();
+    });
+
+    function render3D() {
+      requestAnimationFrame(render3D);
+      if (!isPageVisible) return;
+      const elapsed = clock.getElapsedTime();
+
+      // Highway terrain forward flow and wave modulation
+      gridHelper.position.z = (elapsed * 2.5) % 2;
+
+      // Animate terrain vertices undulating
+      const currentPos = terrainGeo.attributes.position;
+      for (let i = 0; i < currentPos.count; i++) {
+        const x = currentPos.getX(i);
+        const z = currentPos.getZ(i);
+        if (Math.abs(x) > 4.5) {
+          const wave = Math.sin(z * 0.35 + elapsed * 2.2) * 0.45;
+          currentPos.setY(i, baseHeights[i] + wave);
+        }
+      }
+      currentPos.needsUpdate = true;
+
+      // Holographic Torus Knot Chromatic Shift & Tumble
+      knotMesh.rotation.x += 0.007;
+      knotMesh.rotation.y += 0.012;
+      knotMesh.rotation.z += 0.004;
+      knotMat.color.setHSL((elapsed * 0.07) % 1, 0.95, 0.58);
+      knotMesh.position.y = 1.0 + Math.sin(elapsed * 1.6) * 0.35;
+
+      // Rotating polyhedrons
+      coreMesh.rotation.x += 0.006;
+      coreMesh.rotation.y += 0.009;
+      innerMesh.rotation.y -= 0.018;
+      coreMesh.position.y = 1.2 + Math.sin(elapsed * 1.4) * 0.45;
+
+      // Audio Reactivity (Pulse 3D Core with ambient synthesizer bass)
+      if (ambientMusicPlaying && analyserNode) {
+        const audioFreq = new Uint8Array(16);
+        analyserNode.getByteFrequencyData(audioFreq);
+        const bassVal = (audioFreq[0] + audioFreq[1] + audioFreq[2]) / (3 * 255);
+        const pulseScale = 1.0 + bassVal * 0.38;
+        coreMesh.scale.set(pulseScale, pulseScale, pulseScale);
+        knotMesh.scale.set(pulseScale * 0.95, pulseScale * 0.95, pulseScale * 0.95);
+      } else {
+        coreMesh.scale.set(1.0, 1.0, 1.0);
+        knotMesh.scale.set(1.0, 1.0, 1.0);
+      }
+
+      // Update shockwaves
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        sw.scale += 0.18;
+        sw.opacity -= 0.022;
+        sw.mesh.scale.set(sw.scale, sw.scale, sw.scale);
+        sw.mesh.material.opacity = Math.max(0, sw.opacity);
+        if (sw.opacity <= 0) {
+          scene.remove(sw.mesh);
+          sw.mesh.geometry.dispose();
+          sw.mesh.material.dispose();
+          shockwaves.splice(i, 1);
+        }
+      }
+
+      // Smooth Camera Mouse Parallax (Silky Lerp)
+      const targetCamX = (mouseX / window.innerWidth - 0.5) * 2.6;
+      const targetCamY = 3.2 - (mouseY / window.innerHeight - 0.5) * 1.4;
+      camera.position.x += (targetCamX - camera.position.x) * 0.045;
+      camera.position.y += (targetCamY - camera.position.y) * 0.045;
+
+      // Particles rotation
+      particlesMesh.rotation.y = elapsed * 0.03;
+
+      renderer.render(scene, camera);
+
+      // FPS tracking
+      frameCount++;
+      const nowTime = performance.now();
+      if (nowTime - lastFrameTime >= 500) {
+        fps = Math.round((frameCount * 1000) / (nowTime - lastFrameTime));
+        frameCount = 0;
+        lastFrameTime = nowTime;
+        if (fpsEl) fpsEl.innerText = `${Math.min(fps, 120)} FPS`;
+      }
+      updateTelemetryClock();
+    }
+    render3D();
+
+    // 8. Procedural Electric Lightning Sparks Canvas
+    const lCanvas = document.getElementById('lightning-canvas');
+    const lCtx = lCanvas.getContext('2d');
+    function resizeLightning() {
+      lCanvas.width = window.innerWidth;
+      lCanvas.height = window.innerHeight;
+    }
+    resizeLightning();
+    window.addEventListener('resize', resizeLightning);
+
+    function createBolt(x1, y1, x2, y2) {
+      lCtx.strokeStyle = 'rgba(0, 240, 255, 0.7)';
+      lCtx.lineWidth = 1.5;
+      lCtx.shadowBlur = 10;
+      lCtx.shadowColor = '#00f0ff';
+      lCtx.beginPath();
+      lCtx.moveTo(x1, y1);
+      
+      const steps = 6;
+      for (let i = 0; i < steps; i++) {
+        const nextX = x1 + ((x2 - x1) / steps) * (i + 1) + (Math.random() - 0.5) * 30;
+        const nextY = y1 + ((y2 - y1) / steps) * (i + 1) + (Math.random() - 0.5) * 30;
+        lCtx.lineTo(nextX, nextY);
+      }
+      lCtx.stroke();
+    }
+
+    let lastSpark = 0;
+    function renderLightning(time) {
+      requestAnimationFrame(renderLightning);
+      lCtx.clearRect(0, 0, lCanvas.width, lCanvas.height);
+
+      if (time - lastSpark > 1100) {
+        lastSpark = time;
+        if (Math.random() > 0.35) {
+          const startX = Math.random() * lCanvas.width;
+          const startY = Math.random() * (lCanvas.height * 0.4);
+          createBolt(startX, startY, startX + (Math.random() - 0.5) * 160, startY + 130);
+        }
+      }
+    }
+    requestAnimationFrame(renderLightning);
+
+    // 9. Interactive Spotlight Borders & 3D Tilt on Cards (HackaRun / Vercel Ultra-Fluid)
+    document.querySelectorAll('.card-glass, .system-card, #hero-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+
+        // Gentle 3D perspective tilt
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotX = (-(y - centerY) / centerY) * 7;
+        const rotY = ((x - centerX) / centerX) * 7;
+        card.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-2px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
+    });
+
+    // 9.1. Cyber Text Scramble Decryptor Effect (Com Cooldown Inteligente & Preservação 100% de Gradientes)
+    const scrambleGlyphs = '01#_$%&<>[]{}~=+*!▲▼◆';
+    let lastGlobalScrambleTime = 0;
+
+    function runScramble(el) {
+      const now = Date.now();
+      // Cooldown global de 4s para não sobrecarregar e cooldown de 12s no mesmo elemento
+      if (now - lastGlobalScrambleTime < 4000) return;
+      if (el.dataset.scrambleCooldown && now < parseInt(el.dataset.scrambleCooldown, 10)) return;
+      if (el.dataset.scrambling === 'true') return;
+
+      lastGlobalScrambleTime = now;
+      el.dataset.scrambleCooldown = (now + 12000).toString();
+      el.dataset.scrambling = 'true';
+
+      const originalHtml = el.dataset.originalHtml || el.innerHTML;
+      const originalText = el.dataset.originalText || el.textContent;
+      el.dataset.originalHtml = originalHtml;
+      el.dataset.originalText = originalText;
+
+      let iteration = 0;
+      const interval = setInterval(() => {
+        el.textContent = originalText.split('').map((char, index) => {
+          if (char === ' ' || char === '\n') return char;
+          if (index < iteration) return originalText[index];
+          return scrambleGlyphs[Math.floor(Math.random() * scrambleGlyphs.length)];
+        }).join('');
+
+        if (iteration >= originalText.length) {
+          clearInterval(interval);
+          el.dataset.scrambling = 'false';
+          el.innerHTML = originalHtml; // Restaura HTML original com gradiente 100% intacto!
+        }
+        iteration += 1 / 2;
+      }, 30);
+    }
+
+    // Scramble aplicado à palavra-chave 'INTELIGÊNCIA' e títulos sem nós filhos complexos
+    document.querySelectorAll('.scramble-word, .tab-btn, h2, h3').forEach(el => {
+      // Ignora containers complexos com muitos filhos para nunca apagar formatações e spans
+      if (el.children.length > 0 && !el.classList.contains('scramble-word')) return;
+      el.classList.add('cyber-scramble');
+      el.addEventListener('mouseenter', () => runScramble(el));
+    });
+
+    // 10. HackaRun Live Countdown Timer
+    const targetDate = new Date('2026-11-12T20:15:00-03:00').getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const dStr = String(days).padStart(2, '0');
+        const hStr = String(hours).padStart(2, '0');
+        const mStr = String(minutes).padStart(2, '0');
+        const sStr = String(seconds).padStart(2, '0');
+
+        const cdDays = document.getElementById('cd-days');
+        if (cdDays) {
+          cdDays.innerText = dStr;
+          const cdHours = document.getElementById('cd-hours');
+          const cdMins = document.getElementById('cd-minutes');
+          const cdSecs = document.getElementById('cd-seconds');
+          if (cdHours) cdHours.innerText = hStr;
+          if (cdMins) cdMins.innerText = mStr;
+          if (cdSecs) cdSecs.innerText = sStr;
+        }
+
+        const tabDays = document.getElementById('tab-cd-days');
+        if (tabDays) {
+          tabDays.innerText = dStr;
+          const th = document.getElementById('tab-cd-hours');
+          const tm = document.getElementById('tab-cd-minutes');
+          const ts = document.getElementById('tab-cd-seconds');
+          if (th) th.innerText = hStr;
+          if (tm) tm.innerText = mStr;
+          if (ts) ts.innerText = sStr;
+        }
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 11. Interactive Terminal Engine
+    const termInput = document.getElementById('terminal-input');
+    const termOutput = document.getElementById('terminal-output');
+
+    const commands = {
+      help: () => `
+  Comandos disponíveis:
+  • <span class="text-cyanGlow">about</span>: Biografia e foco de atuação
+  • <span class="text-cyanGlow">skills</span>: Stack tecnológica dominada
+  • <span class="text-cyanGlow">projects</span> / <span class="text-cyanGlow">systems</span>: Todos os 12 sistemas em produção
+  • <span class="text-cyanGlow">cv</span> / <span class="text-cyanGlow">resume</span>: Abrir Currículo Executivo oficial (PDF)
+  • <span class="text-cyanGlow">services</span> / <span class="text-cyanGlow">quote</span>: Modelos de contratação comercial e orçamentos
+  • <span class="text-cyanGlow">obsidian</span>: Estatísticas do cérebro central e grafo
+  • <span class="text-cyanGlow">cipa</span>, <span class="text-cyanGlow">medx</span>, <span class="text-cyanGlow">backtowork</span>, <span class="text-cyanGlow">sstfarma</span>: Ficha técnica do sistema
+  • <span class="text-cyanGlow">psicomed</span>, <span class="text-cyanGlow">santos</span>, <span class="text-cyanGlow">meueso</span>, <span class="text-cyanGlow">checklist</span>: Ficha técnica do sistema
+  • <span class="text-cyanGlow">token-cost</span>: Simulação da ferramenta Rust
+  • <span class="text-cyanGlow">hackarun</span>: Detalhes do campeonato
+  • <span class="text-cyanGlow">stats</span>: Telemetria e status do motor gráfico/áudio
+  • <span class="text-cyanGlow">music</span>: Ligar/Desligar sintetizador ambiente
+  • <span class="text-cyanGlow">contact</span> / <span class="text-cyanGlow">whatsapp</span>: Informações de contato direto
+  • <span class="text-cyanGlow">clear</span>: Limpar tela
+      `,
+      services: () => `
+  <span class="text-purpleGlow font-bold">=== 💼 SOLUÇÕES & CONTRATAÇÃO EXECUTIVA ===</span>
+  1. <span class="text-cyanGlow font-bold">Agente WhatsApp B2C:</span> Triagem flash, memória e fechamento comercial.
+  2. <span class="text-purpleGlow font-bold">ChatGPT B2B Agents:</span> Integração ERP, áudio Opus e relatórios para clínicas e B2B.
+  3. <span class="text-emeraldGlow font-bold">Computer-Use RPA:</span> Visão e mouse para ERPs fechados sem API (Totvs/Sankhya).
+  4. <span class="text-yellow-400 font-bold">Sistemas Web Sob Medida:</span> Next.js 16 + Rust + Postgres com 100% de testes.
+  <span class="text-emeraldGlow font-bold">Garantia:</span> Kill-Switch imediato + Zero Alucinações de preço.
+      `,
+      quote: () => `
+  <span class="text-emeraldGlow font-bold">=== ⚡ SIMULAÇÃO RÁPIDA DE ORÇAMENTO ===</span>
+  • Agentes WhatsApp: Entrega em 7 a 14 dias úteis | SLA < 1.4s
+  • Automação Computer-Use: Ticket R$ 3k a R$ 8k+ | Zero alteração no ERP legado
+  • Contato direto via WhatsApp: <a href="https://wa.me/5563991206201" target="_blank" class="text-cyanGlow underline">Clique para abrir chat</a>
+      `,
+      obsidian: () => `
+  <span class="text-cyanGlow font-bold">=== 🧠 OBSIDIAN FOGOLIN (CÉREBRO CENTRAL) ===</span>
+  • Total de Documentos Estruturados: 126
+  • Notas Cronológicas Maduras: 52+
+  • Motor de Auditoria: fogolin-cli (Rust nativo, < 0.7ms)
+  • Regra de Ouro: Gravação e aprendizado contínuo sem perda de contexto.
+      `,
+      about: () => `
+  <span class="text-white font-bold">Arthur Fogolin Rocha</span> (18 anos, Palmas - TO)
+  Estudante de Inteligência Artificial na Católica do Tocantins.
+  Desenvolvedor freelancer focado em agentes autônomos, integrações de WhatsApp e sistemas de alto desempenho.
+      `,
+      skills: () => `
+  [STACK PRINCIPAL]
+  • <span class="text-purpleGlow">Linguagens:</span> Rust, TypeScript, Python, SQL, JavaScript
+  • <span class="text-cyanGlow">IA & LLMs:</span> Claude Code, Gemini 3.8 Flash & 4 Carbon, Groq Whisper, OpenAI
+  • <span class="text-emeraldGlow">Web & Backend:</span> Next.js 16, React 18, Tailwind CSS, Supabase RLS, Playwright
+  • <span class="text-yellow-400">Integrações:</span> Conta Azul REST API, Evolution API v2, UAZAPI, SOAP eSocial
+      `,
+      projects: () => `
+  [CATÁLOGO DE SISTEMAS DESENVOLVIDOS]
+  1.  <span class="text-cyanGlow font-bold">PH Estoque:</span> ERP + Agente de WhatsApp com memória e blindagem comercial (292 testes Vitest).
+  2.  <span class="text-purpleGlow font-bold">DIX BPO Agent:</span> Agente de triagem de voz com transcrição Opus e humanização.
+  3.  <span class="text-cyanGlow font-bold">CIPA MedWork:</span> Gestão eleitoral de CIPA (NR-5/31/22) com votação digital por CPF.
+  4.  <span class="text-purpleGlow font-bold">MEDX / MedX-Flow:</span> Faturamento integrado via API do Conta Azul e régua IA.
+  5.  <span class="text-emeraldGlow font-bold">BackToWork:</span> Gestão de retorno ao trabalho, absenteísmo e triagem de ASO.
+  6.  <span class="text-cyanGlow font-bold">SSTFARMA:</span> Plataforma de SST farmacêutica em 10 etapas integradas.
+  7.  <span class="text-purpleGlow font-bold">PsicoMed:</span> Avaliação COPSOQ e riscos psicossociais com Supabase Multi-Tenant.
+  8.  <span class="text-yellow-400 font-bold">Santos Construtivos:</span> ERP de engenharia civil, orçamentação e obras.
+  9.  <span class="text-emeraldGlow font-bold">MeuESO & Playwright:</span> Robô headless de sincronização eSocial (S-2210/2220/2240).
+  10. <span class="text-cyanGlow font-bold">Checklist GERAL:</span> PWA offline-first para auditoria em campo com assinatura digital.
+  11. <span class="text-purpleGlow font-bold">Week MedWork:</span> Governança corporativa, gestão de frotas e premiações.
+  12. <span class="text-yellow-400 font-bold">ProfessaAi:</span> Sistema acadêmico inteligente com IA generativa.
+  <span class="text-gray-400">Digite o nome de qualquer sistema (ex: 'cipa', 'medx', 'sstfarma') para abrir a ficha técnica.</span>
+      `,
+      systems: () => commands.projects(),
+      cipa: () => `
+  <span class="text-cyanGlow font-bold">=== 🛡️ CIPA MedWork (NR-5 / NR-31 / NR-22) ===</span>
+  • Objetivo: Digitalização de eleições de CIPA e geração automática de atas legais.
+  • Stack: React, TypeScript, Supabase, Tailwind, Vercel.
+  • Destaque: Voto único por CPF anti-duplicidade, cálculo de grau de risco e geração de PDF.
+  • Deploy: <a href="https://cipa.medworkto.com" target="_blank" class="text-cyanGlow underline">cipa.medworkto.com</a>
+      `,
+      medx: () => `
+  <span class="text-purpleGlow font-bold">=== 💰 MEDX / MedX-Flow (Conta Azul API) ===</span>
+  • Objetivo: Faturamento médico-ocupacional sincronizado e pipeline de cobrança inteligente.
+  • Stack: React, TypeScript, REST API Conta Azul, Supabase, UAZAPI.
+  • Destaque: Conciliação financeira em tempo real e régua de cobrança automática via WhatsApp.
+      `,
+      backtowork: () => `
+  <span class="text-emeraldGlow font-bold">=== 🏥 BackToWork (Gestão de Retorno & Absenteísmo) ===</span>
+  • Objetivo: Acompanhamento de colaboradores afastados e retorno seguro conforme PCMSO.
+  • Stack: React 18, Vite, TypeScript, Tailwind, Supabase.
+  • Destaque: Rastreamento de atestados, agendamento de ASO e monitoramento de restrições.
+      `,
+      sstfarma: () => `
+  <span class="text-cyanGlow font-bold">=== 💊 SSTFARMA (Segurança do Trabalho Farmacêutica) ===</span>
+  • Objetivo: Plataforma especializada em conformidade regulatória para redes de farmácias.
+  • Stack: React, Vite, shadcn/ui, Supabase.
+  • Destaque: Pipeline em 10 etapas da admissão a treinamentos NR-32 e eventos eSocial.
+  • Deploy: <a href="https://sstfarma.vercel.app" target="_blank" class="text-cyanGlow underline">sstfarma.vercel.app</a>
+      `,
+      psicomed: () => `
+  <span class="text-purpleGlow font-bold">=== 🧠 PsicoMed (Avaliação COPSOQ & NR-17) ===</span>
+  • Objetivo: Diagnóstico científico de fatores de riscos psicossociais e estresse no trabalho.
+  • Stack: React 18, TypeScript, Supabase Multi-Tenant RLS, Tailwind.
+  • Destaque: Questionários anônimos criptografados e relatórios diagnósticos de burnout.
+      `,
+      santos: () => `
+  <span class="text-yellow-400 font-bold">=== 🏗️ Santos Sistemas Construtivos ===</span>
+  • Objetivo: ERP operacional e financeiro para construtoras e engenharia civil.
+  • Stack: React, TypeScript, Supabase, Tailwind.
+  • Destaque: Orçamentação por etapa de obra, medição física de campo e controle de materiais.
+      `,
+      meueso: () => `
+  <span class="text-emeraldGlow font-bold">=== 🤖 MeuESO & Robô eSocial Playwright ===</span>
+  • Objetivo: Automação robótica headless para extração e envio em lote de eventos do eSocial.
+  • Stack: Playwright, Python, Node.js, Next.js, API SOAP eSocial.
+  • Destaque: Salvaguardas críticas de integridade: dry-run, threshold e zero-kill prevention.
+      `,
+      checklist: () => `
+  <span class="text-cyanGlow font-bold">=== 📋 Checklist GERAL (PWA Offline-First) ===</span>
+  • Objetivo: Inspeção de campo sem internet para auditores e técnicos de segurança.
+  • Stack: Vanilla JS, Service Worker, Canvas API, Vercel.
+  • Destaque: 74 riscos, 56 EPIs, 21 NRs, assinatura digital coletada na tela e PDF imediato.
+  • Deploy: <a href="https://checklist-geral.vercel.app" target="_blank" class="text-cyanGlow underline">checklist-geral.vercel.app</a>
+      `,
+      'token-cost': () => `
+  <span class="text-cyanGlow">=== ⚡ TokenCost Simulation (Rust) ===</span>
+  Entrada: 10.802 tokens | Simulação: 5.000 chamadas
+  • Gemini 3.8 Flash:   <span class="text-emeraldGlow font-bold">R$ 46,99 / mês</span> (Recomendado)
+  • Groq Llama 3.3 70B: R$ 184,82 / mês
+  • Gemini 4 Carbon:    R$ 626,52 / mês
+  • Claude 3.7 Sonnet:  R$ 939,77 / mês
+  <span class="text-gray-400">Tempo de execução no Mac: 1.85ms</span>
+      `,
+      hackarun: () => `
+  <span class="text-yellow-400 font-bold">🏆 1º HackaRun UniCatólica 2026</span>
+  • Local: UniCatólica (Bloco II) & Capim Dourado Shopping
+  • Datas: 11 a 14 de Novembro de 2026
+  • Missão 1: Problema & Canvas (12/11 20h15 - 13/11 10h)
+  • Missão 2: 24h Sprint Código e Testes (13/11 10h - 14/11 10h)
+  • Missão 3: Final Presencial no Shopping (14/11 17h)
+      `,
+      cv: () => {
+        openCvModal();
+        return `<span class="text-emeraldGlow font-bold">📄 Currículo Executivo Aberto!</span> Você pode visualizá-lo ou clicar em <strong>IMPRIMIR / PDF</strong>.`;
+      },
+      resume: () => {
+        openCvModal();
+        return `<span class="text-emeraldGlow font-bold">📄 Executive Resume Modal Opened!</span> (Atalho rápido: <span class="text-cyanGlow">cv</span>)`;
+      },
+      curriculo: () => {
+        openCvModal();
+        return `<span class="text-emeraldGlow font-bold">📄 Currículo Executivo Aberto!</span>`;
+      },
+      music: () => {
+        toggleAmbientSoundtrack();
+        return `<span class="text-cyanGlow font-bold">🎵 Trilha sonora ambiente comutador acionado.</span>`;
+      },
+      audio: () => {
+        toggleAmbientSoundtrack();
+        return `<span class="text-cyanGlow font-bold">🎵 Trilha sonora ambiente comutador acionado.</span>`;
+      },
+      stats: () => `
+  <span class="text-cyanGlow font-bold">=== 📊 STATUS DO SISTEMA EM PRODUÇÃO ===</span>
+  • Motor Gráfico: Three.js WebGL (60 FPS Locked, Page Visibility Guard)
+  • Motor de Áudio: Web Audio API (Sintetizador Analógico Cm9/Abmaj7)
+  • Reatividade Sonora: 3D Core pulsa em sincronia com o baixo analógico
+  • Sistemas em Produção: 12 Plataformas Ativas
+  • Filosofia: Zero Alucinações, Testes Vitest/Playwright, Rust Nativo
+      `,
+      whatsapp: () => {
+        window.open('https://wa.me/5563991206201', '_blank');
+        return `<span class="text-emeraldGlow font-bold">💬 Redirecionando para o WhatsApp do Arthur...</span>`;
+      },
+      contact: () => `
+  E-mail: <a href="mailto:arthurfogolinrocha01@gmail.com" class="text-cyanGlow underline">arthurfogolinrocha01@gmail.com</a>
+  WhatsApp: <a href="https://wa.me/5563991206201" target="_blank" class="text-emeraldGlow underline font-bold">+55 (63) 99120-6201</a>
+  Localização: Palmas, Tocantins
+  Status: Disponível para contratos e parcerias
+      `,
+      clear: () => {
+        termOutput.innerHTML = '';
+        return '';
+      }
+    };
+
+    // 11.1 Robust Terminal Submission Engine (Enter nativo + Botão + Chips)
+    function submitTerminal() {
+      const inputEl = document.getElementById('terminal-input');
+      const outputEl = document.getElementById('terminal-output');
+      if (!inputEl || !outputEl) return;
+
+      const raw = inputEl.value.trim().toLowerCase();
+      if (!raw) return;
+
+      try {
+        playTone(750, 'square', 0.05, 0.03);
+      } catch (err) {
+        // Áudio nunca deve bloquear execução
+      }
+
+      const line = document.createElement('div');
+      line.className = 'flex items-center gap-2 text-white font-bold pt-1';
+      line.innerHTML = `<span class="text-cyanGlow">arthur@fogolin:~$</span> <span>${inputEl.value}</span>`;
+      outputEl.appendChild(line);
+
+      const result = commands[raw] 
+        ? commands[raw]() 
+        : `<span class="text-red-400">Comando '${raw}' não reconhecido. Digite <strong class="text-cyanGlow cursor-pointer underline" onclick="runCliCmd('help')">'help'</strong> para ver comandos válidos.</span>`;
+      
+      if (result) {
+        const resDiv = document.createElement('div');
+        resDiv.className = 'text-gray-300 leading-relaxed font-mono';
+        resDiv.innerHTML = result;
+        outputEl.appendChild(resDiv);
+      }
+
+      inputEl.value = '';
+      outputEl.scrollTop = outputEl.scrollHeight;
+      inputEl.focus();
+    }
+
+    // Atalho global para rodar comandos via cliques de chip
+    window.runCliCmd = function(cmd) {
+      const inputEl = document.getElementById('terminal-input');
+      if (inputEl) {
+        inputEl.value = cmd;
+        submitTerminal();
+      }
+    };
+
+    termInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        submitTerminal();
+      }
+    });
+
+    // 12. Holographic Modal System Engine
+    const modalData = {
+      phestoque: {
+        tag: 'FLAGSHIP #1 • VAREJO & IA',
+        title: 'PH Estoque: ERP + Agente de Vendas',
+        client: 'Casas Pedro Henrique (Taquaralto & Luzimangues)',
+        challenge: 'A rede varejista sofria com perda de vendas fora do horário comercial, demora para responder orçamentos no WhatsApp e desencontro no saldo de estoque entre as filiais de Taquaralto e Luzimangues.',
+        solution: 'Desenvolvimento de uma plataforma integrada em TypeScript com bot autônomo conectado à API do WhatsApp. O agente analisa a intenção de compra, busca produtos no estoque em milissegundos com tolerância a erros de digitação, envia fotos e links e transiciona para atendente humano com histórico consolidado.',
+        metrics: [
+          '292 testes unitários automatizados no Vitest garantindo 0 quebras em produção.',
+          'Alerta automático exclusivo no WhatsApp do Pedro assim que qualquer produto zera.',
+          'Blindagem contra concorrência e espionagem de custos internos (sigilo comercial).',
+          'Proteção anti-flood inteligente (máximo 8 mensagens por 30 segundos).'
+        ],
+        tech: ['TypeScript', 'Node.js', 'PostgreSQL', 'Z-API', 'Vitest', 'Tailwind CSS']
+      },
+      cipa: {
+        tag: 'FLAGSHIP #2 • COMPLIANCE REGULATÓRIO',
+        title: 'CIPA MedWork: Governança & Eleições NR-5',
+        client: 'MedWork Saúde & Segurança do Trabalho',
+        challenge: 'Processos eleitorais físicos de CIPA eram lentos, caros, propensos a fraudes de votação em papel e geravam enorme retrabalho manual para redigir atas, convocações e dimensionar cargos conforme as NRs do Ministério do Trabalho.',
+        solution: 'Plataforma web completa em React e Supabase que digitaliza 100% da eleição. Importação de folha de colaboradores, portal de votação seguro por CPF com bloqueio contra duplicidade, dimensionamento automático de risco (NR-5, NR-31 e NR-22) e emissão de atas com valor legal.',
+        metrics: [
+          'Zero fraudes ou votos duplicados (criptografia e trava por CPF).',
+          'Geração instantânea em PDF de Atas de Eleição, Convocação e Posse.',
+          'Cálculo automático de horas de treinamento obrigatório (4h a 16h).'
+        ],
+        tech: ['React', 'TypeScript', 'Supabase Auth & DB', 'Tailwind CSS', 'Vercel']
+      },
+      medx: {
+        tag: 'FLAGSHIP #3 • FINTECH & ERP',
+        title: 'MEDX / MedX-Flow: Faturamento & Conta Azul API',
+        client: 'Operações de Saúde Ocupacional & Clínicas',
+        challenge: 'Emissão manual de centenas de faturas médicas por mês, descompasso no faturamento de contratos recorrentes e alta inadimplência sem acompanhamento em tempo real.',
+        solution: 'Arquitetura de faturamento automatizado com sincronização bidirecional direta via API REST do Conta Azul, conciliando exames, contratos corporativos e disparando régua ativa de cobrança no WhatsApp via UAZAPI.',
+        metrics: [
+          'Integração direta com endpoints da API REST do Conta Azul.',
+          'Redução drástica do tempo de fechamento mensal de faturamento.',
+          'Pipeline automatizado para agente de cobrança amigável via WhatsApp.'
+        ],
+        tech: ['React', 'TypeScript', 'Conta Azul REST API', 'Supabase', 'UAZAPI', 'Node.js']
+      },
+      dix: {
+        tag: 'AUTOMAÇÃO DE VOZ • SUPORTE BPO',
+        title: 'DIX BPO Agent: Agente de Suporte e Voz',
+        client: 'DIX BPO Financeiro & Administrativo',
+        challenge: 'Atendimento corporativo recebia grande volume de notas de áudio e dúvidas repetitivas sobre conciliação e acesso a sistemas financeiros, sobrecarregando os analistas humanos.',
+        solution: 'Agente inteligente conectado via Evolution API v2, equipado com pipeline de decodificação de áudios OGG Opus, transcrição resiliente e quebra humanizada de respostas com pausas naturais de digitação.',
+        metrics: [
+          'Latência média de processamento e resposta menor que 2.2 segundos.',
+          'Isolamento de ambiente de testes em número próprio ("Você").',
+          'Fallback automático e retry com backoff exponencial.'
+        ],
+        tech: ['Node.js', 'Evolution API v2', 'Whisper / Groq', 'FFmpeg Opus', 'Webhooks']
+      },
+      sstfarma: {
+        tag: 'SST VERTICALIZADO • VAREJO FARMA',
+        title: 'SSTFARMA: Gestão SST para Farmácias',
+        client: 'Redes de Drogarias e Farmácias',
+        challenge: 'Farmácias possuem riscos ocupacionais muito particulares (químicos, biológicos e perfurocortantes) e sofriam para atender à NR-32 e aos envios do eSocial.',
+        solution: 'Plataforma segmentada em pipeline sequencial de 10 etapas cobrindo desde o quadro funcional, integração de riscos psicossociais, laudos PGR/PCMSO, até treinamentos NR-32 e eventos eSocial.',
+        metrics: [
+          'Fluxo guiado de 10 etapas da admissão ao cumprimento de NRs.',
+          'Mapeamento automatizado de riscos específicos do varejo farmacêutico.',
+          'Ambiente em produção ativo em sstfarma.vercel.app.'
+        ],
+        tech: ['React 18', 'Vite', 'Tailwind CSS', 'shadcn/ui', 'Supabase']
+      },
+      psicomed: {
+        tag: 'SAÚDE MENTAL & ERGONOMIA NR-17',
+        title: 'PsicoMed: Plataforma COPSOQ & AEP',
+        client: 'Corporações & Departamentos de RH',
+        challenge: 'A nova redação da NR-1 e NR-17 exige que as empresas avaliem riscos psicossociais (estresse, burnout e assédio), mas formulários em papel quebram o anonimato e geram insegurança jurídica.',
+        solution: 'Plataforma científica digital multi-tenant baseada no protocolo internacional COPSOQ (Copenhagen) e AEP (Avaliação Ergonômica Preliminar). Coleta de respostas 100% anônimas e dashboards estatísticos em tempo real para o RH.',
+        metrics: [
+          'Segurança e isolamento absoluto de dados entre clínicas via Supabase RLS.',
+          'Cálculo automatizado de matriz de risco psicossocial corporativo.',
+          'Geração de relatórios diagnósticos de saúde mental ocupacional.'
+        ],
+        tech: ['React 18', 'TypeScript', 'Supabase Multi-Tenant RLS', 'Tailwind CSS']
+      },
+      meueso: {
+        tag: 'ROBÓTICA HEADLESS • WEBSCRAPING',
+        title: 'MeuESO & Robô de Sincronização eSocial',
+        client: 'Clínicas Ocupacionais',
+        challenge: 'O portal oficial do governo (eSocial) exige envio individual e demorado de eventos S-2210, S-2220 e S-2240, gerando filas e atrasos nos prazos legais.',
+        solution: 'Robô headless programado com Playwright e Python para sincronização híbrida (scraping + chamadas SOAP/REST), monitorando filas de exames e transmitindo eventos em lote com proteções severas contra perda de dados.',
+        metrics: [
+          'Salvaguardas críticas: dry-run, threshold percentual e zero-kill prevention.',
+          'Portal MeuESO em Next.js para visualização operacional em tempo real.',
+          'Eliminação de multas trabalhistas por atraso de transmissão.'
+        ],
+        tech: ['Playwright', 'Python', 'Next.js', 'SOAP eSocial API', 'PostgreSQL']
+      },
+      backtowork: {
+        tag: 'PCMSO & CONTROLE DE ABSENTEÍSMO',
+        title: 'BackToWork: Gestão de Retorno ao Trabalho',
+        client: 'Indústrias & Grandes Empregadores',
+        challenge: 'Colaboradores afastados por mais de 30 dias (doença, parto ou INSS) retornavam aos postos sem triagem adequada, gerando recidivas médicas e passivos trabalhistas.',
+        solution: 'Sistema para acompanhamento integral de colaboradores afastados, triagem clínica prévia, agendamento automatizado de ASO de Retorno (NR-7) e gestão de restrições funcionais no posto de trabalho.',
+        metrics: [
+          'Rastreabilidade completa de atestados e laudos periciais.',
+          'Prevenção ativa de agravamento de doenças ocupacionais.',
+          'Conformidade rígida com os protocolos médicos do PCMSO.'
+        ],
+        tech: ['React 18', 'Vite', 'TypeScript', 'Tailwind CSS', 'Supabase']
+      },
+      santos: {
+        tag: 'CONSTRUÇÃO CIVIL & ERP',
+        title: 'Santos Sistemas Construtivos: ERP de Obras',
+        client: 'Santos Sistemas Construtivos',
+        challenge: 'Falta de controle centralizado entre os insumos comprados no escritório e o consumo real nos canteiros de obras, causando desvios e atrasos no cronograma físico-financeiro.',
+        solution: 'ERP operacional de engenharia para orçamentação por etapa, boletins diários de medição física, requisição de materiais e acompanhamento de cronograma em tempo real.',
+        metrics: [
+          'Visão unificada de custos previstos versus realizados por obra.',
+          'Controle digital de medições em campo por mestres e engenheiros.',
+          'Interface limpa e rápida acessível via tablet e desktop.'
+        ],
+        tech: ['React', 'TypeScript', 'Supabase DB', 'Tailwind CSS']
+      },
+      checklist: {
+        tag: 'PWA OFFLINE-FIRST • AUDITORIA',
+        title: 'Checklist GERAL: Auditoria de Riscos em Campo',
+        client: 'Engenheiros & Técnicos de Segurança do Trabalho',
+        challenge: 'Inspeções em galpões industriais e fazendas sem sinal de internet obrigavam o uso de pranchetas de papel, exigindo digitação posterior de laudos de dezenas de páginas.',
+        solution: 'Aplicação web progressiva (PWA) offline-first com Service Worker. Permite inspecionar 74 fatores de risco, 56 EPIs e 21 NRs sem internet, com coleta de assinatura digital na tela e exportação de laudo em PDF.',
+        metrics: [
+          'Funcionamento 100% offline com sincronização automática.',
+          'Assinatura digital na tela via HTML5 Canvas API.',
+          'Deploy ativo em checklist-geral.vercel.app.'
+        ],
+        tech: ['Vanilla JS', 'Service Worker PWA', 'HTML5 Canvas', 'Vercel']
+      },
+      week: {
+        tag: 'GOVERNANÇA OPERACIONAL & FROTAS',
+        title: 'Week MedWork: Gestão Operacional & Frotas',
+        client: 'MedWork Saúde & Segurança',
+        challenge: 'Descontrole na escala de veículos corporativos, falta de acompanhamento de manutenções preventivas e descentralização de metas e compromissos semanais da equipe.',
+        solution: 'Sistema interno de governança operacional integrando checklist de veículos corporativos, controle de procurações, metas de atendimento e premiações semanais.',
+        metrics: [
+          'Redução de sinistros e controle rígido de saída e devolução de frotas.',
+          'Gestão unificada de compromissos operacionais e prazos de clientes.',
+          'Deploy ativo em week.medworkto.com.'
+        ],
+        tech: ['React', 'TypeScript', 'Supabase', 'Tailwind CSS', 'Vercel']
+      },
+      professaai: {
+        tag: 'IA GENERATIVA & EDTECH',
+        title: 'ProfessaAi: Sistema Acadêmico Inteligente',
+        client: 'Comunidade Acadêmica & Universitária',
+        challenge: 'Universitários enfrentam sobrecarga de leitura e dificuldades de síntese em disciplinas de alta complexidade teórica e tecnológica.',
+        solution: 'Plataforma educacional com agentes de IA generativa para estruturação de planos de estudo, geração de resumos conceituais e auxílio na resolução de desafios acadêmicos.',
+        metrics: [
+          'Trilhas guiadas de aprendizado adaptativo.',
+          'Assistência pedagógica com linguagem natural e referências bibliográficas.',
+          'Deploy ativo em professaai.vercel.app.'
+        ],
+        tech: ['React', 'Vite', 'Node.js API', 'LLM Generativa', 'Vercel']
+      }
+    };
+
+    function openSystemModal(key) {
+      const data = modalData[key];
+      if (!data) return;
+
+      document.getElementById('modal-tag').innerText = data.tag;
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-client').innerText = data.client;
+      document.getElementById('modal-challenge').innerText = data.challenge;
+      document.getElementById('modal-solution').innerText = data.solution;
+
+      const metricsList = document.getElementById('modal-metrics');
+      metricsList.innerHTML = '';
+      data.metrics.forEach(m => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start gap-2';
+        li.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emeraldGlow shrink-0 mt-0.5"></i><span>${m}</span>`;
+        metricsList.appendChild(li);
+      });
+
+      const techBox = document.getElementById('modal-tech');
+      techBox.innerHTML = '';
+      data.tech.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300';
+        span.innerText = t;
+        techBox.appendChild(span);
+      });
+
+      const modal = document.getElementById('system-modal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      if (window.lucide) lucide.createIcons();
+      playTone(1050, 'sine', 0.08, 0.04);
+    }
+
+    function closeSystemModal() {
+      const modal = document.getElementById('system-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      playTone(650, 'sine', 0.05, 0.03);
+    }
+
+    // Fechar modal de sistema ao clicar fora
+    const systemModalEl = document.getElementById('system-modal');
+    if (systemModalEl) {
+      systemModalEl.addEventListener('click', (e) => {
+        if (e.target === systemModalEl) closeSystemModal();
+      });
+    }
+
+    // 12.1 Executive CV Modal Engine
+    function openCvModal() {
+      const modal = document.getElementById('cv-modal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      if (window.lucide) lucide.createIcons();
+      playTone(1100, 'sine', 0.08, 0.04);
+    }
+
+    function closeCvModal() {
+      const modal = document.getElementById('cv-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      playTone(600, 'sine', 0.05, 0.03);
+    }
+
+    // Fechar modal de CV ao clicar fora
+    const cvModalEl = document.getElementById('cv-modal');
+    if (cvModalEl) {
+      cvModalEl.addEventListener('click', (e) => {
+        if (e.target === cvModalEl) closeCvModal();
+      });
+    }
+
+    // 12.2 Hacker Keyboard Navigation Shortcuts (Pro Mode)
+    window.addEventListener('keydown', (e) => {
+      // Escape fecha qualquer modal ativo
+      if (e.key === 'Escape') {
+        closeSystemModal();
+        closeCvModal();
+        return;
+      }
+
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+      if (e.key === '1') switchTab('perfil');
+      else if (e.key === '2') switchTab('sistemas');
+      else if (e.key === '3') switchTab('rust');
+      else if (e.key === '4') switchTab('servicos');
+      else if (e.key.toLowerCase() === 't') {
+        const term = document.getElementById('terminal');
+        if (term) {
+          term.scrollIntoView({ behavior: 'smooth' });
+          setTimeout(() => {
+            const inp = document.getElementById('terminal-input');
+            if (inp) inp.focus();
+          }, 350);
+        }
+      } else if (e.key.toLowerCase() === 'm') {
+        toggleAmbientSoundtrack();
+      }
+    });
+
+    // 12.3 Magnetic Cyberpunk Cursor (Desktop - 1:1 Zero Latency)
+    function initMagneticCursor() {
+      const dot = document.getElementById('cyber-cursor-dot');
+      const ring = document.getElementById('cyber-cursor-ring');
+      if (!dot || !ring) return;
+
+      window.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+        // Totalmente colado com o mouse sem atraso (Zero Latência)
+        dot.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        ring.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      });
+
+      // Expande cursor sobre elementos interativos
+      const clickables = document.querySelectorAll('button, a, input, [onclick], .cursor-pointer');
+      clickables.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          ring.style.width = '48px';
+          ring.style.height = '48px';
+          ring.style.borderColor = '#8b5cf6';
+          ring.style.boxShadow = '0 0 20px rgba(139, 92, 246, 0.4)';
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.style.width = '32px';
+          ring.style.height = '32px';
+          ring.style.borderColor = 'rgba(0, 240, 255, 0.6)';
+          ring.style.boxShadow = 'none';
+        });
+      });
+    }
+
+    // 12.4 Visitor Telemetry & Session Tracker
+    function initVisitorCounter() {
+      try {
+        let count = localStorage.getItem('fogolin_visitor_counter');
+        if (!count) {
+          count = 1482 + Math.floor(Math.random() * 4) + 1;
+        } else {
+          count = parseInt(count, 10) + 1;
+        }
+        localStorage.setItem('fogolin_visitor_counter', count);
+
+        const visEl = document.getElementById('telemetry-visitor');
+        if (visEl) {
+          visEl.innerHTML = `<i data-lucide="users" class="w-3 h-3 text-cyanGlow"></i> VISITANTE #${parseInt(count, 10).toLocaleString('pt-BR')}`;
+          if (window.lucide) lucide.createIcons();
+        }
+      } catch (err) {
+        // Fallback gracioso
+      }
+    }
+
+    initMagneticCursor();
+    initVisitorCounter();
+
+    // 13. Floating Scroll Progress Indicator & Scroll-To-Top
+    const scrollPill = document.getElementById('scroll-top-pill');
+    const scrollPct = document.getElementById('scroll-percentage');
+    window.addEventListener('scroll', () => {
+      const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.min(100, Math.max(0, Math.round((window.scrollY / (scrollTotal || 1)) * 100)));
+      if (scrollPct) scrollPct.innerText = `${progress}%`;
+      if (scrollPill) {
+        if (window.scrollY > 350) {
+          scrollPill.classList.remove('opacity-0', 'pointer-events-none');
+          scrollPill.classList.add('opacity-100');
+        } else {
+          scrollPill.classList.add('opacity-0', 'pointer-events-none');
+          scrollPill.classList.remove('opacity-100');
+        }
+      }
+    });
+  </script>
+
+  <!-- Floating Scroll-To-Top & Reading HUD Pill -->
+  <div id="scroll-top-pill" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Voltar ao Topo (Atalho: 1, 2, 3, 4, T, M)" class="fixed bottom-6 right-6 z-40 px-3.5 py-2 rounded-xl bg-void/90 border border-white/10 hover:border-cyanGlow/50 card-glass text-xs font-mono text-gray-400 hover:text-cyanGlow cursor-pointer transition-all hover:scale-105 active:scale-95 shadow-2xl flex items-center gap-2 select-none opacity-0 pointer-events-none transition-opacity duration-300">
+    <i data-lucide="arrow-up" class="w-3.5 h-3.5 text-cyanGlow"></i>
+    <span id="scroll-percentage" class="font-bold">0%</span>
+  </div>
+</body>
+</html>

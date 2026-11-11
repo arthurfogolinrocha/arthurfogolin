@@ -1,0 +1,7 @@
+*.png
+*.jpg
+!assets/**/*.jpg
+!assets/**/*.png
+.vercel
+node_modules
+.DS_Store
