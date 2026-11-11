@@ -608,12 +608,32 @@
 
       </div>
 
-      <!-- Right Column: 3D Holographic Portrait Frame with Interactive Photo Switcher -->
-      <div class="lg:col-span-5 flex justify-center min-w-0">
+      <!-- Right Column: 3D Holographic Projector Platform (Inspirado no Emissor Sci-Fi com Feixe Laser, Balãozinho e Pedestal) -->
+      <div class="lg:col-span-5 flex flex-col items-center justify-center min-w-0 relative">
+        
+        <!-- Balãozinho de Fala Interativo do Holograma de Arthur Fogolin -->
+        <div id="hero-speech-bubble" onclick="toggleArthurAi()" title="Clique para interagir com o Holograma de Arthur" class="relative sm:absolute -top-4 sm:-top-16 left-0 right-0 sm:left-auto sm:-right-4 sm:max-w-[340px] mb-4 sm:mb-0 p-3 sm:p-3.5 rounded-2xl bg-void/98 border border-cyanGlow/80 shadow-[0_0_30px_rgba(0,240,255,0.45)] backdrop-blur-2xl z-40 font-sans text-xs text-white space-y-1 transition-all hover:scale-105 active:scale-95 cursor-pointer group/speech animate-fadeIn select-none">
+          <div class="flex items-center justify-between font-mono text-[10px] text-cyanGlow">
+            <span class="flex items-center gap-1.5 font-bold tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-emeraldGlow animate-ping"></span>
+              ARTHUR FOGOLIN // PROJEÇÃO HOLO
+            </span>
+            <span class="text-gray-400 group-hover/speech:text-cyanGlow transition-colors font-mono text-[9px]">CLIQUE P/ FALAR ↗</span>
+          </div>
+          <p id="hero-speech-text" class="text-gray-200 text-xs sm:text-[13px] leading-relaxed font-normal">
+            "Olá! Sou a projeção holográfica de <strong>Arthur Fogolin</strong>. Posso te apresentar meus sistemas em produção, prazos e orçamentos. Clique aqui para falar comigo!"
+          </p>
+          <!-- Ponta do Balão de Fala apontando para o holograma -->
+          <div class="hidden sm:block absolute -bottom-2 left-10 w-4 h-4 bg-void/98 border-b border-r border-cyanGlow/80 rotate-45"></div>
+        </div>
+
         <div class="relative group cursor-pointer perspective-1000 max-w-full" id="hero-card">
           
           <!-- Outer Neon Ambient Aura -->
           <div class="absolute -inset-2 sm:-inset-3 bg-gradient-to-r from-cyanGlow via-purpleGlow to-pink-500 rounded-3xl blur-2xl opacity-50 group-hover:opacity-85 transition-opacity duration-700 animate-pulse-glow pointer-events-none"></div>
+
+          <!-- Arco Orbital Segmentado (Ficção Científica igual à Imagem de Referência) -->
+          <div class="holo-orbital-arc hidden sm:block"></div>
 
           <!-- Animated Border Wrapper -->
           <div class="animated-border p-1 max-w-full">
@@ -668,6 +688,19 @@
           </div>
 
         </div>
+
+        <!-- Pedestal Emissor Holográfico com Feixe Laser Ascendente (Inspirado no Globo Holográfico) -->
+        <div class="holo-pedestal-wrapper mt-2 select-none pointer-events-none hidden sm:flex">
+          <div class="holo-light-cone"></div>
+          <div class="holo-pedestal-base">
+            <div class="holo-pedestal-ring-outer"></div>
+            <div class="holo-pedestal-ring-inner"></div>
+            <div class="absolute inset-x-0 bottom-1 flex items-center justify-center font-mono text-[8px] text-cyanGlow/70 tracking-widest uppercase">
+              <span>EMISSOR HOLO // 60 FPS</span>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </section>
@@ -3885,9 +3918,13 @@
         // Ativa a simulação de fala do holograma (movimento natural de cabeça, vocoder na boca e anéis de onda)
         triggerHoloTalkingAnimation(3200);
 
-        // Se o áudio estiver disponível, fala uma síntese verbal rápida da resposta
+        // Atualiza também o balãozinho de fala no holograma do Hero e dispara a síntese de voz
         try {
           const plainSummary = replyHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split('.')[0] + '.';
+          const heroSpeech = document.getElementById('hero-speech-text');
+          if (heroSpeech && plainSummary.length > 5) {
+            heroSpeech.innerHTML = `"${escapeHtml(plainSummary)}"`;
+          }
           if (plainSummary.length > 5 && plainSummary.length < 120) {
             speakVoiceCue(plainSummary, 1.2);
           }
@@ -4065,11 +4102,11 @@
       </div>
     </button>
 
-    <!-- Arthur AI Chat Panel (Responsivo: 440px no Desktop, 92vw no Mobile, Máximo 580px de Altura) -->
-    <div id="ai-assistant-panel" class="hidden absolute bottom-14 left-0 w-[92vw] sm:w-[440px] md:w-[480px] max-w-[480px] h-[580px] max-h-[82vh] rounded-2xl bg-void/98 border border-cyanGlow/60 shadow-[0_15px_60px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden backdrop-blur-2xl animate-fadeIn">
+    <!-- Arthur AI Chat Panel (No Mobile: Aba Suspensa em Tela Cheia na Frente de Tudo; No Desktop: Caixa Flutuante 480px) -->
+    <div id="ai-assistant-panel" class="hidden fixed inset-0 z-[1000] w-full h-[100dvh] md:fixed md:inset-auto md:bottom-16 md:left-5 md:w-[480px] md:h-[600px] md:max-h-[85vh] md:rounded-2xl bg-void/98 border-0 md:border md:border-cyanGlow/60 shadow-[0_15px_60px_rgba(0,0,0,0.95)] flex flex-col overflow-hidden backdrop-blur-3xl animate-fadeIn">
       
       <!-- Panel Header com Mini Holograma Interativo -->
-      <div class="px-4 py-3 bg-surface/95 border-b border-white/10 flex items-center justify-between">
+      <div class="px-4 py-3 bg-surface/95 border-b border-white/10 flex items-center justify-between shrink-0">
         <div class="flex items-center gap-3">
           <div id="ai-holo-projector-box" class="relative w-12 h-12 rounded-xl border border-cyanGlow/80 shadow-[0_0_20px_rgba(0,240,255,0.6)] bg-surface shrink-0 holo-projector p-0.5 group">
             <div class="w-full h-full rounded-[10px] overflow-hidden relative">
@@ -4094,8 +4131,11 @@
             <span class="text-[10px] text-cyanGlow tracking-wider block font-mono">HOLOGRAMA VIRTUAL // 60 FPS</span>
           </div>
         </div>
-        <button onclick="toggleArthurAi()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all cursor-pointer">
+        
+        <!-- Botão Fechar em Destaque Alto Contraste para Mobile e Desktop -->
+        <button type="button" onclick="toggleArthurAi()" title="Fechar Assistente de IA" class="px-3.5 py-1.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 hover:text-white transition-all font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-md">
           <i data-lucide="x" class="w-4 h-4"></i>
+          <span>FECHAR</span>
         </button>
       </div>
 
