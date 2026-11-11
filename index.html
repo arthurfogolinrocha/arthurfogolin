@@ -1493,18 +1493,18 @@
       <div class="rounded-2xl card-glass border border-white/10 shadow-2xl overflow-hidden font-mono text-xs">
         
         <!-- Window Titlebar -->
-        <div class="px-4 py-3 bg-void/80 border-b border-white/5 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
-            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
-            <span class="text-gray-400 text-[11px] ml-2 font-semibold">arthur@fogolin-macbook: ~</span>
+        <div class="px-3 sm:px-4 py-2.5 sm:py-3 bg-void/80 border-b border-white/5 flex items-center justify-between gap-2 overflow-hidden">
+          <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500/80 inline-block"></span>
+            <span class="text-gray-400 text-[10px] sm:text-[11px] ml-1 sm:ml-2 font-semibold truncate">arthur@fogolin: ~</span>
           </div>
-          <span class="text-cyanGlow text-[11px] font-bold">zsh • rust 1.99.1 • mac silicon</span>
+          <span class="text-cyanGlow text-[10px] sm:text-[11px] font-bold shrink-0">zsh • rust 1.99</span>
         </div>
 
         <!-- Terminal Output Screen -->
-        <div id="terminal-output" class="p-4 sm:p-6 space-y-2 h-72 overflow-y-auto text-gray-300">
+        <div id="terminal-output" class="p-3.5 sm:p-6 space-y-2 h-72 overflow-y-auto overflow-x-hidden text-gray-300 max-w-full">
           <p class="text-cyanGlow font-bold">=== 🧠 Arthur Fogolin Shell [v1.0.0-release] ===</p>
           <p class="text-gray-400">Digite <span class="text-yellow-400 font-bold">help</span> para ver a lista de comandos disponíveis ou explore os projetos.</p>
           <div class="flex flex-wrap items-center gap-2 pt-2 text-[11px] text-gray-400">
@@ -1520,12 +1520,13 @@
         </div>
 
         <!-- Input Row (Form nativo com suporte garantido a Enter e botão Executar) -->
-        <form id="terminal-form" onsubmit="event.preventDefault(); submitTerminal();" class="px-4 py-3 bg-void/90 border-t border-white/5 flex items-center gap-2">
-          <span class="text-cyanGlow font-bold">arthur@fogolin:~$</span>
-          <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="digite um comando (ex: 'help', 'projects', 'token-cost')..." class="flex-1 bg-transparent border-none outline-none text-white font-mono text-xs focus:ring-0">
-          <button type="submit" id="terminal-submit-btn" class="px-3.5 py-1.5 rounded-lg bg-cyanGlow/20 hover:bg-cyanGlow/30 border border-cyanGlow/50 text-cyanGlow font-mono text-[11px] font-bold flex items-center gap-1.5 transition-all shadow-[0_0_12px_rgba(0,240,255,0.2)] active:scale-95">
+        <form id="terminal-form" onsubmit="event.preventDefault(); submitTerminal();" class="px-3 sm:px-4 py-2.5 sm:py-3 bg-void/90 border-t border-white/5 flex items-center gap-1.5 sm:gap-2 w-full max-w-full">
+          <span class="text-cyanGlow font-bold shrink-0 text-xs hidden sm:inline">arthur@fogolin:~$</span>
+          <span class="text-cyanGlow font-bold shrink-0 text-xs sm:hidden">~$</span>
+          <input type="text" id="terminal-input" autocomplete="off" spellcheck="false" placeholder="comando (ex: help, projects)..." class="flex-1 min-w-0 bg-transparent border-none outline-none text-white font-mono text-xs focus:ring-0 px-1">
+          <button type="submit" id="terminal-submit-btn" class="shrink-0 px-2.5 sm:px-3.5 py-1.5 rounded-lg bg-cyanGlow/20 hover:bg-cyanGlow/30 border border-cyanGlow/50 text-cyanGlow font-mono text-[11px] font-bold flex items-center gap-1 transition-all shadow-[0_0_12px_rgba(0,240,255,0.2)] active:scale-95">
             <span>ENTER</span>
-            <i data-lucide="corner-down-left" class="w-3.5 h-3.5"></i>
+            <i data-lucide="corner-down-left" class="w-3 h-3"></i>
           </button>
         </form>
 
