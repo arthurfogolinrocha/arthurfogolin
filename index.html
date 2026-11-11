@@ -367,7 +367,34 @@
       </div>
 
       <div class="flex items-center gap-2 sm:gap-5">
-        <span class="text-amber-400 font-semibold flex items-center gap-1">
+        <!-- Matrix Theme Selector Dropdown/Pill -->
+        <div class="relative group">
+          <button id="theme-btn" title="Alternar Matriz Cromática (Cyan, Hacker, Synthwave, Amber)" class="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/5 hover:bg-cyanGlow/10 border border-white/10 hover:border-cyanGlow/40 text-gray-300 hover:text-cyanGlow font-mono text-[9px] sm:text-[10px] transition-all">
+            <span id="theme-indicator" class="w-2 h-2 rounded-full bg-cyanGlow inline-block shadow-[0_0_6px_#00f0ff]"></span>
+            <span id="theme-name" class="font-bold tracking-wider">CYAN</span>
+            <i data-lucide="chevron-down" class="w-2.5 h-2.5 opacity-60"></i>
+          </button>
+          <div class="absolute right-0 top-full mt-1 hidden group-hover:block hover:block p-1 rounded-xl bg-void/95 border border-cyanGlow/40 backdrop-blur-md shadow-2xl z-50 min-w-[130px] space-y-0.5 font-mono text-[10px]">
+            <button onclick="setMatrixTheme('cyan')" class="w-full text-left px-2.5 py-1 rounded-lg hover:bg-cyanGlow/20 text-cyanGlow flex items-center justify-between font-bold">
+              <span>01. Cyan Matrix</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow"></span>
+            </button>
+            <button onclick="setMatrixTheme('hacker')" class="w-full text-left px-2.5 py-1 rounded-lg hover:bg-emeraldGlow/20 text-emeraldGlow flex items-center justify-between font-bold">
+              <span>02. Hacker Green</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span>
+            </button>
+            <button onclick="setMatrixTheme('synthwave')" class="w-full text-left px-2.5 py-1 rounded-lg hover:bg-pink-500/20 text-pink-400 flex items-center justify-between font-bold">
+              <span>03. Synthwave 80s</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
+            </button>
+            <button onclick="setMatrixTheme('amber')" class="w-full text-left px-2.5 py-1 rounded-lg hover:bg-amber-400/20 text-amber-400 flex items-center justify-between font-bold">
+              <span>04. Amber 2077</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            </button>
+          </div>
+        </div>
+        <span class="text-white/20 hidden sm:inline">|</span>
+        <span class="text-amber-400 font-semibold hidden sm:flex items-center gap-1">
           <i data-lucide="cpu" class="w-3 h-3 text-amber-400"></i>
           12 CORES (APPLE SILICON M)
         </span>
@@ -1543,6 +1570,87 @@
           </div>
         </div>
 
+        <!-- NOVO: SIMULADOR INTERATIVO DE ROI COMERCIAL (MÓDULO 3) -->
+        <div class="card-glass rounded-2xl p-6 sm:p-8 border border-emeraldGlow/40 space-y-6 relative overflow-hidden">
+          <div class="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-emeraldGlow/10 blur-3xl pointer-events-none"></div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span class="text-emeraldGlow font-mono text-xs font-bold tracking-widest block">// RETORNO SOBRE INVESTIMENTO (ROI)</span>
+              <h3 class="font-orbitron text-xl sm:text-2xl font-bold text-white">Calculadora de Economia & Eficiência de IA</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-emeraldGlow/15 border border-emeraldGlow/40 text-emeraldGlow font-mono text-xs font-semibold">ECONOMIA DE ATÉ 75%</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center font-mono">
+            
+            <!-- Sliders de Simulação -->
+            <div class="lg:col-span-7 space-y-6 text-xs">
+              
+              <!-- Slider 1: Mensagens por Mês -->
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="text-gray-300 font-bold">CLIENTES / MENSAGENS POR MÊS:</label>
+                  <span id="roi-volume-display" class="text-cyanGlow font-bold text-sm">4.000 msgs</span>
+                </div>
+                <input type="range" id="roi-volume-slider" min="500" max="25000" step="500" value="4000" class="w-full accent-cyanGlow cursor-pointer">
+                <div class="flex justify-between text-[10px] text-gray-500">
+                  <span>500</span>
+                  <span>10.000</span>
+                  <span>25.000+</span>
+                </div>
+              </div>
+
+              <!-- Slider 2: Quantidade de Atendentes Humanos Atuais -->
+              <div class="space-y-2">
+                <div class="flex justify-between items-center">
+                  <label class="text-gray-300 font-bold">ATENDENTES HUMANOS NA OPERAÇÃO:</label>
+                  <span id="roi-staff-display" class="text-purpleGlow font-bold text-sm">2 pessoas</span>
+                </div>
+                <input type="range" id="roi-staff-slider" min="1" max="8" step="1" value="2" class="w-full accent-purpleGlow cursor-pointer">
+                <div class="flex justify-between text-[10px] text-gray-500">
+                  <span>1 atendente</span>
+                  <span>4 atendentes</span>
+                  <span>8+ atendentes</span>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 text-[11px] text-gray-300 font-sans space-y-1">
+                <strong class="text-white block font-mono">💡 O que a IA do Arthur assume:</strong>
+                <p>Triagem instantânea, envio de fotos e catálogo em menos de 1.4s, qualificação do lead e agendamento automático 24 horas por dia, liberando sua equipe humana apenas para o fechamento de alto valor.</p>
+              </div>
+
+            </div>
+
+            <!-- Placar de Resultados de ROI -->
+            <div class="lg:col-span-5 card-glass rounded-2xl p-6 border border-emeraldGlow/40 bg-void/90 space-y-4 text-center">
+              <span class="text-[11px] text-gray-400 uppercase tracking-widest block font-bold">Projeção Anual de Economia</span>
+              
+              <div class="p-4 rounded-xl bg-emeraldGlow/10 border border-emeraldGlow/30 space-y-1">
+                <div id="roi-annual-savings" class="font-orbitron text-2xl sm:text-3xl font-black text-emeraldGlow">R$ 48.000</div>
+                <span class="text-[10px] text-emeraldGlow/80 font-bold block uppercase tracking-wider">Economia Líquida por Ano</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-[11px] text-left pt-2 border-t border-white/10 font-mono">
+                <div class="p-2 rounded bg-white/5">
+                  <span class="text-gray-500 block text-[9px]">CUSTO ATUAL (CLT):</span>
+                  <span id="roi-cost-current" class="text-red-400 font-bold">R$ 4.800/mês</span>
+                </div>
+                <div class="p-2 rounded bg-white/5">
+                  <span class="text-gray-500 block text-[9px]">COM AGENTE IA:</span>
+                  <span id="roi-cost-ai" class="text-cyanGlow font-bold">R$ 800/mês</span>
+                </div>
+              </div>
+
+              <button type="button" onclick="sendRoiToWhatsapp()" class="w-full py-3 px-4 rounded-xl bg-emeraldGlow hover:bg-emerald-400 text-black font-extrabold font-mono text-xs tracking-wider flex items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <i data-lucide="calculator" class="w-4 h-4"></i>
+                <span>CONTRATAR COM ESTA ECONOMIA</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
         <!-- Arena de Inovação: HackaRun 2026 Trophy & Countdown -->
         <div class="card-glass rounded-2xl p-6 sm:p-8 border border-yellow-500/30 relative overflow-hidden">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -2354,6 +2462,9 @@
         }
         if (eqBars) eqBars.classList.add('eq-playing');
         playTone(920, 'sine', 0.1, 0.05);
+        if (typeof speakArthurWelcome === 'function') {
+          setTimeout(speakArthurWelcome, 600);
+        }
       } else {
         musicMasterGain.gain.linearRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
         clearInterval(synthSeqTimer);
@@ -3461,6 +3572,228 @@
         }
       }
     }, { passive: true });
+
+    // 14. NOVO: Motor do Arthur AI Assistant (Módulo 1)
+    let aiAssistantOpen = false;
+    window.toggleArthurAi = function() {
+      aiAssistantOpen = !aiAssistantOpen;
+      const panel = document.getElementById('ai-assistant-panel');
+      if (panel) {
+        if (aiAssistantOpen) {
+          panel.classList.remove('hidden');
+          playTone(1150, 'triangle', 0.08, 0.05);
+          setTimeout(() => {
+            const inp = document.getElementById('ai-chat-input');
+            if (inp) inp.focus();
+            if (window.lucide) lucide.createIcons();
+          }, 150);
+        } else {
+          panel.classList.add('hidden');
+          playTone(700, 'sine', 0.05, 0.03);
+        }
+      }
+    };
+
+    const aiKnowledgeBase = [
+      {
+        match: ['preco', 'preço', 'quanto custa', 'valor', 'orcamento', 'orçamento', 'custo', 'investimento', 'bot'],
+        reply: `<strong>Investimento em Agentes de IA:</strong><br>• <strong>Agente WhatsApp B2C:</strong> A partir de R$ 2.500 a R$ 4.800 (implantação única + SLA &lt; 1.4s).<br>• <strong>ChatGPT B2B & Clínicas:</strong> R$ 3.500 a R$ 7.000 (com transcrição de áudio Opus e integração com ERP).<br>• <strong>Automação Computer-Use (Totvs/Sankhya):</strong> R$ 4.000 a R$ 8.500+.<br><br>👉 Todo projeto conta com <strong>Zero Alucinações</strong> e <strong>Kill-Switch imediato</strong>.`
+      },
+      {
+        match: ['sistemas', 'cases', 'projetos', 'ph estoque', 'dix', 'producao', 'produção', 'carteira', 'experiencia', 'experiência'],
+        reply: `<strong>Sistemas de Destaque em Produção:</strong><br>1. <strong>PH Estoque:</strong> ERP e bot comercial para rede varejista (292 testes Vitest e alerta instantâneo quando o estoque zera).<br>2. <strong>DIX BPO Agent:</strong> Triagem de voz e CRM com Whisper e transbordo humano.<br>3. <strong>CIPA MedWork & SSTFARMA:</strong> Votação auditável por CPF e conformidade regulatória NR-5/NR-32.<br>4. <strong>token-cost & fogolin-cli:</strong> Motores nativos em Rust rodando abaixo de 1.8ms.`
+      },
+      {
+        match: ['kill', 'switch', 'seguranca', 'segurança', 'alucinacao', 'alucinação', 'trava', 'risco'],
+        reply: `<strong>Blindagem de Engenharia & Garantias:</strong><br>• <strong>Kill-Switch Obrigatório:</strong> Seletor imediato que desliga a IA na hora e transfere a conversa para atendimento humano.<br>• <strong>Zero Alucinações de Preço:</strong> Os agentes nunca "inventam" valores; toda resposta consulta antes a base relacional tipada (PostgreSQL).<br>• <strong>Proteção Anti-Flood:</strong> Limite de mensagens para evitar spam ou custos indesejados.`
+      },
+      {
+        match: ['whatsapp', 'contato', 'reuniao', 'reunião', 'falar', 'contratar', 'agenda', 'email', 'telefone'],
+        reply: `<strong>Contato Direto com Arthur Fogolin:</strong><br>• <strong>WhatsApp:</strong> <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20estou%20conversando%20com%20sua%20IA%20e%20gostaria%20de%20fechar%20um%20projeto!" target="_blank" class="text-cyanGlow underline font-bold">+55 (63) 99120-6201</a><br>• <strong>E-mail:</strong> arthurfogolinrocha01@gmail.com<br>• <strong>Cidade:</strong> Palmas – TO (Atendimento remoto para todo o Brasil).`
+      },
+      {
+        match: ['rust', 'stack', 'tecnologia', 'linguagens', 'next', 'python'],
+        reply: `<strong>Stack Tecnológica de Arthur Fogolin:</strong><br>• <strong>Performance Pura:</strong> Rust 1.99 nativo (latência ultra-baixa sem Garbage Collector).<br>• <strong>Sistemas Web:</strong> Next.js 16, TypeScript, Tailwind CSS, Supabase RLS, PostgreSQL e Drizzle ORM.<br>• <strong>IA & Agentes:</strong> Gemini Flash & Carbon, Claude Code, Groq Whisper Opus, Evolution API v2.`
+      }
+    ];
+
+    window.askArthurAi = function(promptText) {
+      const input = document.getElementById('ai-chat-input');
+      if (input) {
+        input.value = promptText;
+        submitArthurAiChat();
+      }
+    };
+
+    window.submitArthurAiChat = function() {
+      const input = document.getElementById('ai-chat-input');
+      const history = document.getElementById('ai-chat-history');
+      if (!input || !history) return;
+      const userText = input.value.trim();
+      if (!userText) return;
+
+      // 1. Renderiza mensagem do usuário
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex justify-end';
+      userBubble.innerHTML = `
+        <div class="p-3 rounded-2xl rounded-tr-sm bg-gradient-to-r from-cyanGlow/20 to-purpleGlow/20 border border-cyanGlow/40 text-white max-w-[85%] leading-relaxed">
+          <p>${escapeHtml(userText)}</p>
+        </div>
+      `;
+      history.appendChild(userBubble);
+      input.value = '';
+      history.scrollTop = history.scrollHeight;
+      playTone(850, 'sine', 0.04, 0.02);
+
+      // 2. Análise semântica e resposta da IA
+      setTimeout(() => {
+        const lower = userText.toLowerCase();
+        let matched = aiKnowledgeBase.find(item => item.match.some(m => lower.includes(m)));
+
+        let replyHtml = matched ? matched.reply : `Entendi! Posso arquitetar uma solução sob medida para sua necessidade com IA autônoma e alta precisão. Gostaria de enviar sua demanda diretamente para o WhatsApp pessoal do Arthur com um clique?`;
+
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'flex items-start gap-2 animate-fadeIn';
+        aiBubble.innerHTML = `
+          <div class="w-6 h-6 rounded-md bg-cyanGlow/20 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow shrink-0 mt-0.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          </div>
+          <div class="p-3 rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 max-w-[85%] space-y-2 leading-relaxed">
+            <span class="text-[10px] font-mono text-cyanGlow font-bold block">Arthur AI // Virtual Core</span>
+            <div>${replyHtml}</div>
+            <div class="pt-1">
+              <a href="https://wa.me/5563991206201?text=${encodeURIComponent('Olá Arthur! Estive conversando com seu Assistente de IA sobre: ' + userText)}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emeraldGlow/20 border border-emeraldGlow/40 text-emeraldGlow text-[10px] font-mono font-bold hover:bg-emeraldGlow/30 transition-all">
+                <span>Continuar no WhatsApp</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+              </a>
+            </div>
+          </div>
+        `;
+        history.appendChild(aiBubble);
+        if (window.lucide) lucide.createIcons();
+        history.scrollTop = history.scrollHeight;
+        playTone(1100, 'triangle', 0.08, 0.04);
+      }, 350);
+    };
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // 15. NOVO: Seletor de Temas Cromáticos da Matriz (Módulo 2)
+    const matrixThemes = {
+      cyan: {
+        name: 'CYAN',
+        color: '#00f0ff',
+        secondary: '#8b5cf6',
+        hex3d: 0x00f0ff,
+        knot3d: 0x8b5cf6
+      },
+      hacker: {
+        name: 'HACKER',
+        color: '#10b981',
+        secondary: '#059669',
+        hex3d: 0x10b981,
+        knot3d: 0x059669
+      },
+      synthwave: {
+        name: 'SYNTH',
+        color: '#ec4899',
+        secondary: '#8b5cf6',
+        hex3d: 0xec4899,
+        knot3d: 0x8b5cf6
+      },
+      amber: {
+        name: 'AMBER',
+        color: '#f59e0b',
+        secondary: '#ef4444',
+        hex3d: 0xf59e0b,
+        knot3d: 0xef4444
+      }
+    };
+
+    window.setMatrixTheme = function(themeKey) {
+      const theme = matrixThemes[themeKey] || matrixThemes.cyan;
+      const ind = document.getElementById('theme-indicator');
+      const name = document.getElementById('theme-name');
+      if (ind) {
+        ind.style.backgroundColor = theme.color;
+        ind.style.boxShadow = `0 0 8px ${theme.color}`;
+      }
+      if (name) name.innerText = theme.name;
+
+      // Atualiza cores dinâmicas no WebGL Three.js
+      if (typeof terrainMat !== 'undefined') terrainMat.color.setHex(theme.hex3d);
+      if (typeof coreMat !== 'undefined') coreMat.color.setHex(theme.hex3d);
+      if (typeof knotMat !== 'undefined') knotMat.color.setHex(theme.knot3d);
+      if (typeof gridHelper !== 'undefined') {
+        gridHelper.material.color.setHex(theme.hex3d);
+      }
+
+      playTone(1250, 'sine', 0.07, 0.04);
+    };
+
+    // 16. NOVO: Simulador de ROI Comercial Interativo (Módulo 3)
+    const roiVolSlider = document.getElementById('roi-volume-slider');
+    const roiStaffSlider = document.getElementById('roi-staff-slider');
+    const roiVolDisplay = document.getElementById('roi-volume-display');
+    const roiStaffDisplay = document.getElementById('roi-staff-display');
+    const roiAnnualSavings = document.getElementById('roi-annual-savings');
+    const roiCostCurrent = document.getElementById('roi-cost-current');
+    const roiCostAi = document.getElementById('roi-cost-ai');
+
+    function updateRoiCalc() {
+      if (!roiVolSlider || !roiStaffSlider) return;
+      const volume = parseInt(roiVolSlider.value, 10);
+      const staff = parseInt(roiStaffSlider.value, 10);
+
+      if (roiVolDisplay) roiVolDisplay.innerText = `${volume.toLocaleString('pt-BR')} msgs`;
+      if (roiStaffDisplay) roiStaffDisplay.innerText = `${staff} ${staff === 1 ? 'pessoa' : 'pessoas'}`;
+
+      // Custo mensal CLT estimado: R$ 2.400 por atendente (salário + encargos/ferramentas)
+      const monthlyCurrent = staff * 2400;
+      // Custo mensal com IA autônoma Arthur (servidor + tokens Flash): R$ 350 fixo + R$ 0,08/atendimento
+      const monthlyAi = Math.round(350 + (volume * 0.08));
+      const monthlySavings = Math.max(800, monthlyCurrent - monthlyAi);
+      const annualSavings = monthlySavings * 12;
+
+      if (roiCostCurrent) roiCostCurrent.innerText = `R$ ${monthlyCurrent.toLocaleString('pt-BR')}/mês`;
+      if (roiCostAi) roiCostAi.innerText = `R$ ${monthlyAi.toLocaleString('pt-BR')}/mês`;
+      if (roiAnnualSavings) roiAnnualSavings.innerText = `R$ ${annualSavings.toLocaleString('pt-BR')}`;
+    }
+
+    if (roiVolSlider && roiStaffSlider) {
+      roiVolSlider.addEventListener('input', updateRoiCalc);
+      roiStaffSlider.addEventListener('input', updateRoiCalc);
+      updateRoiCalc();
+    }
+
+    window.sendRoiToWhatsapp = function() {
+      const vol = roiVolSlider ? roiVolSlider.value : '4000';
+      const staff = roiStaffSlider ? roiStaffSlider.value : '2';
+      const savings = roiAnnualSavings ? roiAnnualSavings.innerText : 'R$ 48.000';
+      const msg = `Olá Arthur! Fiz a simulação de ROI no seu portfólio para ${vol} atendimentos/mês e ${staff} atendentes. Vi a projeção de economia de ${savings}/ano e gostaria de implantar um Agente de IA na minha empresa.`;
+      window.open(`https://wa.me/5563991206201?text=${encodeURIComponent(msg)}`, '_blank');
+    };
+
+    // 17. NOVO: Voz Neural Sintética de Boot (Módulo 4)
+    let welcomeSpoken = false;
+    window.speakArthurWelcome = function() {
+      if (welcomeSpoken) return;
+      if (!('speechSynthesis' in window)) return;
+      try {
+        const text = "Sistemas Arthur Fogolin ativados. Núcleo neural operacional.";
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'pt-BR';
+        utter.rate = 1.05;
+        utter.pitch = 0.95;
+        const voices = window.speechSynthesis.getVoices();
+        const ptVoice = voices.find(v => v.lang.includes('pt') || v.lang.includes('BR'));
+        if (ptVoice) utter.voice = ptVoice;
+        window.speechSynthesis.speak(utter);
+        welcomeSpoken = true;
+      } catch (e) {}
+    };
   </script>
 
   <!-- Compact Floating Scroll-To-Top & Reading Percentage Pill (Zero Empty Space, Compact on Mobile & Desktop) -->
@@ -3468,5 +3801,72 @@
     <svg class="w-2.5 h-2.5 text-cyanGlow shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
     <span id="scroll-percentage" class="font-bold tracking-tight">0%</span>
   </button>
+
+  <!-- NOVO: ARTHUR AI ASSISTANT FLUTUANTE (MÓDULO 1) -->
+  <div id="ai-assistant-wrapper" class="fixed bottom-3 left-3 sm:bottom-4 sm:left-4 z-40 font-mono select-none">
+    <!-- Trigger Pill Button -->
+    <button type="button" id="ai-assistant-toggle-btn" onclick="toggleArthurAi()" title="Conversar com o Arthur AI (Assistente Inteligente)" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-void/95 border border-cyanGlow/50 hover:border-cyanGlow text-xs text-white flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-[0_0_25px_rgba(0,240,255,0.3)] group cursor-pointer">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyanGlow opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyanGlow"></span>
+      </span>
+      <span class="font-orbitron font-extrabold text-cyanGlow tracking-wider text-[11px] sm:text-xs">ARTHUR AI</span>
+      <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-cyanGlow/15 text-[9px] text-cyanGlow border border-cyanGlow/30 font-bold">ONLINE</span>
+    </button>
+
+    <!-- Arthur AI Chat Panel -->
+    <div id="ai-assistant-panel" class="hidden absolute bottom-12 left-0 w-[92vw] max-w-[390px] sm:w-[390px] h-[520px] max-h-[82vh] rounded-2xl bg-void/95 border border-cyanGlow/50 shadow-[0_0_50px_rgba(0,240,255,0.3)] flex flex-col overflow-hidden backdrop-blur-xl animate-fadeIn">
+      
+      <!-- Panel Header -->
+      <div class="px-4 py-3 bg-surface/90 border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyanGlow/30 to-purpleGlow/40 border border-cyanGlow/60 flex items-center justify-center text-cyanGlow">
+            <i data-lucide="bot" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h4 class="font-orbitron font-extrabold text-white text-xs tracking-wider flex items-center gap-1.5">
+              <span>Arthur AI Assistant</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow animate-ping"></span>
+            </h4>
+            <span class="text-[9px] text-cyanGlow tracking-wider block">AUTONOMOUS ENGINE v2.6</span>
+          </div>
+        </div>
+        <button onclick="toggleArthurAi()" class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="px-3 py-2 bg-void/60 border-b border-white/5 flex gap-1.5 overflow-x-auto whitespace-nowrap scrollbar-none text-[10px]">
+        <button onclick="askArthurAi('quanto custa um bot')" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 text-gray-300 hover:text-cyanGlow transition-all shrink-0">💰 Quanto custa um bot?</button>
+        <button onclick="askArthurAi('quais sistemas')" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 text-gray-300 hover:text-cyanGlow transition-all shrink-0">🚀 Sistemas em produção</button>
+        <button onclick="askArthurAi('como funciona o kill switch')" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 text-gray-300 hover:text-cyanGlow transition-all shrink-0">🛡️ Kill-Switch</button>
+        <button onclick="askArthurAi('agendar reuniao')" class="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-cyanGlow/20 border border-white/10 text-gray-300 hover:text-cyanGlow transition-all shrink-0">📅 Falar no WhatsApp</button>
+      </div>
+
+      <!-- Chat History Box -->
+      <div id="ai-chat-history" class="flex-1 p-3.5 space-y-3 overflow-y-auto font-sans text-xs text-gray-200">
+        <!-- Initial Welcome Message from AI -->
+        <div class="flex items-start gap-2">
+          <div class="w-6 h-6 rounded-md bg-cyanGlow/20 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow shrink-0 mt-0.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          </div>
+          <div class="p-3 rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 max-w-[85%] space-y-1.5 leading-relaxed">
+            <span class="text-[10px] font-mono text-cyanGlow font-bold block">Arthur AI // Virtual Core</span>
+            <p>Olá! Sou a inteligência artificial do portfólio de <strong>Arthur Fogolin</strong>. Posso te apresentar os sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega e como blindar sua empresa com automação. O que você gostaria de saber?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input Form -->
+      <form id="ai-chat-form" onsubmit="event.preventDefault(); submitArthurAiChat();" class="p-2.5 bg-surface/90 border-t border-white/10 flex items-center gap-1.5">
+        <input type="text" id="ai-chat-input" placeholder="Pergunte sobre bots, prazos, preços..." autocomplete="off" class="flex-1 min-w-0 bg-void/80 border border-white/10 rounded-xl px-3 py-2 text-white font-sans text-xs focus:outline-none focus:border-cyanGlow/60 transition-all">
+        <button type="submit" class="p-2.5 rounded-xl bg-gradient-to-r from-cyanGlow to-blue-600 hover:opacity-90 text-black font-bold shrink-0 transition-all active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.25)]">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+        </button>
+      </form>
+
+    </div>
+  </div>
 </body>
 </html>
