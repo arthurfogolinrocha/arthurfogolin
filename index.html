@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Arthur Fogolin (Arthur Fogolin Rocha) — Arquiteto de Sistemas de IA & Engenheiro de Software</title>
   <meta name="description" content="Portfólio Oficial de Arthur Fogolin Rocha (Palmas, TO). Arquiteto de Agentes Autônomos de Inteligência Artificial (WhatsApp & B2B), Automação de ERPs, Sistemas Web Next.js e Motores de Alta Performance em Rust.">
   <meta name="keywords" content="Arthur Fogolin, Arthur Fogolin Rocha, Desenvolvedor de IA, Inteligência Artificial Palmas, Agentes de IA WhatsApp, Automação Empresarial IA, Engenheiro de Software Tocantins, Rust Developer Brasil, Sistemas Sob Medida, UniCatólica IA">
@@ -386,6 +386,129 @@
       100% { transform: scale(1.5); opacity: 0; }
     }
 
+    /* Holographic Stage Cyberpunk Grid & Animations */
+    .holo-stage-grid {
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.12) 1px, transparent 1px);
+      background-size: 20px 20px;
+      transform: perspective(320px) rotateX(55deg);
+      transform-origin: bottom center;
+    }
+
+    /* Shader Cibernético para o Homem Holográfico Azul */
+    .holo-man-shader {
+      filter: saturate(1.8) hue-rotate(180deg) brightness(1.25) contrast(1.15) drop-shadow(0 0 18px rgba(0, 240, 255, 0.95));
+      opacity: 0.94;
+      transition: all 0.3s ease;
+    }
+    .speaking .holo-man-shader {
+      filter: saturate(2.4) hue-rotate(180deg) brightness(1.4) contrast(1.25) drop-shadow(0 0 30px rgba(0, 240, 255, 1)) !important;
+      animation: holoManSpeechBob 0.8s ease-in-out infinite alternate !important;
+    }
+    @keyframes holoManSpeechBob {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-4px) scale(1.03); }
+    }
+
+    /* Flutuação Contínua da Figura Holográfica no Ar */
+    .holo-man-float {
+      animation: holoLevitate 3.6s ease-in-out infinite;
+    }
+    @keyframes holoLevitate {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Scanlines Dinâmicas do Holograma */
+    .holo-scanlines {
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 240, 255, 0) 0px,
+        rgba(0, 240, 255, 0) 2px,
+        rgba(0, 240, 255, 0.28) 3px,
+        rgba(0, 240, 255, 0.28) 4px
+      );
+      background-size: 100% 4px;
+      animation: holoScanlineRoll 3.5s linear infinite;
+    }
+    @keyframes holoScanlineRoll {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 100%; }
+    }
+
+    /* Feixe Cônico Laser Vertical */
+    .holo-cone-beam {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 230px;
+      clip-path: polygon(18% 0%, 82% 0%, 96% 100%, 4% 100%);
+      background: linear-gradient(to top, rgba(0, 240, 255, 0.42) 0%, rgba(0, 240, 255, 0.14) 65%, transparent 100%);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+      animation: holoConeFlicker 3s ease-in-out infinite alternate;
+    }
+    @keyframes holoConeFlicker {
+      0% { opacity: 0.8; transform: translateX(-50%) scaleX(0.98); }
+      100% { opacity: 1; transform: translateX(-50%) scaleX(1.03); }
+    }
+
+    /* Pedestal Emissor Circular com Anéis Girando */
+    .holo-pedestal-emitter {
+      position: relative;
+      width: 200px;
+      height: 50px;
+      margin: 0 auto;
+      perspective: 320px;
+      transform-style: preserve-3d;
+    }
+    .holo-ring-outer {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px dashed rgba(0, 240, 255, 0.8);
+      box-shadow: 0 0 22px rgba(0, 240, 255, 0.55), inset 0 0 16px rgba(0, 240, 255, 0.35);
+      animation: spinSlow 12s linear infinite;
+      transform: rotateX(65deg);
+    }
+    .holo-ring-inner {
+      position: absolute;
+      inset: 8px 18px;
+      border-radius: 50%;
+      border: 1.5px dotted rgba(56, 189, 248, 0.95);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.65);
+      animation: spinReverse 7s linear infinite;
+      transform: rotateX(65deg);
+    }
+    .holo-core-spark {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 34px;
+      height: 11px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, #ffffff 0%, #00f0ff 70%, transparent 100%);
+      filter: blur(1.5px);
+      box-shadow: 0 0 18px #00f0ff;
+      animation: holoCoreGlow 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes holoCoreGlow {
+      0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.75; }
+      100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    }
+
+    /* Prevenção de Auto-Zoom no Safari e Navegadores Móveis (Instagram / WhatsApp In-App WebViews) */
+    @media (max-width: 768px) {
+      input, textarea, select, #ai-chat-input {
+        font-size: 16px !important;
+      }
+    }
+
     /* Clean Print Styles for Executive CV */
     @media print {
       body * { visibility: hidden !important; }
@@ -460,16 +583,17 @@
       <div class="max-w-7xl 2xl:max-w-[1480px] mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
         
         <!-- Brand Logo -->
-        <a href="#inicio" onclick="scrollToTop(event)" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-          <div class="relative w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-cyanGlow/20 to-purpleGlow/30 border border-cyanGlow/50 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+        <a href="#inicio" onclick="scrollToTop(event)" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+          <div class="relative w-8 h-8 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-tr from-cyanGlow/20 to-purpleGlow/30 border border-cyanGlow/50 flex items-center justify-center group-hover:scale-105 transition-transform overflow-hidden shadow-[0_0_15px_rgba(0,240,255,0.2)]">
             <div class="absolute inset-0 bg-cyanGlow/20 animate-pulse"></div>
-            <span class="font-orbitron font-extrabold text-cyanGlow text-base sm:text-lg tracking-wider relative z-10">AF</span>
+            <span class="font-orbitron font-extrabold text-cyanGlow text-sm sm:text-lg tracking-wider relative z-10">AF</span>
           </div>
           <div>
             <span class="font-orbitron font-bold text-white tracking-widest text-xs sm:text-sm block">ARTHUR FOGOLIN</span>
-            <span class="font-mono text-[9px] sm:text-[10px] text-cyanGlow tracking-wider flex items-center gap-1.5 font-semibold">
+            <span class="font-mono text-[9px] sm:text-[10px] text-cyanGlow tracking-wider flex items-center gap-1 font-semibold">
               <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow animate-ping shrink-0"></span>
-              <span class="truncate">AI ARCHITECT & RUST DEV</span>
+              <span class="hidden sm:inline">AI ARCHITECT & RUST DEV</span>
+              <span class="sm:hidden">AI ARCHITECT</span>
             </span>
           </div>
         </a>
@@ -483,14 +607,14 @@
           <a href="#terminal" class="hover:text-cyanGlow transition-colors flex items-center gap-1 whitespace-nowrap"><span class="text-cyanGlow/50">05.</span> Terminal CLI</a>
         </nav>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-          <!-- Matrix Theme Selector Pill (Posicionado no Header com z-index alto e dropdown perfeito) -->
+        <!-- Action Buttons (100% visíveis e sem cortes em mobile iPhone/Android e desktop) -->
+        <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <!-- Matrix Theme Selector Pill -->
           <div class="relative">
-            <button type="button" id="theme-btn" onclick="toggleThemeDropdown(event)" title="Alternar Matriz Cromática (Cyan, Hacker, Synthwave, Amber)" class="flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 bg-void/80 text-[10px] sm:text-xs font-mono transition-all hover:scale-105 active:scale-95 cursor-pointer">
+            <button type="button" id="theme-btn" onclick="toggleThemeDropdown(event)" title="Alternar Matriz Cromática (Cyan, Hacker, Synthwave, Amber)" class="flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 bg-void/80 text-[10px] sm:text-xs font-mono transition-all hover:scale-105 active:scale-95 cursor-pointer">
               <span id="theme-indicator" class="w-2 h-2 rounded-full bg-cyanGlow inline-block shadow-[0_0_8px_#00f0ff]"></span>
-              <span id="theme-name" class="font-bold tracking-wider text-gray-300">CYAN</span>
-              <i data-lucide="palette" class="w-3 h-3 text-cyanGlow"></i>
+              <span id="theme-name" class="font-bold tracking-wider text-gray-300 hidden xs:inline">CYAN</span>
+              <i data-lucide="palette" class="w-3.5 h-3.5 text-cyanGlow"></i>
             </button>
             <div id="theme-dropdown-menu" class="hidden absolute right-0 top-full mt-2 p-1.5 rounded-2xl bg-void/98 border border-cyanGlow/60 shadow-[0_15px_40px_rgba(0,0,0,0.9)] z-[100] min-w-[165px] space-y-1 font-mono text-[11px] backdrop-blur-2xl">
               <button type="button" onclick="setMatrixTheme('cyan')" class="w-full text-left px-3 py-1.5 rounded-xl hover:bg-cyanGlow/20 text-cyanGlow flex items-center justify-between font-bold transition-all cursor-pointer">
@@ -513,19 +637,21 @@
           </div>
 
           <!-- Cyber Ambient Audio Player Pill -->
-          <button id="sfx-toggle" title="Trilha Sonora Ambient Cyberpunk (Web Audio Synthesizer)" class="flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 bg-void/80 text-[10px] sm:text-xs font-mono transition-all hover:scale-105 active:scale-95 group">
+          <button id="sfx-toggle" title="Trilha Sonora Ambient Cyberpunk (Web Audio Synthesizer)" class="flex items-center gap-1.5 sm:gap-2 px-2 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-white/10 hover:border-cyanGlow/50 bg-void/80 text-[10px] sm:text-xs font-mono transition-all hover:scale-105 active:scale-95 group">
             <div class="flex items-end gap-0.5 h-3.5 w-3.5" id="eq-bars">
               <span class="w-0.5 bg-gray-500 rounded-full h-1 eq-bar"></span>
               <span class="w-0.5 bg-gray-500 rounded-full h-2 eq-bar"></span>
               <span class="w-0.5 bg-gray-500 rounded-full h-1.5 eq-bar"></span>
               <span class="w-0.5 bg-gray-500 rounded-full h-2.5 eq-bar"></span>
             </div>
-            <span id="sfx-label" class="text-gray-400 group-hover:text-cyanGlow transition-colors font-semibold">TRILHA: OFF</span>
+            <span id="sfx-label" class="text-gray-400 group-hover:text-cyanGlow transition-colors font-semibold hidden xs:inline">TRILHA: OFF</span>
           </button>
 
-          <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar!" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-3.5 lg:px-4 py-2 rounded-xl bg-gradient-to-r from-cyanGlow/20 to-purpleGlow/20 hover:from-cyanGlow/30 hover:to-purpleGlow/30 border border-cyanGlow/50 text-white font-mono text-xs font-bold tracking-wider transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,240,255,0.2)] whitespace-nowrap">
-            <i data-lucide="send" class="w-3.5 h-3.5 text-cyanGlow"></i>
-            <span>FALE COMIGO</span>
+          <!-- Botão FALE COMIGO (100% visível em todas as telas, sem sumir nem ser cortado) -->
+          <a href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20vi%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar!" target="_blank" class="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-500/25 via-cyanGlow/20 to-purpleGlow/25 hover:from-emerald-500/35 hover:to-cyanGlow/35 border border-emeraldGlow/60 text-white font-mono text-[10px] sm:text-xs font-bold tracking-wider transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.25)] whitespace-nowrap">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-emeraldGlow"></i>
+            <span class="hidden sm:inline">FALE COMIGO</span>
+            <span class="sm:hidden">FALAR</span>
           </a>
         </div>
 
@@ -3860,25 +3986,24 @@
 
     window.submitArthurAiChat = function() {
       const input = document.getElementById('ai-chat-input');
-      const history = document.getElementById('ai-chat-history');
-      if (!input || !history) return;
+      const speechText = document.getElementById('holo-speech-text');
+      const questionHint = document.getElementById('holo-speech-question-hint');
+      const statusPill = document.getElementById('holo-speech-status');
+      const whatsappBtn = document.getElementById('holo-speech-whatsapp-btn');
+      if (!input) return;
       const userText = input.value.trim();
       if (!userText) return;
 
-      // 1. Renderiza mensagem do usuário
-      const userBubble = document.createElement('div');
-      userBubble.className = 'flex justify-end';
-      userBubble.innerHTML = `
-        <div class="p-3 rounded-2xl rounded-tr-sm bg-gradient-to-r from-cyanGlow/20 to-purpleGlow/20 border border-cyanGlow/40 text-white max-w-[85%] leading-relaxed">
-          <p>${escapeHtml(userText)}</p>
-        </div>
-      `;
-      history.appendChild(userBubble);
       input.value = '';
-      history.scrollTop = history.scrollHeight;
+      if (questionHint) {
+        questionHint.innerHTML = `Você perguntou: &ldquo;${escapeHtml(userText)}&rdquo;`;
+      }
+      if (statusPill) {
+        statusPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span> PROCESSANDO...`;
+      }
       playTone(850, 'sine', 0.04, 0.02);
 
-      // 2. Análise semântica e resposta da IA (com suporte a frases e palavras-chave dispersas)
+      // Análise semântica e resposta da IA (com suporte a frases e palavras-chave dispersas)
       setTimeout(() => {
         const normUser = normalizeQuery(userText);
         let matched = aiKnowledgeBase.find(item => item.match.some(m => {
@@ -3891,32 +4016,21 @@
 
         let replyHtml = matched 
           ? matched.reply 
-          : `Sou o assistente especializado na trajetória, biografia e serviços de <strong>Arthur Fogolin</strong>. Posso te responder sobre a carreira do Arthur, sistemas de IA em produção, orçamentos, prazos de entrega, idade ou formação na UniCatólica. Como posso te ajudar com o trabalho do Arthur?`;
+          : `Sou a inteligência holográfica de <strong>Arthur Fogolin</strong>. Posso te apresentar sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega, idade ou formação na UniCatólica. Como posso te ajudar com o trabalho do Arthur?`;
 
-        const aiBubble = document.createElement('div');
-        aiBubble.className = 'flex items-start gap-2 animate-fadeIn';
-        aiBubble.innerHTML = `
-          <div class="w-6 h-6 rounded-md bg-cyanGlow/20 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow shrink-0 mt-0.5">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-          </div>
-          <div class="p-3 rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 max-w-[85%] space-y-2 leading-relaxed">
-            <span class="text-[10px] font-mono text-cyanGlow font-bold block">Arthur AI // Virtual Core</span>
-            <div>${replyHtml}</div>
-            <div class="pt-1">
-              <a href="https://wa.me/5563991206201?text=${encodeURIComponent('Olá Arthur! Estive conversando com seu Assistente de IA sobre: ' + userText)}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emeraldGlow/20 border border-emeraldGlow/40 text-emeraldGlow text-[10px] font-mono font-bold hover:bg-emeraldGlow/30 transition-all">
-                <span>Continuar no WhatsApp</span>
-                <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
-              </a>
-            </div>
-          </div>
-        `;
-        history.appendChild(aiBubble);
-        if (window.lucide) lucide.createIcons();
-        history.scrollTop = history.scrollHeight;
+        if (speechText) {
+          speechText.innerHTML = replyHtml;
+          speechText.scrollTop = 0;
+        }
+
+        if (whatsappBtn) {
+          whatsappBtn.href = `https://wa.me/5563991206201?text=${encodeURIComponent('Olá Arthur! Estive conversando com seu Assistente Holográfico de IA sobre: ' + userText)}`;
+        }
+
         playTone(1100, 'triangle', 0.08, 0.04);
 
-        // Ativa a simulação de fala do holograma (movimento natural de cabeça, vocoder na boca e anéis de onda)
-        triggerHoloTalkingAnimation(3200);
+        // Ativa a simulação de fala do Homem Holográfico Azul (levitação vibrante, vocoder na boca, ondas sonoras e status)
+        triggerHoloTalkingAnimation(3400);
 
         // Atualiza também o balãozinho de fala no holograma do Hero e dispara a síntese de voz
         try {
@@ -3933,12 +4047,23 @@
     };
 
     let holoTalkTimer = null;
-    window.triggerHoloTalkingAnimation = function(durationMs = 3200) {
+    window.triggerHoloTalkingAnimation = function(durationMs = 3400) {
+      const holoFigure = document.getElementById('holo-man-figure');
+      const voiceBeam = document.getElementById('holo-voice-beam');
+      const soundRipples = document.getElementById('holo-sound-ripples');
+      const statusPill = document.getElementById('holo-speech-status');
+      
+      // Também sincroniza o mini card do header caso visível
       const projBox = document.getElementById('ai-holo-projector-box');
       const mouthBeam = document.getElementById('ai-mouth-beam');
       const rings = document.getElementById('ai-holo-rings');
       const wave = document.getElementById('ai-speaking-wave');
       
+      if (holoFigure) holoFigure.classList.add('speaking');
+      if (voiceBeam) voiceBeam.classList.remove('hidden');
+      if (soundRipples) soundRipples.classList.remove('hidden');
+      if (statusPill) statusPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow animate-ping"></span> TRANSMITINDO VOZ`;
+
       if (projBox) projBox.classList.add('speaking');
       if (mouthBeam) mouthBeam.classList.remove('hidden');
       if (rings) rings.classList.remove('hidden');
@@ -3946,6 +4071,11 @@
 
       if (holoTalkTimer) clearTimeout(holoTalkTimer);
       holoTalkTimer = setTimeout(() => {
+        if (holoFigure) holoFigure.classList.remove('speaking');
+        if (voiceBeam) voiceBeam.classList.add('hidden');
+        if (soundRipples) soundRipples.classList.add('hidden');
+        if (statusPill) statusPill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span> VIRTUAL LIVE`;
+
         if (projBox) projBox.classList.remove('speaking');
         if (mouthBeam) mouthBeam.classList.add('hidden');
         if (rings) rings.classList.add('hidden');
@@ -4102,47 +4232,131 @@
       </div>
     </button>
 
-    <!-- Arthur AI Chat Panel (No Mobile: Aba Suspensa em Tela Cheia na Frente de Tudo; No Desktop: Caixa Flutuante 480px) -->
-    <div id="ai-assistant-panel" class="hidden fixed inset-0 z-[1000] w-full h-[100dvh] md:fixed md:inset-auto md:bottom-16 md:left-5 md:w-[480px] md:h-[600px] md:max-h-[85vh] md:rounded-2xl bg-void/98 border-0 md:border md:border-cyanGlow/60 shadow-[0_15px_60px_rgba(0,0,0,0.95)] flex flex-col overflow-hidden backdrop-blur-3xl animate-fadeIn">
+    <!-- Arthur AI Hologram Communicator Panel (No Mobile: Tela Suspensa Futurista; No Desktop: Communicator 500px) -->
+    <div id="ai-assistant-panel" class="hidden fixed inset-0 z-[1000] w-full h-[100dvh] md:fixed md:inset-auto md:bottom-16 md:left-5 md:w-[500px] md:h-[620px] md:max-h-[90vh] md:rounded-2xl bg-[#030617]/98 border-0 md:border md:border-cyanGlow/60 shadow-[0_15px_60px_rgba(0,0,0,0.95)] flex flex-col overflow-hidden backdrop-blur-3xl animate-fadeIn">
       
-      <!-- Panel Header com Mini Holograma Interativo -->
-      <div class="px-4 py-3 bg-surface/95 border-b border-white/10 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-3">
-          <div id="ai-holo-projector-box" class="relative w-12 h-12 rounded-xl border border-cyanGlow/80 shadow-[0_0_20px_rgba(0,240,255,0.6)] bg-surface shrink-0 holo-projector p-0.5 group">
-            <div class="w-full h-full rounded-[10px] overflow-hidden relative">
-              <img id="ai-holo-avatar" src="/assets/arthur_ai_executive_real.jpg" alt="Avatar Holográfico Arthur" class="w-full h-full object-cover transition-transform duration-300">
-              <!-- Pulso Holográfico Sonora da Fala (Ativa quando a IA fala) -->
-              <div id="ai-speaking-wave" class="hidden absolute inset-0 bg-gradient-to-t from-cyanGlow/40 via-purpleGlow/20 to-transparent animate-pulse"></div>
-              <div id="ai-mouth-beam" class="hidden holo-mouth-beam"></div>
-              <div id="ai-holo-rings" class="hidden holo-ring-pulse"></div>
-            </div>
-            <!-- Projeção Laser Inferior e Miras HUD Cibernéticas -->
-            <div class="absolute -bottom-1.5 inset-x-2 h-1.5 bg-gradient-to-t from-cyanGlow to-transparent blur-[1px]"></div>
-            <div class="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-cyanGlow"></div>
-            <div class="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-cyanGlow"></div>
-            <div class="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-cyanGlow"></div>
-            <div class="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-cyanGlow"></div>
+      <!-- Panel Header -->
+      <div class="px-4 py-2.5 bg-surface/95 border-b border-white/10 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-cyanGlow/20 border border-cyanGlow/50 flex items-center justify-center text-cyanGlow shadow-[0_0_10px_#00f0ff] shrink-0">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
           </div>
           <div>
             <h4 class="font-orbitron font-extrabold text-white text-xs sm:text-sm tracking-wider flex items-center gap-1.5">
-              <span>Arthur Fogolin • IA</span>
+              <span>ARTHUR AI // COMMUNICATOR</span>
               <span class="px-1.5 py-0.2 rounded bg-emeraldGlow/15 border border-emeraldGlow/40 text-[9px] text-emeraldGlow font-mono">ONLINE</span>
             </h4>
-            <span class="text-[10px] text-cyanGlow tracking-wider block font-mono">HOLOGRAMA VIRTUAL // 60 FPS</span>
+            <span class="text-[9px] text-cyanGlow tracking-wider block font-mono">PROJEÇÃO HOLOGRÁFICA 3D // 60 FPS</span>
           </div>
         </div>
         
-        <!-- Botão Fechar em Destaque Alto Contraste para Mobile e Desktop -->
-        <button type="button" onclick="toggleArthurAi()" title="Fechar Assistente de IA" class="px-3.5 py-1.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 hover:text-white transition-all font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-md">
+        <!-- Botão Fechar em Destaque Alto Contraste -->
+        <button type="button" onclick="toggleArthurAi()" title="Fechar Holograma" class="px-3 py-1.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-300 hover:text-white transition-all font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-md">
           <i data-lucide="x" class="w-4 h-4"></i>
           <span>FECHAR</span>
         </button>
       </div>
 
-      <!-- Quick Suggestion Chips (Com Botões de Navegação Lateral + Rolagem por Mouse/Touch) -->
-      <div class="relative px-2 py-2 bg-surfaceLight/60 border-b border-white/5 flex items-center gap-1 group select-none">
+      <!-- Palco Holográfico Sci-Fi (Hologram Communicator Stage) -->
+      <div id="holo-stage-container" class="flex-1 relative overflow-hidden flex flex-col items-center justify-between p-3 select-none bg-gradient-to-b from-[#020516] via-[#040a24] to-[#01030d]">
+        
+        <!-- Grid Cibernético 3D no Chão -->
+        <div class="absolute inset-x-0 bottom-0 h-40 pointer-events-none holo-stage-grid opacity-70"></div>
+
+        <!-- Partículas de Luz e Ambient Glow -->
+        <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom,rgba(0,240,255,0.22)_0%,transparent_70%)]"></div>
+
+        <!-- 1. Balão de Resposta Holográfico Projetado Direto do Homem Azul -->
+        <div id="holo-speech-balloon" class="relative z-20 w-full max-w-[440px] rounded-2xl bg-void/90 border border-cyanGlow/60 shadow-[0_0_30px_rgba(0,240,255,0.25)] p-3.5 backdrop-blur-xl transition-all duration-300">
+          <!-- Cabeçalho do Balão -->
+          <div class="flex items-center justify-between border-b border-cyanGlow/20 pb-1 mb-1.5 font-mono text-[10px]">
+            <span class="text-cyanGlow font-bold flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-ping"></span>
+              TRANSMISSÃO HOLOGRÁFICA // ARTHUR AI
+            </span>
+            <span id="holo-speech-status" class="text-emeraldGlow font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emeraldGlow"></span>
+              VIRTUAL LIVE
+            </span>
+          </div>
+
+          <!-- Pergunta de Contexto Anterior -->
+          <div id="holo-speech-question-hint" class="text-[10px] font-mono text-gray-400 mb-1.5 italic truncate">
+            Bem-vindo à inteligência holográfica de Arthur Fogolin.
+          </div>
+
+          <!-- Conteúdo da Resposta Formatada com Rolagem Interna Suave -->
+          <div id="holo-speech-text" class="text-xs sm:text-[13px] leading-relaxed text-gray-200 max-h-[140px] sm:max-h-[160px] overflow-y-auto pr-1 scrollbar-none font-sans">
+            Olá! Sou a inteligência artificial holográfica de <strong>Arthur Fogolin</strong>. Posso te apresentar sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega e como blindar sua empresa com automação. O que você gostaria de saber?
+          </div>
+
+          <!-- Botão WhatsApp no Balão -->
+          <div id="holo-speech-cta" class="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between">
+            <span class="text-[10px] font-mono text-gray-400">Dúvidas ou projeto sob medida?</span>
+            <a id="holo-speech-whatsapp-btn" href="https://wa.me/5563991206201?text=Ol%C3%A1%20Arthur%2C%20estive%20conversando%20com%20sua%20IA%20hologr%C3%A1fica%20e%20gostaria%20de%20conversar!" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emeraldGlow/20 hover:bg-emeraldGlow/30 border border-emeraldGlow/50 text-emeraldGlow font-mono text-[10px] font-bold transition-all shadow-[0_0_12px_rgba(16,185,129,0.3)] shrink-0">
+              <span>Falar no WhatsApp</span>
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+            </a>
+          </div>
+
+          <!-- Rabicho / Ponteiro Laser Holográfico que aponta diretamente para o Homem -->
+          <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-cyanGlow/80 filter drop-shadow(0 2px 5px #00f0ff)"></div>
+        </div>
+
+        <!-- 2. Área Central de Projeção: Feixe de Luz Cônico Laser + Homem Holográfico Azul -->
+        <div class="relative z-10 w-full flex-1 flex flex-col items-center justify-end pb-1 min-h-[160px] sm:min-h-[180px]">
+          
+          <!-- Feixe Cônico Laser Vertical Translúcido (Cone de Luz) -->
+          <div class="holo-cone-beam"></div>
+
+          <!-- Homem Holográfico Azul (Figura Flutuante com Scanlines e Shader Neon) -->
+          <div id="holo-man-figure" class="relative z-10 holo-man-float group flex flex-col items-center">
+            
+            <!-- Anéis HUD Orbitais Girando em Torno do Homem (Idêntico à Imagem do Arthur) -->
+            <div class="absolute -inset-3 sm:-inset-4 rounded-full border border-cyanGlow/40 animate-spin-slow pointer-events-none border-dashed"></div>
+            <div class="absolute -inset-6 sm:-inset-7 rounded-full border border-purpleGlow/30 animate-spin-reverse pointer-events-none border-dotted"></div>
+            
+            <!-- Ondas Sonoras Radiais quando Fala -->
+            <div id="holo-sound-ripples" class="hidden absolute inset-0 rounded-full border-2 border-cyanGlow/80 animate-ping pointer-events-none"></div>
+
+            <!-- Corpo / Avatar Holográfico Estilizado em Azul Neon -->
+            <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden p-1 border-2 border-cyanGlow shadow-[0_0_35px_#00f0ff,inset_0_0_20px_#00f0ff] bg-void/60">
+              <img id="holo-man-img" src="/assets/arthur_ai_executive_real.jpg" alt="Arthur Holograma" class="w-full h-full object-cover holo-man-shader">
+              
+              <!-- Scanlines Holográficas Sobrepostas -->
+              <div class="absolute inset-0 holo-scanlines pointer-events-none"></div>
+              
+              <!-- Vocoder Labial no Rosto (Luz que pulsa na boca ao falar) -->
+              <div id="holo-voice-beam" class="hidden holo-mouth-beam"></div>
+              
+              <!-- Glitch / Brilho Azulado Interativo -->
+              <div id="holo-glow-aura" class="absolute inset-0 bg-gradient-to-t from-cyanGlow/30 via-transparent to-purpleGlow/20 pointer-events-none"></div>
+            </div>
+
+            <!-- Etiqueta Holográfica Flutuante sob o Holograma -->
+            <div class="mt-1 px-2.5 py-0.5 rounded-full bg-void/90 border border-cyanGlow/50 shadow-[0_0_12px_rgba(0,240,255,0.4)] text-[9px] font-mono text-cyanGlow font-bold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-pulse"></span>
+              <span>HOLOGRAMA VIRTUAL // ARTHUR FOGOLIN</span>
+            </div>
+
+          </div>
+
+          <!-- 3. Base / Pedestal Emissor Circular Holográfico com Anéis Concêntricos Girando -->
+          <div class="holo-pedestal-emitter mt-1.5">
+            <div class="holo-ring-outer"></div>
+            <div class="holo-ring-inner"></div>
+            <div class="holo-core-spark"></div>
+            <div class="absolute -top-2 inset-x-8 h-2 bg-gradient-to-t from-cyanGlow/60 to-transparent blur-sm"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Quick Suggestion Chips (Com Botões de Navegação Lateral + Rolagem) -->
+      <div class="relative px-2 py-2 bg-surfaceLight/70 border-t border-b border-white/5 flex items-center gap-1 group select-none shrink-0">
         <!-- Botão Scroll Esquerda -->
-        <button type="button" onclick="scrollAiChips(-130)" title="Rolar opções anteriores" class="w-6 h-7 rounded-md bg-void/90 border border-white/10 hover:border-cyanGlow text-gray-400 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
+        <button type="button" onclick="scrollAiChips(-140)" title="Rolar opções anteriores" class="w-6 h-7 rounded-md bg-void/90 border border-white/10 hover:border-cyanGlow text-gray-400 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
         </button>
 
@@ -4156,28 +4370,14 @@
         </div>
 
         <!-- Botão Scroll Direita -->
-        <button type="button" onclick="scrollAiChips(130)" title="Rolar próximas opções" class="w-6 h-7 rounded-md bg-void/90 border border-white/10 hover:border-cyanGlow text-gray-400 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
+        <button type="button" onclick="scrollAiChips(140)" title="Rolar próximas opções" class="w-6 h-7 rounded-md bg-void/90 border border-white/10 hover:border-cyanGlow text-gray-400 hover:text-cyanGlow flex items-center justify-center shrink-0 transition-all cursor-pointer active:scale-95 shadow-md">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
         </button>
       </div>
 
-      <!-- Chat History Box -->
-      <div id="ai-chat-history" class="flex-1 p-4 space-y-3.5 overflow-y-auto font-sans text-xs sm:text-sm text-gray-200">
-        <!-- Initial Welcome Message from AI -->
-        <div class="flex items-start gap-2.5">
-          <div class="w-7 h-7 rounded-lg overflow-hidden border border-cyanGlow/50 shadow-[0_0_8px_#00f0ff] shrink-0 mt-0.5">
-            <img src="/assets/arthur_ai_executive_real.jpg" alt="Arthur" class="w-full h-full object-cover">
-          </div>
-          <div class="p-3.5 rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 max-w-[88%] space-y-1.5 leading-relaxed">
-            <span class="text-[10px] font-mono text-cyanGlow font-bold block">Arthur Fogolin // Holograma</span>
-            <p>Olá! Sou a inteligência artificial interativa de <strong>Arthur Fogolin</strong>. Posso te apresentar os sistemas em produção, orçamentos para agentes de WhatsApp, prazos de entrega e como blindar sua empresa com automação. O que você gostaria de saber?</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Chat Input Form -->
-      <form id="ai-chat-form" onsubmit="event.preventDefault(); submitArthurAiChat();" class="p-3 bg-surface/95 border-t border-white/10 flex items-center gap-2">
-        <input type="text" id="ai-chat-input" placeholder="Pergunte sobre bots, prazos, preços..." autocomplete="off" class="flex-1 min-w-0 bg-void/80 border border-white/15 rounded-xl px-3.5 py-2.5 text-white font-sans text-xs sm:text-sm focus:outline-none focus:border-cyanGlow transition-all">
+      <!-- Chat Input Form com Proteção Anti-Zoom (text-[16px] sm:text-sm) -->
+      <form id="ai-chat-form" onsubmit="event.preventDefault(); submitArthurAiChat();" class="p-3 bg-surface/95 border-t border-white/10 flex items-center gap-2 shrink-0">
+        <input type="text" id="ai-chat-input" placeholder="Pergunte sobre bots, prazos, preços..." autocomplete="off" class="flex-1 min-w-0 bg-void/80 border border-white/15 rounded-xl px-3.5 py-2.5 text-white font-sans text-[16px] sm:text-sm focus:outline-none focus:border-cyanGlow transition-all">
         <button type="submit" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyanGlow to-blue-600 hover:opacity-90 text-black font-bold shrink-0 transition-all active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.3)] flex items-center gap-1.5 cursor-pointer">
           <span class="hidden sm:inline font-mono text-xs font-black">ENVIAR</span>
           <i data-lucide="send" class="w-3.5 h-3.5"></i>
