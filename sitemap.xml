@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://arthurfogolin.vercel.app/</loc>
-    <lastmod>2026-11-11</lastmod>
+    <lastmod>2026-11-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://arthurfogolin.vercel.app/assets/arthur_ai_executive_real.jpg</image:loc>
+      <image:title>Arthur Fogolin Rocha — AI Systems Architect &amp; Software Engineer</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arthurfogolin.vercel.app/assets/arthur_hero_portrait.jpg</image:loc>
+      <image:title>Arthur Fogolin — Palmas TO</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arthurfogolin.vercel.app/assets/post_hackarun_winner.png</image:loc>
+      <image:title>Arthur Fogolin — 1º Lugar HackaRun UniCatólica 2026 (VitrineIQ)</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arthurfogolin.vercel.app/assets/favicon-192x192.png</image:loc>
+      <image:title>Arthur Fogolin — Logo AF</image:title>
+    </image:image>
   </url>
 </urlset>
-
