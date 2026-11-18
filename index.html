@@ -2141,17 +2141,24 @@
     <div class="relative w-full max-w-3xl rounded-2xl card-glass border border-purpleGlow/50 shadow-[0_0_60px_rgba(139,92,246,0.3)] p-6 sm:p-10 space-y-6 max-h-[90vh] overflow-y-auto">
       
       <!-- Top Action Bar -->
-      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 flex-wrap gap-2">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emeraldGlow animate-ping"></span>
           <span class="font-mono text-xs text-purpleGlow font-bold uppercase tracking-wider">// CURRÍCULO EXECUTIVO OFICIAL (2026)</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="window.print()" title="Imprimir ou Salvar em PDF" class="px-3.5 py-1.5 rounded-xl bg-purpleGlow/20 hover:bg-purpleGlow/30 border border-purpleGlow/50 text-white font-mono text-xs font-bold transition-all flex items-center gap-1.5 hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
-            <i data-lucide="printer" class="w-3.5 h-3.5 text-purpleGlow"></i>
-            <span>IMPRIMIR / PDF</span>
+          <a href="/assets/curriculo_arthur_fogolin_pt.pdf" download="Curriculo_Arthur_Fogolin_Rocha_PT.pdf" class="px-3 py-1.5 rounded-xl bg-cyanGlow/20 hover:bg-cyanGlow/30 border border-cyanGlow/50 text-cyanGlow font-mono text-xs font-bold transition-all flex items-center gap-1.5 hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>PDF (PT)</span>
+          </a>
+          <a href="/assets/arthur_fogolin_resume_en.pdf" download="Arthur_Fogolin_Rocha_Resume_EN.pdf" class="px-3 py-1.5 rounded-xl bg-purpleGlow/20 hover:bg-purpleGlow/30 border border-purpleGlow/50 text-purple-200 font-mono text-xs font-bold transition-all flex items-center gap-1.5 hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>PDF (EN)</span>
+          </a>
+          <button onclick="window.print()" title="Imprimir" class="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all">
+            <i data-lucide="printer" class="w-4 h-4"></i>
           </button>
-          <button onclick="closeCvModal()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
+          <button onclick="closeCvModal()" class="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all">
             <i data-lucide="x" class="w-5 h-5"></i>
           </button>
         </div>
@@ -2165,11 +2172,11 @@
           <div>
             <h1 class="font-orbitron text-2xl sm:text-3xl font-black text-white">ARTHUR FOGOLIN ROCHA</h1>
             <p class="font-mono text-sm text-cyanGlow font-semibold">AI Systems Architect & Software Engineer</p>
-            <p class="text-xs text-slate-400 font-mono mt-1">Palmas, TO • WhatsApp: +55 (63) 99120-6201 • arthurfogolinrocha01@gmail.com</p>
+            <p class="text-xs text-slate-400 font-mono mt-1">Palmas, TO • WhatsApp: <a href="https://wa.me/5563992858024" target="_blank" class="text-emeraldGlow font-semibold hover:underline">+55 (63) 99285-8024</a> • <a href="mailto:arthurfogolinrocha01@gmail.com" class="text-cyanGlow hover:underline">arthurfogolinrocha01@gmail.com</a></p>
           </div>
           <div class="text-right font-mono text-xs space-y-1 sm:block hidden">
             <span class="px-2.5 py-1 rounded-md bg-yellow-400/15 border border-yellow-400/40 text-yellow-300 font-bold block">🏆 1º Lugar HackaRun 2026</span>
-            <span class="text-slate-400 text-[11px] block">18 Anos • UniCatólica (IA) • 13 Sistemas</span>
+            <span class="text-slate-400 text-[11px] block">18 Anos • UniCatólica (IA) • 100% Remoto</span>
           </div>
         </div>
 
@@ -2180,7 +2187,7 @@
             Resumo Profissional & Filosofia de Engenharia
           </h2>
           <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
-            Desenvolvedor freelancer e arquiteto de soluções autônomas especializado em transformar gargalos operacionais em agentes inteligentes de atendimento, automação e faturamento. Engenharia pautada pelo <strong>rigor de código</strong>: bancos relacionais tipados (PostgreSQL / Drizzle), cobertura sistemática de testes automatizados com Vitest e Playwright, e utilitários de ultra-baixa latência compilados nativamente em <strong>Rust 1.99</strong>.
+            Engenheiro de IA, Desenvolvedor Full-Stack e Arquiteto de Soluções Autônomas. Campeão em <strong>1º Lugar Geral do HackaRun UniCatólica 2026</strong>. Especialista no desenvolvimento de sistemas web de ponta a ponta, microsserviços escaláveis, agentes de IA conversacionais/multimodais e motores de alta concorrência compilados nativamente em <strong>Rust</strong>. Rigor técnico pautado por bancos relacionais tipados (PostgreSQL / Drizzle), cobertura sistemática de testes automatizados (Vitest, Playwright, Pytest), zero alucinações e geração mensurável de ROI para negócios. Disponibilidade total para trabalho 100% Remoto (Home Office).
           </p>
         </div>
 
@@ -2188,16 +2195,18 @@
         <div class="space-y-2">
           <h2 class="font-orbitron text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <span class="w-1.5 h-1.5 rounded-full bg-purpleGlow"></span>
-            Formação & Cérebro Central
+            Formação Acadêmica & Cérebro Central
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
             <div class="p-3 rounded-xl bg-white/5 border border-white/5">
-              <span class="text-white font-bold block">Graduando em Inteligência Artificial</span>
-              <span class="text-slate-400 text-[11px]">Centro Universitário Católica do Tocantins (UniCatólica)</span>
+              <span class="text-white font-bold block">Bacharelado em Inteligência Artificial</span>
+              <span class="text-slate-400 text-[11px]">Centro Universitário Católica do Tocantins (2026 – 2028)</span>
+              <span class="text-slate-500 text-[10px] block mt-0.5">(2 períodos de Eng. de Software cursados na Ulbra)</span>
             </div>
             <div class="p-3 rounded-xl bg-white/5 border border-white/5">
               <span class="text-white font-bold block">Obsidian Fogolin (Segundo Cérebro)</span>
-              <span class="text-slate-400 text-[11px]">126 documentos estruturados e 52+ notas cronológicas auditadas em Rust</span>
+              <span class="text-slate-400 text-[11px]">130+ documentos estruturados, pipelines de RAG e motores nativos em Rust</span>
+              <span class="text-slate-500 text-[10px] block mt-0.5">Inglês Técnico Avançado para Engenharia & Docs</span>
             </div>
           </div>
         </div>
@@ -2210,20 +2219,20 @@
           </h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
             <div class="space-y-1">
-              <span class="text-cyanGlow font-bold block">• Linguagens & Compiladores:</span>
-              <p class="text-slate-300 text-[11px]">Rust (Nativo), TypeScript, JavaScript (ESNext), Python 3.12, SQL.</p>
+              <span class="text-cyanGlow font-bold block">• Linguagens & Runtimes:</span>
+              <p class="text-slate-300 text-[11px]">Rust (Nativo), TypeScript, JavaScript (Node.js/Bun), Python 3.12, PHP, SQL.</p>
             </div>
             <div class="space-y-1">
-              <span class="text-purpleGlow font-bold block">• IA, LLMs & Agentes:</span>
-              <p class="text-slate-300 text-[11px]">Gemini Flash & Carbon, Claude Code, Groq Whisper Opus, Smart Cost Routing.</p>
+              <span class="text-purpleGlow font-bold block">• IA, Visão & LLMs:</span>
+              <p class="text-slate-300 text-[11px]">Gemini API (Flash/Live/Carbon), Claude API, Whisper, YOLO, OpenCV, RAG, Prompt Engineering.</p>
             </div>
             <div class="space-y-1">
               <span class="text-emeraldGlow font-bold block">• Backend & Bancos de Dados:</span>
-              <p class="text-slate-300 text-[11px]">Next.js 16 (App Router), Supabase (Multi-tenant RLS), PostgreSQL, Drizzle ORM.</p>
+              <p class="text-slate-300 text-[11px]">Next.js 16 (App Router), FastAPI, Express, Supabase (Multi-tenant RLS), PostgreSQL, Drizzle ORM, WebSockets.</p>
             </div>
             <div class="space-y-1">
-              <span class="text-yellow-400 font-bold block">• Testes & Integrações:</span>
-              <p class="text-slate-300 text-[11px]">Vitest (292 testes), Playwright RPA, Evolution API v2, Conta Azul REST API.</p>
+              <span class="text-yellow-400 font-bold block">• Testes & Engenharia de Qualidade:</span>
+              <p class="text-slate-300 text-[11px]">Vitest (290+ testes), Playwright RPA/E2E, Pytest, Docker, Git, CI/CD, Arquitetura Limpa.</p>
             </div>
           </div>
         </div>
@@ -2238,30 +2247,37 @@
             <div class="p-3 rounded-xl bg-yellow-400/10 border border-yellow-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <strong class="text-yellow-300 font-mono">🏆 VitrineIQ Capim Dourado (1º Lugar HackaRun 2026)</strong>
-                <p class="text-slate-300 text-[11px]">Inteligência comercial 3D WebGL, Visão Computacional YOLO/OpenCV LGPD, Copiloto Gemini e 216 testes.</p>
+                <p class="text-slate-300 text-[11px]">Inteligência comercial 3D WebGL, Visão Computacional YOLO/OpenCV LGPD, Copiloto Gemini e 216 testes automatizados verdes.</p>
               </div>
-              <span class="text-yellow-300 font-mono font-bold shrink-0">🥇 1º Lugar</span>
+              <span class="text-yellow-300 font-mono font-bold shrink-0">🥇 1º Lugar Geral</span>
+            </div>
+            <div class="p-3 rounded-xl bg-purpleGlow/10 border border-purpleGlow/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <strong class="text-purple-300 font-mono">🤖 G.I.D.E.O.N. (Assistente IA 3D em Tempo Real)</strong>
+                <p class="text-slate-300 text-[11px]">Sistema operacional assistente de voz hands-free em Rust, Tauri v2, Gemini Live WebSocket e Three.js 60fps.</p>
+              </div>
+              <span class="text-purpleGlow font-mono font-bold shrink-0">Rust + Tauri v2</span>
             </div>
             <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <strong class="text-white font-mono">PH Estoque (ERP + Agente WhatsApp)</strong>
-                <p class="text-slate-400 text-[11px]">Agente comercial com memória consolidada e 292 testes automatizados verdes.</p>
+                <strong class="text-white font-mono">CIPA MedWork, Week MedWork & ESO Oficial</strong>
+                <p class="text-slate-400 text-[11px]">Votação eleitoral NR-5 auditável por CPF, robôs Playwright de eSocial (S-2220/2240) e integração ERP Conta Azul.</p>
+              </div>
+              <span class="text-cyanGlow font-mono font-bold shrink-0">SST em Escala</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <strong class="text-white font-mono">PH Estoque & DIX BPO Agent</strong>
+                <p class="text-slate-400 text-[11px]">Agentes de atendimento WhatsApp com memória consolidada assíncrona, áudio Whisper e 292 testes Vitest.</p>
               </div>
               <span class="text-emeraldGlow font-mono font-bold shrink-0">99.9% Uptime</span>
             </div>
             <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <strong class="text-white font-mono">DIX BPO Agent (Agente de Voz & Triagem)</strong>
-                <p class="text-slate-400 text-[11px]">Triagem com transcrição de áudio Opus, transbordo humanizado e CRM.</p>
+                <strong class="text-white font-mono">Micro-SaaS OrçaPro PIX</strong>
+                <p class="text-slate-400 text-[11px]">Motor ultra-rápido de geração de orçamentos e QR Code BACEN EMVCo com latência inferior a 2ms.</p>
               </div>
-              <span class="text-purpleGlow font-mono font-bold shrink-0">Zero Fila</span>
-            </div>
-            <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <strong class="text-white font-mono">CIPA MedWork & MEDX Conta Azul</strong>
-                <p class="text-slate-400 text-[11px]">Votação eleitoral NR-5 auditável por CPF e faturamento inteligente com ERP.</p>
-              </div>
-              <span class="text-cyanGlow font-mono font-bold shrink-0">SLA Rigoroso</span>
+              <span class="text-emeraldGlow font-mono font-bold shrink-0">Sub-2ms</span>
             </div>
           </div>
         </div>
